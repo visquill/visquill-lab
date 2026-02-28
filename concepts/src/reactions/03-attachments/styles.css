@@ -1,0 +1,89 @@
+/* Prefix chain:  "demos-"  +  "attach-basics-"  +  class name
+                   ↓              ↓                     ↓
+                   demos-attach-basics-<class>                 */
+
+/* ─── Segment ────────────────────────────────────────────────────────── */
+
+/* The main draggable segment drawn between the two handles. */
+.demos-attach-basics-segment {
+    stroke: #555;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+/* ─── Endpoint handles ───────────────────────────────────────────────── */
+
+/* Invisible drag targets at each end of the segment. */
+.demos-attach-basics-handle {
+    fill: #34495e;
+    stroke: #fff;
+    stroke-width: 3px;
+    r: 11px;
+    cursor: grab;
+}
+
+
+
+/* ─── pointToPoint — follower dot ────────────────────────────────────── */
+
+/* A small green dot that tracks endpoint A via pointToPoint with an offset.
+   The offset makes it visibly separate so the binding is obvious. */
+.demos-attach-basics-follower {
+    fill: #2ecc71;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+}
+
+/* ─── pinToSegment — midpoint ────────────────────────────────────────── */
+
+/* Diamond at the segment's centre (default position). */
+.demos-attach-basics-midpoint {
+    fill: #e74c3c;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+}
+
+/* ─── pinToSegment — ratio pin ───────────────────────────────────────── */
+
+/* Diamond at position 0.25 along the segment. */
+.demos-attach-basics-ratio-pin {
+    fill: #9b59b6;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+}
+
+/* ─── pinToSegment — offset pin ──────────────────────────────────────── */
+
+/* Diamond offset perpendicularly to the left of the segment. */
+.demos-attach-basics-offset-pin {
+    fill: #f39c12;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+}
+
+/* ─── rectangleToSegment ─────────────────────────────────────────────── */
+
+/* Semi-transparent rectangle that spans the segment and grows
+   perpendicularly from it.  Sits behind everything else. */
+.demos-attach-basics-bar {
+    fill: rgba(52, 152, 219, 0.25);
+    stroke: rgba(52, 152, 219, 0.7);
+    stroke-width: 1.5px;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+/* Static annotations that identify each attached element. */
+.demos-attach-basics-label {
+    fill: #444;
+    font-size: 11px;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

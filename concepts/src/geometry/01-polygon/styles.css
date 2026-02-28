@@ -1,0 +1,44 @@
+/* Prefix chain:  "demos-"  +  "polygon-editor-"  +  class name
+                   ↓              ↓                      ↓
+                   demos-polygon-editor-<class>                    */
+
+/* ─── Polygon Shape ──────────────────────────────────────────────────── */
+
+.demos-polygon-editor-shape {
+    fill: rgba(70, 130, 180, 0.3);  /* Semi-transparent steel blue */
+    stroke: rgba(70, 130, 180, 0.8);
+    stroke-width: 2px;
+}
+
+/* ─── Vertex Handles ─────────────────────────────────────────────────── */
+
+.demos-polygon-editor-vertex {
+    fill: #4682b4;  /* Steel blue */
+    stroke: #1a1a1a;
+    stroke-width: 2px;
+    cursor: move;
+}
+
+.demos-polygon-editor-vertex:hover {
+    fill: #ff8c00;  /* Orange on hover */
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-polygon-editor-label {
+    fill: #1a1a1a;
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: bold;
+    pointer-events: none;  /* Don't interfere with dragging */
+    user-select: none;
+}
+
+.demos-polygon-editor-instructions {
+    fill: #666;
+    font-family: sans-serif;
+    font-size: 16px;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

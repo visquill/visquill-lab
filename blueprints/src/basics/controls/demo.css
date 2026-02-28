@@ -1,0 +1,210 @@
+/* Prefix chain:  "blueprint-"  +  "controls-"  +  class name
+                   ↓              ↓                      ↓
+                   blueprint-controls-<class>                       */
+
+/* Section Labels */
+
+.blueprint-controls-section-label {
+    font-size: 16px;
+    font-weight: 600;
+    fill: #2c3e50;
+    user-select: none;
+    pointer-events: none;
+}
+
+.blueprint-controls-counter-label {
+    font-size: 18px;
+    font-weight: 500;
+    fill: #34495e;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Button Styles */
+
+.blueprint-controls-button-primary {
+    fill: #3498db;
+    stroke: #2980b9;
+    stroke-width: 2px;
+    cursor: pointer;
+    transition: fill 0.2s ease;
+}
+
+.blueprint-controls-button-primary:hover {
+    fill: #5dade2;
+}
+
+.blueprint-controls-button-success {
+    fill: #2ecc71;
+    stroke: #27ae60;
+    stroke-width: 2px;
+    cursor: pointer;
+    transition: fill 0.2s ease;
+}
+
+.blueprint-controls-button-success:hover {
+    fill: #58d68d;
+}
+
+.blueprint-controls-button-warning {
+    fill: #f39c12;
+    stroke: #e67e22;
+    stroke-width: 2px;
+    cursor: pointer;
+    transition: fill 0.2s ease;
+}
+
+.blueprint-controls-button-warning:hover {
+    fill: #f5b041;
+}
+
+.blueprint-controls-button-danger {
+    fill: #e74c3c;
+    stroke: #c0392b;
+    stroke-width: 2px;
+    cursor: pointer;
+    transition: fill 0.2s ease;
+}
+
+.blueprint-controls-button-danger:hover {
+    fill: #ec7063;
+}
+
+.blueprint-controls-button-interactive {
+    fill: #9b59b6;
+    stroke: #8e44ad;
+    stroke-width: 2px;
+    cursor: pointer;
+    transition: fill 0.2s ease;
+}
+
+.blueprint-controls-button-interactive:hover {
+    fill: #af7ac5;
+}
+
+.blueprint-controls-button-reset {
+    fill: #95a5a6;
+    stroke: #7f8c8d;
+    stroke-width: 2px;
+    cursor: pointer;
+    transition: fill 0.2s ease;
+}
+
+.blueprint-controls-button-reset:hover {
+    fill: #b2babb;
+}
+
+.blueprint-controls-button-outlined {
+    fill: none;
+    stroke: #34495e;
+    stroke-width: 2px;
+    cursor: pointer;
+    transition: stroke 0.2s ease;
+}
+
+.blueprint-controls-button-outlined:hover {
+    stroke: #5d6d7e;
+}
+
+/* Label Styles */
+
+/* Top row */
+.blueprint-controls-label-top-left {
+    fill: #2c3e50;
+    text-anchor: start;
+    dominant-baseline: hanging;
+    font-size: 18px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+}
+
+.blueprint-controls-label-top-center {
+    fill: #2c3e50;
+    text-anchor: middle;
+    dominant-baseline: hanging;
+    font-size: 18px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+}
+
+.blueprint-controls-label-top-right {
+    fill: #2c3e50;
+    text-anchor: end;
+    dominant-baseline: hanging;
+    font-size: 18px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Center row */
+.blueprint-controls-label-center-left {
+    fill: #2c3e50;
+    text-anchor: start;
+    dominant-baseline: middle;
+    font-size: 18px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+}
+
+.blueprint-controls-label-center-center {
+    fill: #2c3e50;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    font-size: 18px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+}
+
+.blueprint-controls-label-center-right {
+    fill: #2c3e50;
+    text-anchor: end;
+    dominant-baseline: middle;
+    font-size: 18px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Bottom row */
+.blueprint-controls-label-bottom-left {
+    fill: #2c3e50;
+    text-anchor: start;
+    dominant-baseline: auto;
+    font-size: 18px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+}
+
+.blueprint-controls-label-bottom-center {
+    fill: #2c3e50;
+    text-anchor: middle;
+    dominant-baseline: auto;
+    font-size: 18px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+}
+
+.blueprint-controls-label-bottom-right {
+    fill: #2c3e50;
+    text-anchor: end;
+    dominant-baseline: auto;
+    font-size: 18px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+}
+
+.blueprint-controls-toggle-button {
+    fill: #3498db;
+    stroke: #2980b9;
+    stroke-width: 2px;
+    cursor: pointer;
+    transition: fill 0.2s ease;
+}

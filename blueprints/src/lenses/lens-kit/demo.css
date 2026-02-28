@@ -1,0 +1,70 @@
+/* ── Rim ─────────────────────────────────────────────────────────────────── */
+
+.blueprint-lens-rim {
+    fill: none;
+    stroke: rgba(30, 30, 30, 0.12);
+    stroke-width: 1.5px;
+}
+
+/* ── Baselines ───────────────────────────────────────────────────────────── */
+
+.blueprint-lens-baseline-a {
+    fill: none;
+    stroke: #e05c3a;
+    stroke-width: 18px;
+    stroke-linecap: round;
+}
+
+.blueprint-lens-baseline-b {
+    fill: none;
+    stroke: #4a90d9;
+    stroke-width: 18px;
+    stroke-linecap: round;
+}
+
+.blueprint-lens-baseline-c {
+    fill: none;
+    stroke: #5bb87a;
+    stroke-width: 18px;
+    stroke-linecap: round;
+}
+
+/* ── Bar captions ────────────────────────────────────────────────────────── */
+
+.blueprint-lens-bar-caption {
+    fill: rgba(255, 255, 255, 0.9);
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 10px;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ── Value labels ────────────────────────────────────────────────────────── */
+
+.blueprint-lens-value-label {
+    fill: #1a1a1a;
+    font-family: "SF Mono", "Fira Code", monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ── Titles ──────────────────────────────────────────────────────────────── */
+
+.blueprint-lens-plot-title {
+    fill: #444;
+    font-family: system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "workspaces": [
+    "concepts",
+    "visquill-explorer",
+    "blueprints",
+    "home-screen"
+  ],
+  "scripts": {
+    "build:ts": "tsc -b",
+    "build": "tsc -b && npm run build --workspace=visquill-explorer",
+    "dev": "tsc -b && npm run dev --workspace=visquill-explorer",
+    "preview": "npm run preview --workspace=visquill-explorer"
+  },
+  "license": "MIT"
+}

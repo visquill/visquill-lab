@@ -1,0 +1,402 @@
+/* ==========================
+   Viewer-scoped CSS
+   ========================== */
+
+:root {
+    --source-panel-width: 600px;
+}
+
+.demo-viewer {
+    --bg: #ffffff;
+    --panel: #f8f9fa;
+    --border: #e1e4e8;
+    --text: #24292e;
+    --muted: #6a737d;
+    --accent: #0366d6;
+
+    display: flex;
+    height: 100vh;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    color: var(--text);
+    background: var(--bg);
+    overflow: hidden;
+}
+
+/* Reset box-sizing locally */
+.demo-viewer *,
+.demo-viewer *::before,
+.demo-viewer *::after {
+    box-sizing: border-box;
+}
+
+/* ==================== Sidebar ==================== */
+.demo-viewer .sidebar {
+    width: 230px;
+    background: var(--panel);
+    border-right: 1px solid var(--border);
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.demo-viewer .sidebar h1 {
+    font-size: 18px;
+    margin: 0 0 12px;
+}
+
+.demo-viewer .home-button {
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.2s;
+}
+
+.demo-viewer .home-button:hover {
+    color: var(--accent);
+}
+
+.demo-viewer #demo-list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+/* Package sections (top-level) */
+.demo-viewer .package-section {
+    margin-bottom: 16px;
+}
+
+.demo-viewer .package-title {
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text);
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+    background: #e8f0fe;
+    border: 1px solid #d0e3ff;
+}
+
+.demo-viewer .package-title:hover {
+    background: #d0e3ff;
+}
+
+.demo-viewer .package-title::after {
+    content: '▶';
+    font-size: 11px;
+    color: var(--accent);
+    transition: transform 0.2s;
+}
+
+.demo-viewer .package-section.expanded .package-title::after {
+    transform: rotate(90deg);
+}
+
+.demo-viewer .package-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    margin-left: 0;
+    padding-left: 0;
+}
+
+.demo-viewer .package-section.expanded .package-content {
+    max-height: 2000px;
+    transition: max-height 0.5s ease-in;
+    margin-top: 8px;
+}
+
+/* Category sections */
+.demo-viewer .demo-category {
+    margin-bottom: 12px;
+}
+
+.demo-viewer .demo-category-title {
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    user-select: none;
+}
+
+.demo-viewer .demo-category-title:hover {
+    background: #f0f2f5;
+}
+
+.demo-viewer .demo-category-title::after {
+    content: '▶';
+    font-size: 10px;
+    color: var(--muted);
+    transition: transform 0.2s;
+}
+
+.demo-viewer .demo-category.expanded .demo-category-title::after {
+    transform: rotate(90deg);
+}
+
+.demo-viewer .demo-category-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    margin-left: 8px;
+}
+
+.demo-viewer .demo-category.expanded .demo-category-list {
+    max-height: 1000px;
+    transition: max-height 0.5s ease-in;
+}
+
+.demo-viewer .demo-item {
+    padding: 8px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--muted);
+}
+
+.demo-viewer .demo-item:hover {
+    background: #f0f2f5;
+    color: var(--text);
+}
+
+.demo-viewer .demo-item.active {
+    background: #e8f0fe;
+    color: var(--accent);
+    font-weight: 500;
+}
+
+/* ==================== Main Area ==================== */
+.demo-viewer .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.demo-viewer .header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 16px;
+}
+
+.demo-viewer .header-info {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    min-width: 0;
+}
+
+.demo-viewer .header h2 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.demo-viewer .category {
+    font-size: 13px;
+    color: var(--muted);
+    white-space: nowrap;
+}
+
+.demo-viewer .tabs {
+    display: flex;
+    gap: 8px;
+}
+
+.demo-viewer .tab {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.demo-viewer .tab.active {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: #e8f0fe;
+}
+
+/* ==================== Content Container ==================== */
+.demo-viewer .content {
+    flex: 1;
+    padding: 16px;
+    min-height: 0;
+    overflow: hidden;
+}
+
+/* ==================== Panels ==================== */
+.demo-viewer .panel {
+    display: none;
+    height: 100%;
+}
+
+.demo-viewer .panel.active {
+    display: flex;
+}
+
+/* Preview-only: single column with preview stage */
+.demo-viewer .panel.preview-panel {
+    flex-direction: column;
+}
+
+/* Source-only: single column with source wrapper at full width */
+.demo-viewer .panel.source-panel {
+    flex-direction: column;
+}
+
+/* Both: two columns - preview grows, source fixed width */
+.demo-viewer .panel.both-panel {
+    gap: 0;
+    position: relative;
+}
+
+/* Resizer handle */
+.demo-viewer .resizer {
+    width: 8px;
+    cursor: col-resize;
+    background: transparent;
+    position: relative;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.demo-viewer .resizer:hover,
+.demo-viewer .resizer.resizing {
+    background: var(--border);
+}
+
+.demo-viewer .resizer::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px;
+    height: 40px;
+    background: var(--muted);
+    border-radius: 1px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.demo-viewer .resizer:hover::before,
+.demo-viewer .resizer.resizing::before {
+    opacity: 0.5;
+}
+
+/* ==================== Preview Stage ==================== */
+.demo-viewer .preview-stage {
+    flex: 1;
+    min-height: 0;
+    border-radius: 12px;
+    background: #fafbfc;
+    border: 1px solid var(--border);
+    overflow: hidden;
+}
+
+/* ==================== Source Wrapper ==================== */
+.demo-viewer .source-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1; /* Full width by default (source mode) */
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg);
+    overflow: hidden;
+}
+
+/* In both mode, source wrapper has dynamic width */
+.demo-viewer .panel.both-panel .source-wrapper {
+    width: var(--source-panel-width);
+    flex: 0 0 var(--source-panel-width);
+    min-width: 200px;
+    max-width: 80%;
+}
+
+/* ==================== File Tabs ==================== */
+.demo-viewer .file-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 12px 12px 8px 12px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    background: var(--bg);
+}
+
+.demo-viewer .file-tab {
+    background: none;
+    border: none;
+    color: var(--muted);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.demo-viewer .file-tab.active {
+    background: rgba(3, 102, 214, 0.15);
+    color: var(--accent);
+}
+
+/* ==================== Source Container ==================== */
+/* This is the scrollable area - clean container with no styling */
+.demo-viewer .source-container {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 12px;
+}
+
+/* ==================== Source Files ==================== */
+.demo-viewer .source-file {
+    display: none;
+}
+
+.demo-viewer .source-file.active {
+    display: block;
+}
+
+/* Code blocks - no border, the wrapper has it */
+.demo-viewer .source-file.code .code-block {
+    margin: 0;
+    padding: 16px;
+    border-radius: 8px;
+    background: #0b0d12;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 100%;
+}
+
+/* Markdown content - no border, the wrapper has it */
+.demo-viewer .markdown-content {
+    padding: 16px;
+    background: transparent;
+    line-height: 1.6;
+}
+
+.demo-viewer .markdown-content code {
+    background: none;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #24292e;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 85%;
+}

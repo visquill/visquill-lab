@@ -1,0 +1,9 @@
+{
+  "files": [],
+  "references": [
+    { "path": "blueprints" },
+    { "path": "concepts" },
+    { "path": "home-screen" },
+    { "path": "visquill-explorer" }
+  ]
+}

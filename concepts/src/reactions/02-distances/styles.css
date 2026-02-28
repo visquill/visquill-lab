@@ -1,0 +1,125 @@
+/* Prefix chain:  "demos-"  +  "reactions-distances-"  +  class name
+                   ↓              ↓                           ↓
+                   demos-reactions-distances-<class>                    */
+
+/* ─── Draggable handles ──────────────────────────────────────────────── */
+
+.demos-reactions-distances-handle-a,
+.demos-reactions-distances-handle-b,
+.demos-reactions-distances-handle-c,
+.demos-reactions-distances-handle-d {
+    r: 8px;
+    fill: #4299e1;
+    stroke: #2b6cb0;
+    stroke-width: 2;
+    cursor: grab;
+}
+
+.demos-reactions-distances-handle-a:hover,
+.demos-reactions-distances-handle-b:hover,
+.demos-reactions-distances-handle-c:hover,
+.demos-reactions-distances-handle-d:hover {
+    fill: #63b3ed;
+}
+
+/* Circle center handle */
+.demos-reactions-distances-handle-circle-center {
+    r: 6px;
+    fill: #ed8936;
+    stroke: #c05621;
+    stroke-width: 2;
+    cursor: grab;
+}
+
+.demos-reactions-distances-handle-circle-center:hover {
+    fill: #f6ad55;
+}
+
+/* Line segment handles */
+.demos-reactions-distances-handle-line-start,
+.demos-reactions-distances-handle-line-end {
+    r: 6px;
+    fill: #48bb78;
+    stroke: #2f855a;
+    stroke-width: 2;
+    cursor: grab;
+}
+
+.demos-reactions-distances-handle-line-start:hover,
+.demos-reactions-distances-handle-line-end:hover {
+    fill: #68d391;
+}
+
+/* ─── Visual elements ────────────────────────────────────────────────── */
+
+.demos-reactions-distances-connection-line {
+    stroke: #4299e1;
+    stroke-width: 2;
+    stroke-dasharray: 5, 5;
+    opacity: 0.6;
+}
+
+.demos-reactions-distances-the-line {
+    stroke: #48bb78;
+    stroke-width: 3;
+}
+
+.demos-reactions-distances-perpendicular-line {
+    stroke: #ed8936;
+    stroke-width: 2;
+    stroke-dasharray: 3, 3;
+}
+
+.demos-reactions-distances-circle-line {
+    stroke: #9f7aea;
+    stroke-width: 2;
+    stroke-dasharray: 4, 4;
+}
+
+.demos-reactions-distances-the-circle {
+    fill: rgba(237, 137, 54, 0.1);
+    stroke: #ed8936;
+    stroke-width: 2;
+}
+
+/* ─── Closest point markers ──────────────────────────────────────────── */
+
+.demos-reactions-distances-closest-point,
+.demos-reactions-distances-circle-edge-point {
+    r: 5px;
+    fill: #f56565;
+    stroke: #c53030;
+    stroke-width: 2;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-reactions-distances-distance-label {
+    fill: #2d3748;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-reactions-distances-section-title {
+    fill: #2d3748;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-reactions-distances-instructions {
+    fill: #4a5568;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

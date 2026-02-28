@@ -1,0 +1,75 @@
+/* Prefix chain:  "blueprint-"  +  "decoration-"  +  class name
+                   ↓              ↓                      ↓
+                   blueprint-decoration-<class>                       */
+
+/* Section Labels */
+
+.blueprint-decoration-section-label {
+    font-size: 16px;
+    font-weight: 600;
+    fill: #2c3e50;
+}
+
+/* Baseline Styles */
+
+.blueprint-decoration-baseline {
+    stroke: #95a5a6;
+    stroke-width: 2px;
+    fill: none;
+}
+
+/* Polyline Labels */
+
+.blueprint-decoration-label-quarter {
+    fill: #2c3e50;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    font-size: 16px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+}
+
+/* Bar Styles */
+
+.blueprint-decoration-bar-blue {
+    fill: rgba(70, 130, 180, 0.8);
+    stroke: #2c3e50;
+    stroke-width: 2px;
+}
+
+.blueprint-decoration-bar-green {
+    fill: rgba(46, 204, 113, 0.8);
+    stroke: #2c3e50;
+    stroke-width: 2px;
+}
+
+.blueprint-decoration-bar-orange {
+    fill: rgba(230, 126, 34, 0.8);
+    stroke: #2c3e50;
+    stroke-width: 2px;
+}
+
+.blueprint-decoration-bar-purple {
+    fill: rgba(155, 89, 182, 0.8);
+    stroke: #2c3e50;
+    stroke-width: 2px;
+}
+
+.blueprint-decoration-bar-red {
+    fill: rgba(231, 76, 60, 0.8);
+    stroke: #2c3e50;
+    stroke-width: 2px;
+}
+
+/* Rectangle Labels */
+
+.blueprint-decoration-label-value {
+    fill: #2c3e50;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    font-size: 14px;
+    font-weight: 600;
+    user-select: none;
+    pointer-events: none;
+}

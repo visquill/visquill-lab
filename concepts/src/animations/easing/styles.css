@@ -1,0 +1,55 @@
+/* Prefix chain:  "demos-"  +  "animations-easing-"  +  class name
+                   ↓              ↓                        ↓
+                   demos-animations-easing-<class>                    */
+
+/* Bar Colors */
+
+/* Each easing function receives a distinct color for visual differentiation */
+
+.demos-animations-easing-bar-linear {
+    fill: rgba(70, 130, 180, 0.8);  /* Steel Blue */
+    stroke: #1a1a1a;
+    stroke-width: 1px;
+}
+
+.demos-animations-easing-bar-out-cubic {
+    fill: rgba(106, 168, 79, 0.8);  /* Green */
+    stroke: #1a1a1a;
+    stroke-width: 1px;
+}
+
+.demos-animations-easing-bar-in-cubic {
+    fill: rgba(255, 152, 0, 0.8);  /* Orange */
+    stroke: #1a1a1a;
+    stroke-width: 1px;
+}
+
+.demos-animations-easing-bar-in-out-cubic {
+    fill: rgba(158, 158, 158, 0.8);  /* Gray */
+    stroke: #1a1a1a;
+    stroke-width: 1px;
+}
+
+.demos-animations-easing-bar-out-sine {
+    fill: rgba(230, 124, 115, 0.8);  /* Coral */
+    stroke: #1a1a1a;
+    stroke-width: 1px;
+}
+
+.demos-animations-easing-bar-in-sine {
+    fill: rgba(171, 71, 188, 0.8);  /* Purple */
+    stroke: #1a1a1a;
+    stroke-width: 1px;
+}
+
+.demos-animations-easing-bar-in-out-sine {
+    fill: rgba(3, 169, 244, 0.8);  /* Light Blue */
+    stroke: #1a1a1a;
+    stroke-width: 1px;
+}
+
+.demos-animations-easing-bar-out-back {
+    fill: rgba(255, 193, 7, 0.8);  /* Amber */
+    stroke: #1a1a1a;
+    stroke-width: 1px;
+}

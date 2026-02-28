@@ -1,0 +1,42 @@
+/* ─── Lens structure ─────────────────────────────────────────────────── */
+
+
+.demos-lenses-masked-background-ring {
+    fill: none;
+    stroke: #1a1a1a;
+    stroke-width: 2px;
+}
+
+
+.demos-lenses-masked-background-handle {
+    fill: rgba(138, 43, 226, 0.0);
+    r: 50px;
+}
+
+/* red */
+.demos-lenses-masked-background-red {
+    fill: rgba(139, 0, 0, 0.2);
+    r: 5px;
+}
+
+
+/* green */
+.demos-lenses-masked-background-green {
+    fill: rgba(0, 128, 0, 0.2);
+    r: 5px;
+}
+
+
+/* blue */
+.demos-lenses-masked-background-blue {
+    fill: rgba(0, 0, 255, 0.2);
+    r: 5px;
+}
+
+/* orange */
+.demos-lenses-masked-background-orange {
+    fill: rgba(255, 165, 0, 0.2);
+    r: 5px;
+}
+
+

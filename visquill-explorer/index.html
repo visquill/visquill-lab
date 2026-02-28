@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="VisQuill Lab — interactive demos and reusable components built with the VisQuill GDK">
+  <title>VisQuill Lab</title>
+</head>
+<body>
+<div class="demo-viewer">
+  <aside class="sidebar">
+    <h1 id="home-button" class="home-button">VisQuill Lab</h1>
+    <div id="demo-list"></div>
+  </aside>
+
+  <main class="main">
+    <header class="header">
+      <div class="header-info">
+        <h2 id="title">Select a demo</h2>
+        <span id="category" class="category"></span>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-tab="both">Both</button>
+        <button class="tab" data-tab="preview">Canvas</button>
+        <button class="tab" data-tab="source">Source</button>
+      </div>
+    </header>
+
+    <section class="content">
+      <!-- Preview-only panel -->
+      <div id="preview-panel" class="panel preview-panel">
+        <div class="preview-stage" id="preview-stage"></div>
+      </div>
+
+      <!-- Source-only panel -->
+      <div id="source-panel" class="panel source-panel">
+        <div class="source-wrapper">
+          <div class="file-tabs" id="file-tabs-source"></div>
+          <div class="source-container" id="source-container-source"></div>
+        </div>
+      </div>
+
+      <!-- Both panel (split view) -->
+      <div id="both-panel" class="panel both-panel active">
+        <div class="preview-stage" id="both-stage"></div>
+        <div class="resizer" id="resizer"></div>
+        <div class="source-wrapper">
+          <div class="file-tabs" id="file-tabs-both"></div>
+          <div class="source-container" id="source-container-both"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script type="module" src="./src/explorer.ts"></script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+/* Prefix chain:  "demos-"  +  "basics-rvg-frame-"  +  class name
+                   ↓              ↓                        ↓
+                   demos-basics-rvg-frame-<class>                   */
+
+/* ─── Frame Box ──────────────────────────────────────────────────────── */
+
+.demos-basics-rvg-frame-frame {
+    fill: rgba(70, 130, 180, 0.06);
+    stroke: #4682b4;
+    stroke-width: 1.5px;
+    stroke-dasharray: 6, 4;
+}
+
+/* ─── Frame Edges ────────────────────────────────────────────────────── */
+
+.demos-basics-rvg-frame-edge {
+    stroke: #4682b4;
+    stroke-width: 4px;
+    stroke-dasharray: 6, 4;
+    fill: none;
+}
+
+/* ─── Corner Markers ─────────────────────────────────────────────────── */
+
+.demos-basics-rvg-frame-corner {
+    fill: #4682b4;
+    stroke: none;
+}
+
+/* ─── Corner Labels ──────────────────────────────────────────────────── */
+
+.demos-basics-rvg-frame-corner-label-left {
+    fill: #4682b4;
+    font-family: monospace;
+    font-size: 12px;
+    text-anchor: start;
+    pointer-events: none;
+}
+
+.demos-basics-rvg-frame-corner-label-right {
+    fill: #4682b4;
+    font-family: monospace;
+    font-size: 12px;
+    text-anchor: end;
+    pointer-events: none;
+}
+
+/* ─── Centre Crosshair ───────────────────────────────────────────────── */
+
+.demos-basics-rvg-frame-crosshair {
+    stroke: #e05c2a;
+    stroke-width: 2px;
+    fill: none;
+}
+
+/* ─── Centre Label ───────────────────────────────────────────────────── */
+
+.demos-basics-rvg-frame-center-label {
+    fill: #e05c2a;
+    font-family: monospace;
+    font-size: 13px;
+    font-weight: bold;
+    text-anchor: start;
+    pointer-events: none;
+}

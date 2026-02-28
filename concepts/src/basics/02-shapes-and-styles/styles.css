@@ -1,0 +1,77 @@
+/* ─── Title ──────────────────────────────────────────────────────────────── */
+/* "title"  →  demos-basics-shapes-title */
+.demos-basics-shapes-title {
+    fill: #120b12;
+    font-size: 22px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Top row ────────────────────────────────────────────────────────────── */
+
+/* "polygon"  →  demos-basics-shapes-polygon */
+.demos-basics-shapes-polygon {
+    fill: darkgoldenrod;
+    stroke: #1a1a1a;
+    stroke-width: 2px;
+}
+
+/* "box"  →  demos-basics-shapes-box */
+.demos-basics-shapes-box {
+    fill: rebeccapurple;
+    stroke: #1a1a1a;
+    stroke-width: 2px;
+}
+
+/* rounded rectangle uses only inline @style, no class needed here */
+
+/* "circle"  →  demos-basics-shapes-circle
+   Also applies to circle-3p, which passes "circle circle-3p" —
+   so this is the shared base style for both circles. */
+.demos-basics-shapes-circle {
+    fill: darkolivegreen;
+    stroke: #1a1a1a;
+    stroke-width: 2px;
+}
+
+/* ─── Bottom row ─────────────────────────────────────────────────────────── */
+
+/* "circle circle-3p"  →  demos-basics-shapes-circle  +  demos-basics-shapes-circle-3p
+   circle-3p only needs to override what differs from the base circle style. */
+.demos-basics-shapes-circle-3p {
+    fill: steelblue;
+}
+
+/* "point"  →  demos-basics-shapes-point */
+.demos-basics-shapes-point {
+    fill: steelblue;
+    r: 5px;
+    stroke: black;
+    stroke-width: 1px;
+}
+
+/* "segment"  →  demos-basics-shapes-segment
+   The second segment overrides stroke color and width inline via @style,
+   so this class only needs to define the default appearance. */
+.demos-basics-shapes-segment {
+    stroke: #1a1a1a;
+    stroke-width: 2px;
+}
+
+/* "polyline"  →  demos-basics-shapes-polyline */
+.demos-basics-shapes-polyline {
+    fill: none;
+    stroke: #1a1a1a;
+    stroke-width: 2px;
+}
+
+/* "text-on-path"  →  demos-basics-shapes-text-on-path */
+.demos-basics-shapes-text-on-path {
+    fill: #120b12;
+    font-size: 14px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    letter-spacing: 1px;
+    dominant-baseline: text-bottom;
+}

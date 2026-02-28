@@ -1,0 +1,131 @@
+// ─── Variables ────────────────────────────────────────────────────────────────
+
+// Typography
+$mono: "SF Mono", "Fira Code", "Consolas", monospace;
+
+// Text colors
+$color-text-dark:  #1a1a1a;
+$color-text-label: #2e0d21;
+$color-text-value: #2c1810;
+$color-text-white: rgba(255, 255, 255, 0.95);
+
+// Lens palettes
+$palettes: (
+        employment: (#f8c9a4, #f0a76d, #e67e22, #d35400, #a04000),
+        income:     (#7ebce6, #4197cc, #0072b2, #005a8c, #004466),
+        education:  (#e899cc, #d866b3, #cc3399, #a32975, #7a1f58),
+        car:        (#99dde3, #4dbec8, #0099a8, #007a87, #005c65),
+);
+
+// Shared geometry
+$baseline-stroke-width: 18px;
+$rim-stroke-width:       20px;
+$home-stroke-width:      1px;
+
+
+// ─── Mixins ───────────────────────────────────────────────────────────────────
+
+@mixin mono-label($size, $weight: 700, $anchor: middle, $baseline: middle) {
+  font-family:       $mono;
+  font-size:         $size;
+  font-weight:       $weight;
+  text-anchor:       $anchor;
+  dominant-baseline: $baseline;
+  pointer-events:    none;
+  user-select:       none;
+}
+
+@mixin home-shape($color) {
+  stroke:       $color;
+  fill:         rgba($color, 0.15);
+  stroke-width: $home-stroke-width;
+}
+
+@mixin rim($color) {
+  fill:         none;
+  stroke:       rgba($color, 0.25);
+  stroke-width: $rim-stroke-width;
+}
+
+@mixin baseline-arc($color) {
+  fill:           none;
+  stroke:         $color;
+  stroke-width:   $baseline-stroke-width;
+  stroke-linecap: round;
+}
+
+@mixin bar-caption() {
+  @include mono-label(10px, 600);
+  fill: $color-text-white;
+}
+
+@mixin value-label() {
+  @include mono-label(11px);
+  fill: $color-text-value;
+}
+
+@mixin grid-label() {
+  @include mono-label(9px);
+  fill: $color-text-value;
+}
+
+
+// ─── Text Label ───────────────────────────────────────────────────────────────
+
+.home-intro-label {
+  fill:              $color-text-dark;
+  font-size:         48px;
+  font-weight:       bold;
+  text-anchor:       start;
+  dominant-baseline: central;
+  pointer-events:    none;
+  user-select:       none;
+}
+
+
+// ─── Handle & Home Label ──────────────────────────────────────────────────────
+
+.home-data-lenses-handle {
+  r:    100px;
+  fill: rgba(138, 43, 226, 0);
+}
+
+.home-data-lenses-home-label {
+  @include mono-label(14px, 700, start, hanging);
+  fill: $color-text-label;
+}
+
+
+// ─── Lens blocks (generated from $palettes map) ───────────────────────────────
+
+@each $lens, $shades in $palettes {
+  $c1: nth($shades, 1);
+  $c2: nth($shades, 2);
+  $c3: nth($shades, 3);
+  $c4: nth($shades, 4);
+  $c5: nth($shades, 5);
+
+  .home-data-lenses-#{$lens} {
+
+    &-home          { @include home-shape($c3); }
+    &-rim           { @include rim($c3); }
+
+    &-baseline-age    { @include baseline-arc($c3); }
+    &-baseline-gender { @include baseline-arc($c4); }
+
+    &-age-1 { fill: $c1; }
+    &-age-2 { fill: $c2; }
+    &-age-3 { fill: $c3; }
+    &-age-4 { fill: $c4; }
+    &-age-5 { fill: $c5; }
+
+    &-gender-1 { fill: $c2; }
+    &-gender-2 { fill: $c3; }
+    &-gender-3 { fill: $c4; }
+
+    &-aspect-label { @include mono-label(14px); fill: $color-text-label; }
+    &-bar-caption  { @include bar-caption(); }
+    &-value-label  { @include value-label(); }
+    &-grid-label   { @include grid-label(); }
+  }
+}

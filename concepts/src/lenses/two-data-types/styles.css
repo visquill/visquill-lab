@@ -1,0 +1,135 @@
+/* Prefix chain:  "demos-"  +  "lenses-two-hedgehog-paths-"  +  class name
+                   ↓              ↓                           ↓
+                   demos-lenses-two-hedgehog-paths-<class>                     */
+
+/* ─── Lens structure ─────────────────────────────────────────────────── */
+
+/* "ring"  →  demos-lenses-two-hedgehog-paths-ring */
+.demos-lenses-two-hedgehog-paths-ring {
+    fill: rgba(26, 26, 26, 0.2);
+    stroke: #1a1a1a;
+    stroke-width: 2px;
+}
+
+/* "handle"  →  demos-lenses-two-hedgehog-paths-handle
+   Fully transparent fill — exists only as an invisible drag target. */
+.demos-lenses-two-hedgehog-paths-handle {
+    fill: rgba(138, 43, 226, 0.0);
+    r: 50px;
+}
+
+/* "barline"  →  demos-lenses-two-hedgehog-paths-barline
+   Both polylines share this class — the thick stroke draws the visible baseline. */
+.demos-lenses-two-hedgehog-paths-barline {
+    fill: none;
+    stroke: #1a1a1a;
+    stroke-width: 20px;
+}
+
+/* ─── Color dimension — points & bars ────────────────────────────────── */
+/* Each color has two classes:
+     "<color>"      — the scattered point on the canvas  (faded, 0.2 opacity)
+     "bar-<color>"  — the bar that counts those points  (solid, full opacity) */
+
+/* red */
+.demos-lenses-two-hedgehog-paths-red {
+    fill: rgba(139, 0, 0, 0.2);
+    r: 5px;
+}
+.demos-lenses-two-hedgehog-paths-bar-red {
+    fill: rgba(139, 0, 0, 1.0);
+    stroke: whitesmoke;
+    stroke-width: 1px;
+}
+
+/* green */
+.demos-lenses-two-hedgehog-paths-green {
+    fill: rgba(0, 128, 0, 0.2);
+    r: 5px;
+}
+.demos-lenses-two-hedgehog-paths-bar-green {
+    fill: rgba(0, 128, 0, 1.0);
+    stroke: whitesmoke;
+    stroke-width: 1px;
+}
+
+/* blue */
+.demos-lenses-two-hedgehog-paths-blue {
+    fill: rgba(0, 0, 255, 0.2);
+    r: 5px;
+}
+.demos-lenses-two-hedgehog-paths-bar-blue {
+    fill: rgba(0, 0, 255, 1.0);
+    stroke: whitesmoke;
+    stroke-width: 1px;
+}
+
+/* orange */
+.demos-lenses-two-hedgehog-paths-orange {
+    fill: rgba(255, 165, 0, 0.2);
+    r: 5px;
+}
+.demos-lenses-two-hedgehog-paths-bar-orange {
+    fill: rgba(255, 165, 0, 1.0);
+    stroke: whitesmoke;
+    stroke-width: 1px;
+}
+
+/* ─── Shape dimension — bars only ────────────────────────────────────── */
+/* Points are already rendered by the color classes above (each point has
+   both a color and a shape, but it's visually styled by its color).
+   The shape bars use muted, distinct fills to avoid clashing with the
+   saturated color bars on the opposite side of the ring. */
+
+/* circle */
+.demos-lenses-two-hedgehog-paths-bar-circle {
+    fill: #7b8fa3;
+    stroke: whitesmoke;
+    stroke-width: 1px;
+}
+
+/* square */
+.demos-lenses-two-hedgehog-paths-bar-square {
+    fill: #a38b7b;
+    stroke: whitesmoke;
+    stroke-width: 1px;
+}
+
+/* triangle */
+.demos-lenses-two-hedgehog-paths-bar-triangle {
+    fill: #8b7ba3;
+    stroke: whitesmoke;
+    stroke-width: 1px;
+}
+
+/* diamond */
+.demos-lenses-two-hedgehog-paths-bar-diamond {
+    fill: #7ba38b;
+    stroke: whitesmoke;
+    stroke-width: 1px;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+/* "caption"  →  demos-lenses-two-hedgehog-paths-caption
+   Category labels along both polylines — shared style for both hedgehog-paths. */
+.demos-lenses-two-hedgehog-paths-caption {
+    fill: whitesmoke;
+    font-size: 12px;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* "value-label"  →  demos-lenses-two-hedgehog-paths-value-label
+   Count labels on the bars — updated reactively. Shared by both hedgehog-paths. */
+.demos-lenses-two-hedgehog-paths-value-label {
+    fill: black;
+    font-size: 12px;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

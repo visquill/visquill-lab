@@ -1,0 +1,15 @@
+/* Prefix chain:  "demos-"  +  "animations-text-"  +  class name
+                   ↓              ↓                     ↓
+                   demos-animations-text-<class>                    */
+
+/* ─── Text Label ─────────────────────────────────────────────────────── */
+
+.demos-animations-text-label {
+    fill: goldenrod;
+    font-size: 48px;
+    font-weight: bold;
+    text-anchor: start;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

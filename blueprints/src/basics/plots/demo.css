@@ -1,0 +1,65 @@
+/* Prefix chain:  "demos-"  blueprint"plots-"  +  class name
+                   ↓              ↓                    ↓
+                   blueprint-plots-<class>                         */
+
+/* Bar Styles */
+
+.blueprint-plots-bar-blue {
+    fill: rgba(70, 130, 180, 0.8);  /* Steel Blue */
+    stroke: #2c3e50;
+    stroke-width: 2px;
+}
+
+.blueprint-plots-bar-red {
+    fill: rgba(231, 76, 60, 0.8);  /* Red */
+    stroke: #c0392b;
+    stroke-width: 2px;
+}
+
+.blueprint-plots-bar-green {
+    fill: rgba(46, 204, 113, 0.8);  /* Green */
+    stroke: #27ae60;
+    stroke-width: 2px;
+}
+
+.blueprint-plots-bar-orange {
+    fill: rgba(230, 126, 34, 0.8);  /* Orange */
+    stroke: #d35400;
+    stroke-width: 2px;
+}
+
+.blueprint-plots-bar-purple {
+    fill: rgba(155, 89, 182, 0.8);  /* Purple */
+    stroke: #8e44ad;
+    stroke-width: 2px;
+}
+
+.blueprint-plots-bar-animated {
+    fill: rgba(52, 152, 219, 0.8);  /* Blue */
+    stroke: #2980b9;
+    stroke-width: 2px;
+    transition: fill 0.3s ease;
+}
+
+.blueprint-plots-bar-animated:hover {
+    fill: rgba(52, 152, 219, 1.0);
+}
+
+/* Baseline Styles */
+
+.blueprint-plots-baseline {
+    stroke: #95a5a6;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 4;
+    fill: none;
+}
+
+/* Label Styles */
+
+.blueprint-plots-label-horizontal,
+.blueprint-plots-label-curved,
+.blueprint-plots-label-interactive {
+    font-size: 14px;
+    font-weight: 600;
+    fill: #2c3e50;
+}

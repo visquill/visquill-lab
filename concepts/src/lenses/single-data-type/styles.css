@@ -1,0 +1,103 @@
+/* Prefix chain:  "demos-"  +  "lenses-single-hedgehog-path-"  +  class name
+                   ↓              ↓                            ↓
+                   demos-lenses-single-hedgehog-path-<class>                    */
+
+/* ─── Lens structure ─────────────────────────────────────────────────── */
+
+/* "ring"  →  demos-lenses-single-hedgehog-path-ring */
+.demos-lenses-single-hedgehog-path-ring {
+    fill: rgba(26, 26, 26, 0.2);
+    stroke: #1a1a1a;
+    stroke-width: 2px;
+}
+
+/* "handle"  →  demos-lenses-single-hedgehog-path-handle
+   Fully transparent fill — exists only as an invisible drag target. */
+.demos-lenses-single-hedgehog-path-handle {
+    fill: rgba(138, 43, 226, 0.0);
+    r: 50px;
+}
+
+/* "hedgehog-path"  →  demos-lenses-single-hedgehog-path-hedgehog-path
+   The polyline that follows the circle's perimeter.
+   Thick stroke draws the visible baseline; fill:none keeps it open. */
+.demos-lenses-single-hedgehog-path-hedgehog-path {
+    fill: none;
+    stroke: #1a1a1a;
+    stroke-width: 20px;
+}
+
+/* ─── Data points & bars ─────────────────────────────────────────────── */
+/* Each data type has two classes:
+     "<type>"      — the scattered point on the canvas  (faded, 0.2 opacity)
+     "bar-<type>"  — the bar that counts those points  (solid, full opacity)
+   Both share the same base color; only the opacity and role differ.       */
+
+/* red */
+.demos-lenses-single-hedgehog-path-red {
+    fill: rgba(139, 0, 0, 0.2);
+    r: 5px;
+}
+.demos-lenses-single-hedgehog-path-bar-red {
+    fill: rgba(139, 0, 0, 1.0);
+    stroke: whitesmoke;
+    stroke-width: 1px;
+}
+
+/* green */
+.demos-lenses-single-hedgehog-path-green {
+    fill: rgba(0, 128, 0, 0.2);
+    r: 5px;
+}
+.demos-lenses-single-hedgehog-path-bar-green {
+    fill: rgba(0, 128, 0, 1.0);
+    stroke: whitesmoke;
+    stroke-width: 1px;
+}
+
+/* blue */
+.demos-lenses-single-hedgehog-path-blue {
+    fill: rgba(0, 0, 255, 0.2);
+    r: 5px;
+}
+.demos-lenses-single-hedgehog-path-bar-blue {
+    fill: rgba(0, 0, 255, 1.0);
+    stroke: whitesmoke;
+    stroke-width: 1px;
+}
+
+/* orange */
+.demos-lenses-single-hedgehog-path-orange {
+    fill: rgba(255, 165, 0, 0.2);
+    r: 5px;
+}
+.demos-lenses-single-hedgehog-path-bar-orange {
+    fill: rgba(255, 165, 0, 1.0);
+    stroke: whitesmoke;
+    stroke-width: 1px;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+/* "caption"  →  demos-lenses-single-hedgehog-path-caption
+   Labels along the polyline segments, between the bars. */
+.demos-lenses-single-hedgehog-path-caption {
+    fill: whitesmoke;
+    font-size: 12px;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* "value-label"  →  demos-lenses-single-hedgehog-path-value-label
+   Labels on the bars themselves — updated reactively with the count. */
+.demos-lenses-single-hedgehog-path-value-label {
+    fill: black;
+    font-size: 12px;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

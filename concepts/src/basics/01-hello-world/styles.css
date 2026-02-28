@@ -1,0 +1,8 @@
+
+.demos-basics-hello-world-label {
+    font-size: 64px;
+    font-weight: bold;
+    fill: darkgoldenrod;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}

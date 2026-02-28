@@ -1,0 +1,71 @@
+/* Prefix chain:  "demos-"  +  "reactive-basics-"  +  class name
+                   ↓              ↓                      ↓
+                   demos-reactive-basics-<class>                */
+
+/* ─── Track ──────────────────────────────────────────────────────────── */
+
+/* The horizontal guide line the handles slide along. */
+.demos-reactive-basics-track {
+    stroke: #ccc;
+    stroke-width: 2px;
+}
+
+/* ─── Handles ────────────────────────────────────────────────────────── */
+
+/* Invisible drag targets — radius set in CSS so the hit area is generous. */
+.demos-reactive-basics-handle-a {
+    fill: #e74c3c;
+    stroke: #fff;
+    stroke-width: 3px;
+    r: 14px;
+}
+.demos-reactive-basics-handle-b {
+    fill: #3498db;
+    stroke: #fff;
+    stroke-width: 3px;
+    r: 14px;
+}
+
+/* ─── Midpoint marker ────────────────────────────────────────────────── */
+
+/* Small diamond that sits between A and B, repositioned reactively. */
+.demos-reactive-basics-midpoint {
+    fill: #2ecc71;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+/* Static handle name directly below each dot. */
+.demos-reactive-basics-name {
+    fill: #555;
+    font-size: 13px;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: hanging;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Live X-coordinate readout, shown above each dot. */
+.demos-reactive-basics-reading {
+    fill: #333;
+    font-size: 14px;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: auto;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* The derived "Midpoint" label above the green diamond. */
+.demos-reactive-basics-midpoint-label {
+    fill: #27ae60;
+    font-size: 14px;
+    font-weight: bold;
+    text-anchor: middle;
+    dominant-baseline: auto;
+    pointer-events: none;
+    user-select: none;
+}

@@ -1,0 +1,375 @@
+.home-intro-label {
+  fill: #1a1a1a;
+  font-size: 48px;
+  font-weight: bold;
+  text-anchor: start;
+  dominant-baseline: central;
+  pointer-events: none;
+  user-select: none;
+}
+
+.home-data-lenses-handle {
+  r: 100px;
+  fill: rgba(138, 43, 226, 0);
+}
+
+.home-data-lenses-home-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 14px;
+  font-weight: 700;
+  text-anchor: start;
+  dominant-baseline: hanging;
+  pointer-events: none;
+  user-select: none;
+  fill: #2e0d21;
+}
+
+.home-data-lenses-employment-home {
+  stroke: #e67e22;
+  fill: rgba(230, 126, 34, 0.15);
+  stroke-width: 1px;
+}
+.home-data-lenses-employment-rim {
+  fill: none;
+  stroke: rgba(230, 126, 34, 0.25);
+  stroke-width: 20px;
+}
+.home-data-lenses-employment-baseline-age {
+  fill: none;
+  stroke: #e67e22;
+  stroke-width: 18px;
+  stroke-linecap: round;
+}
+.home-data-lenses-employment-baseline-gender {
+  fill: none;
+  stroke: #d35400;
+  stroke-width: 18px;
+  stroke-linecap: round;
+}
+.home-data-lenses-employment-age-1 {
+  fill: #f8c9a4;
+}
+.home-data-lenses-employment-age-2 {
+  fill: #f0a76d;
+}
+.home-data-lenses-employment-age-3 {
+  fill: #e67e22;
+}
+.home-data-lenses-employment-age-4 {
+  fill: #d35400;
+}
+.home-data-lenses-employment-age-5 {
+  fill: #a04000;
+}
+.home-data-lenses-employment-gender-1 {
+  fill: #f0a76d;
+}
+.home-data-lenses-employment-gender-2 {
+  fill: #e67e22;
+}
+.home-data-lenses-employment-gender-3 {
+  fill: #d35400;
+}
+.home-data-lenses-employment-aspect-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 14px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: #2e0d21;
+}
+.home-data-lenses-employment-bar-caption {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: rgba(255, 255, 255, 0.95);
+}
+.home-data-lenses-employment-value-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: #2c1810;
+}
+.home-data-lenses-employment-grid-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 9px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: #2c1810;
+}
+
+.home-data-lenses-income-home {
+  stroke: #0072b2;
+  fill: rgba(0, 114, 178, 0.15);
+  stroke-width: 1px;
+}
+.home-data-lenses-income-rim {
+  fill: none;
+  stroke: rgba(0, 114, 178, 0.25);
+  stroke-width: 20px;
+}
+.home-data-lenses-income-baseline-age {
+  fill: none;
+  stroke: #0072b2;
+  stroke-width: 18px;
+  stroke-linecap: round;
+}
+.home-data-lenses-income-baseline-gender {
+  fill: none;
+  stroke: #005a8c;
+  stroke-width: 18px;
+  stroke-linecap: round;
+}
+.home-data-lenses-income-age-1 {
+  fill: #7ebce6;
+}
+.home-data-lenses-income-age-2 {
+  fill: #4197cc;
+}
+.home-data-lenses-income-age-3 {
+  fill: #0072b2;
+}
+.home-data-lenses-income-age-4 {
+  fill: #005a8c;
+}
+.home-data-lenses-income-age-5 {
+  fill: #004466;
+}
+.home-data-lenses-income-gender-1 {
+  fill: #4197cc;
+}
+.home-data-lenses-income-gender-2 {
+  fill: #0072b2;
+}
+.home-data-lenses-income-gender-3 {
+  fill: #005a8c;
+}
+.home-data-lenses-income-aspect-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 14px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: #2e0d21;
+}
+.home-data-lenses-income-bar-caption {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: rgba(255, 255, 255, 0.95);
+}
+.home-data-lenses-income-value-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: #2c1810;
+}
+.home-data-lenses-income-grid-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 9px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: #2c1810;
+}
+
+.home-data-lenses-education-home {
+  stroke: #cc3399;
+  fill: rgba(204, 51, 153, 0.15);
+  stroke-width: 1px;
+}
+.home-data-lenses-education-rim {
+  fill: none;
+  stroke: rgba(204, 51, 153, 0.25);
+  stroke-width: 20px;
+}
+.home-data-lenses-education-baseline-age {
+  fill: none;
+  stroke: #cc3399;
+  stroke-width: 18px;
+  stroke-linecap: round;
+}
+.home-data-lenses-education-baseline-gender {
+  fill: none;
+  stroke: #a32975;
+  stroke-width: 18px;
+  stroke-linecap: round;
+}
+.home-data-lenses-education-age-1 {
+  fill: #e899cc;
+}
+.home-data-lenses-education-age-2 {
+  fill: #d866b3;
+}
+.home-data-lenses-education-age-3 {
+  fill: #cc3399;
+}
+.home-data-lenses-education-age-4 {
+  fill: #a32975;
+}
+.home-data-lenses-education-age-5 {
+  fill: #7a1f58;
+}
+.home-data-lenses-education-gender-1 {
+  fill: #d866b3;
+}
+.home-data-lenses-education-gender-2 {
+  fill: #cc3399;
+}
+.home-data-lenses-education-gender-3 {
+  fill: #a32975;
+}
+.home-data-lenses-education-aspect-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 14px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: #2e0d21;
+}
+.home-data-lenses-education-bar-caption {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: rgba(255, 255, 255, 0.95);
+}
+.home-data-lenses-education-value-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: #2c1810;
+}
+.home-data-lenses-education-grid-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 9px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: #2c1810;
+}
+
+.home-data-lenses-car-home {
+  stroke: #0099a8;
+  fill: rgba(0, 153, 168, 0.15);
+  stroke-width: 1px;
+}
+.home-data-lenses-car-rim {
+  fill: none;
+  stroke: rgba(0, 153, 168, 0.25);
+  stroke-width: 20px;
+}
+.home-data-lenses-car-baseline-age {
+  fill: none;
+  stroke: #0099a8;
+  stroke-width: 18px;
+  stroke-linecap: round;
+}
+.home-data-lenses-car-baseline-gender {
+  fill: none;
+  stroke: #007a87;
+  stroke-width: 18px;
+  stroke-linecap: round;
+}
+.home-data-lenses-car-age-1 {
+  fill: #99dde3;
+}
+.home-data-lenses-car-age-2 {
+  fill: #4dbec8;
+}
+.home-data-lenses-car-age-3 {
+  fill: #0099a8;
+}
+.home-data-lenses-car-age-4 {
+  fill: #007a87;
+}
+.home-data-lenses-car-age-5 {
+  fill: #005c65;
+}
+.home-data-lenses-car-gender-1 {
+  fill: #4dbec8;
+}
+.home-data-lenses-car-gender-2 {
+  fill: #0099a8;
+}
+.home-data-lenses-car-gender-3 {
+  fill: #007a87;
+}
+.home-data-lenses-car-aspect-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 14px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: #2e0d21;
+}
+.home-data-lenses-car-bar-caption {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 10px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: rgba(255, 255, 255, 0.95);
+}
+.home-data-lenses-car-value-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 11px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: #2c1810;
+}
+.home-data-lenses-car-grid-label {
+  font-family: "SF Mono", "Fira Code", "Consolas", monospace;
+  font-size: 9px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+  fill: #2c1810;
+}
+
+/*# sourceMappingURL=styles.css.map */

@@ -1,0 +1,81 @@
+/* Prefix chain:  "demos-"  +  "geometry-polygon-offset-"  +  class name
+                   ↓              ↓                               ↓
+                   demos-geometry-polygon-offset-<class>                 */
+
+/* ─── Hull Polygon ───────────────────────────────────────────────────── */
+
+.demos-geometry-polygon-offset-contour {
+    fill: rgba(70, 130, 180, 0.3);
+    stroke: rgba(70, 130, 180, 0.8);
+    stroke-width: 2px;
+}
+
+/* ─── Offset Polygon ─────────────────────────────────────────────────── */
+
+.demos-geometry-polygon-offset-offset {
+    fill: none;
+    stroke: rgba(70, 130, 180, 0.4);
+    stroke-width: 1.5px;
+    stroke-dasharray: 6, 4;
+}
+
+/* ─── Leader Lines ───────────────────────────────────────────────────── */
+
+.demos-geometry-polygon-offset-leader {
+    fill: none;
+    stroke: rgba(70, 130, 180, 0.5);
+    stroke-width: 1px;
+}
+
+/* ─── Site Handles ───────────────────────────────────────────────────── */
+
+.demos-geometry-polygon-offset-site {
+    fill: #4682b4;
+    stroke: #1a1a1a;
+    stroke-width: 2px;
+    cursor: move;
+}
+
+.demos-geometry-polygon-offset-site:hover {
+    fill: #ff8c00;
+}
+
+/* ─── Distance Slider ────────────────────────────────────────────────── */
+
+.demos-geometry-polygon-offset-track {
+    stroke: #aaa;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    fill: none;
+}
+
+.demos-geometry-polygon-offset-handle {
+    fill: #4682b4;
+    stroke: #1a1a1a;
+    stroke-width: 2px;
+    cursor: move;
+}
+
+.demos-geometry-polygon-offset-handle:hover {
+    fill: #ff8c00;
+}
+
+.demos-geometry-polygon-offset-slider-label {
+    fill: #444;
+    font-family: monospace;
+    font-size: 13px;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Instructions ───────────────────────────────────────────────────── */
+
+.demos-geometry-polygon-offset-instructions {
+    fill: #666;
+    font-family: sans-serif;
+    font-size: 16px;
+    text-anchor: start;
+    pointer-events: none;
+    user-select: none;
+}
