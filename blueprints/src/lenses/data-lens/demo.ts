@@ -45,11 +45,9 @@ const sharedPlot: Omit<BarPlotScheme, "aspect" | "baselineStyle" | "categories">
         count: 3,
         offset: 25+11,
         style: "@style stroke: black; stroke-width: 0.5px; fill:none",
-        labelStyle: "grid-label"
+        labelStyle: "grid-label",
+        distance: 50
     },
-    minValue: 0,
-    maxValue: 100,
-    maxHeight: 190
 }
 
 // ─── Age breakdown plot (5 categories → larger arc share) ─────────────────────

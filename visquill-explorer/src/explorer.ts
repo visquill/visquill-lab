@@ -4,6 +4,7 @@ import 'prismjs/themes/prism-okaidia.css'
 import 'prismjs/components/prism-typescript'
 import 'prismjs/components/prism-css'
 import {PackageConfig, PACKAGES} from "./packages.ts";
+import {VisQuill} from "@visquill/visquill-gdk";
 
 interface DemoFile {
   name: string
@@ -204,6 +205,7 @@ async function loadDemo(demo: DemoFile, folder: string) {
  * Dynamically import and execute the demo
  */
 async function runDemo(demo: DemoFile, folder: string) {
+  VisQuill.disposeAll()
   try {
     previewStage.innerHTML = ''
     bothStage.innerHTML = ''
@@ -352,6 +354,7 @@ function syncFileTabSelection() {
  */
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', async () => {
+    VisQuill.disposeAll()
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'))
 

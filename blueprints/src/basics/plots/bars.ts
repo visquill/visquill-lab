@@ -26,6 +26,7 @@ export interface Bar {
     shape: Rectangle,
     caption?: RvgAnchoredText,
     valueLabel?: RvgAnchoredText
+    valueLabelDistance?: Real
 }
 
 /**
@@ -34,6 +35,19 @@ export interface Bar {
  *
  * @param group - Group that owns the bars
  * @param options - Configuration object containing baseline, bars, labels, and styling
+ * @param options.baseline - The polyline that serves as the baseline for bar placement. Each bar attaches to a segment of this polyline
+ * @param options.bars - Either a number specifying how many bars to create, or an array of bar configurations with optional style and caption properties
+ * @param options.barWidth - Width of each bar, either as a number or reactive Real value
+ * @param options.barDistance - Optional distance offset from the baseline where bars are positioned. Defaults to 0
+ * @param options.defaultStyle - Optional default style directive applied to bars without explicit style.
+ * @param options.valueLabels - Optional configuration for value labels displayed at bar tops
+ * @param options.valueLabels.style - Style directive for value labels
+ * @param options.valueLabels.autoFlip - Whether to automatically flip label orientation based on bar direction
+ * @param options.valueLabels.distance - Distance from bar top to label position. Can be a number, Real, or array of Real values for per-bar distances
+ * @param options.barCaptions - Optional configuration for caption labels displayed along the baseline at each bar position
+ * @param options.barCaptions.style - Style directive string for caption labels
+ * @param options.barCaptions.autoFlip - Whether to automatically flip caption orientation based on baseline direction
+ * 
  * @returns Array of Bar objects with reactive height values and labels
  */
 export function labeledHedgeHogBars(
@@ -47,7 +61,7 @@ export function labeledHedgeHogBars(
         valueLabels?: {
             style: string,
             autoFlip?: boolean,
-            distance: number | Real
+            distance: number | Real | Real[],
         },
         barCaptions?: {
             style: string,
@@ -78,6 +92,9 @@ export function labeledHedgeHogBars(
     for (let i = 0; i < result.length; i++) {
         result[i].caption = i < barCaptions.length ? barCaptions[i] : undefined
         result[i].valueLabel = i < barValueLabels.length ? barValueLabels[i] : undefined
+        if(options.valueLabels && Array.isArray(options.valueLabels.distance)){
+            result[i].valueLabelDistance = options.valueLabels.distance[i]
+        }
     }
 
     return result

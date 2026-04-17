@@ -90,4 +90,9 @@ VisQuill assembles the full CSS class name automatically. Your stylesheet only n
 
 ## License
 
-MIT © 2026 Dr. Benjamin Niedermann — copy, adapt, and use freely. See [LICENSE](./LICENSE) for the full text.
+The code in this repository — demos, blueprints, and the explorer — is MIT licensed.  
+© 2026 Dr. Benjamin Niedermann. See [LICENSE](./LICENSE) for the full text.
+
+The **VisQuill GDK** itself (`@visquill/visquill-gdk`) is **not MIT licensed**.  
+It is free to use for non-commercial projects with attribution.  
+For more information, see [visquill.com](https://visquill.com/).

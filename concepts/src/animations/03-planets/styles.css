@@ -1,0 +1,55 @@
+/* Prefix chain:  "demos-"  +  "orbit-"  +  class name
+                   ↓              ↓              ↓
+                   demos-orbit-<class>                        */
+
+/* ─── Planet handles ─────────────────────────────────────────────────── */
+
+.demos-orbit-planet {
+    fill: #dce3f0;
+    stroke: #7a8fbb;
+    stroke-width: 2px;
+    r: 14px;
+    cursor: grab;
+}
+
+.demos-orbit-planet:active {
+    cursor: grabbing;
+}
+
+/* ─── Planet labels ──────────────────────────────────────────────────── */
+
+.demos-orbit-planet-label {
+    fill: #7a8fbb;
+    font-size: 11px;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Courier token ──────────────────────────────────────────────────── */
+
+.demos-orbit-courier {
+    fill: #e67e22;
+    stroke: #fff;
+    stroke-width: 2.5px;
+    r: 9px;
+}
+
+/* ─── Ghost token ────────────────────────────────────────────────────── */
+
+.demos-orbit-ghost {
+    fill: rgba(230, 126, 34, 0.25);
+    stroke: rgba(230, 126, 34, 0.45);
+    stroke-width: 1.5px;
+    r: 9px;
+}
+
+/* ─── Trail segment connecting ghost to courier ──────────────────────── */
+
+.demos-orbit-trail {
+    stroke: rgba(230, 126, 34, 0.3);
+    stroke-width: 1.5px;
+    stroke-dasharray: 4 4;
+}

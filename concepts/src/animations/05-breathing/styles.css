@@ -1,0 +1,10 @@
+/* Prefix chain:  "demos-"  +  "breathing-"  +  class name
+                   ↓               ↓               ↓
+                   demos-breathing-<class>                      */
+
+.demos-breathing-shape {
+    fill: rgba(99, 132, 210, 0.25);
+    stroke: rgba(99, 132, 210, 0.85);
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}

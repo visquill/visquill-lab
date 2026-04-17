@@ -1,0 +1,57 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   MapLibre + VisQuill demo styles  —  prefix: demo-
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Layer positioning ────────────────────────────────────────────────────── */
+
+.demo-map,
+.demo-scene {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.demo-map   { z-index: 1; }
+.demo-scene { z-index: 2; }
+
+/* ── Glass pane ───────────────────────────────────────────────────────────── */
+
+.demo-glass-pane {
+    fill: transparent;
+    pointer-events: none;
+}
+
+/* ── Marker handle ────────────────────────────────────────────────────────── */
+
+.demo-marker-handle {
+    fill: none;
+    stroke: none;
+    pointer-events: all;
+    cursor: grab;
+    r: 28px;
+}
+
+.demo-marker-handle:active { cursor: grabbing; }
+
+/* ── Marker ring ──────────────────────────────────────────────────────────── */
+
+.demo-marker-ring {
+    fill: rgba(194, 56, 209, 0.18);
+    stroke: #c965d5;
+    stroke-width: 2px;
+    pointer-events: none;
+}
+
+/* ── Coordinate labels ────────────────────────────────────────────────────── */
+
+.demo-coord-label {
+    font-family: "DM Mono", monospace;
+    font-size: 18px;
+    font-weight: bold;
+    fill: #1a1a2e;
+    text-anchor: start;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

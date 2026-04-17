@@ -171,12 +171,6 @@ export interface BarPlotScheme extends HistogramScheme {
     /** Discriminator — must be `"bar-plot"`. */
     type: "bar-plot",
 
-    /** Maximum visual height of bars in canvas units. */
-    maxHeight: number,
-    /** Data value corresponding to `maxHeight`. */
-    maxValue: number,
-    /** Minimum data value (maps to zero height). Defaults to `0`. */
-    minValue?: number,
 
     /** Width of each bar in canvas units. */
     barWidth: number,
@@ -201,6 +195,8 @@ export interface BarPlotScheme extends HistogramScheme {
          * remains readable regardless of angular position.
          */
         autoFlip?: boolean,
+        /** When `true`, creates individual reactive `Real` values for each bar's label distance, allowing per-bar dynamic positioning. */
+        reactiveDistance?: boolean,
     },
 
     /** Category name labels rendered directly on the bars. */
@@ -223,6 +219,7 @@ export interface BarPlotScheme extends HistogramScheme {
         /** CSS class for grid labels (if supported). */
         labelStyle?: string,
         /** Radial offset for the first grid line. */
-        offset?: number
+        offset?: number,
+        distance: number,
     }
 }

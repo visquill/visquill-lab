@@ -1,0 +1,17 @@
+/* Prefix chain:  "demos-"  +  "waveform-"  +  class name
+                   ↓              ↓               ↓
+                   demos-waveform-<class>                      */
+
+.demos-waveform-wave {
+    fill: none;
+    stroke: #4a90d9;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.demos-waveform-baseline {
+    stroke: rgba(0, 0, 0, 0.15);
+    stroke-width: 1px;
+    stroke-dasharray: 4 4;
+}

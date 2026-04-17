@@ -113,6 +113,16 @@ export class Pixels extends NumberBasedOptions {
 }
 
 /**
+ * Specialized Options class for cycling through integer values.
+ * Commonly used for count, index, or discrete numeric controls.
+ */
+export class Integers extends NumberBasedOptions {
+    valueToString(): string {
+        return this.current.toFixed(0);
+    }
+}
+
+/**
  * Specialized Options class for cycling through string values.
  * Commonly used for text options, labels, or style class names.
  */

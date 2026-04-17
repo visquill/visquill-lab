@@ -23,7 +23,7 @@ import {
 
 /**
  * Assignment of arc position and size to a lens.
- * Returned by arc layout functions.
+ * Returned by arc layout  functions.
  */
 export interface ArcAssignment {
     lens: Lens,
@@ -45,6 +45,7 @@ export interface DataLens extends Lens {
     /** One entry per plot defined in the scheme, in declaration order. */
     plots: BarPlot[],
     size: Real,
+    expandedRadius: Real,
     outerRadius: Real,
     innerRadius: Real,
     aspect: StringValue
@@ -180,6 +181,7 @@ export function createDataLens(group: RvgGroup, scheme: DataLensScheme): DataLen
     const aspect = lens.layer.values.string(scheme.initialAspect)
     const outerRadius = lens.layer.values.real(scheme.outerRadius)
     const innerRadius = lens.layer.values.real(scheme.innerRadius)
+    const expandedRadius = lens.layer.values.real(scheme.rimRadius)
     const baseRing = createBaseRing()
 
     const ringSpan = createRingSpan(baseRing)
@@ -199,7 +201,7 @@ export function createDataLens(group: RvgGroup, scheme: DataLensScheme): DataLen
         })
     })
 
-    return { ...lens, plots, size, aspect, outerRadius,innerRadius }
+    return { ...lens, plots, size, aspect, outerRadius,innerRadius, expandedRadius }
 
     function createBaseRing(){
         const ring = createBoundedRing(lens,{...scheme,rimRadius: 0, stylePrefix:""})
@@ -213,7 +215,7 @@ export function createDataLens(group: RvgGroup, scheme: DataLensScheme): DataLen
                 const ratio = size.value;
                 ring.innerRadius.value = innerRadius.value*ratio + (1-ratio)*onCollapse.innerRadius;
                 ring.outerRadius.value = outerRadius.value*ratio + (1-ratio)*onCollapse.outerRadius;
-                lens.radius.value = scheme.rimRadius*ratio + (1-ratio)*onCollapse.rimRadius;
+                lens.radius.value = expandedRadius.value*ratio + (1-ratio)*onCollapse.rimRadius;
                 ringContent.mounted.value =size.value> 0
                 Circles.circleAt([0,0],lens.radius.value+ring.outerRadius.value,boundingCircle)
             })
@@ -222,36 +224,20 @@ export function createDataLens(group: RvgGroup, scheme: DataLensScheme): DataLen
         return {...ring,layer:ringContent}
     }
     function createBarPlotFromScheme(scheme: BarPlotScheme): BarPlot {
-        const minVal = scheme.minValue ?? 0
-        const maxHeight = scheme.maxHeight
-        const diff = scheme.maxValue - minVal;
-
         const layer = ringSpan.ring.layer.layer()
         if(scheme.gridLines){
             const gridLayer = layer.layer()
             const gridLines = scheme.gridLines;
-            attachGridLines(gridLayer,ringSpan,{...gridLines,vertexCount: scheme.categories.length+1,distance:maxHeight/(gridLines.count), maxExtent: scheme.maxExtent})
+            attachGridLines(gridLayer,ringSpan,{...gridLines,vertexCount: scheme.categories.length+1,distance:gridLines.distance, maxExtent: scheme.maxExtent})
         }
 
-        const barPlot = attachBarPlot(layer,ringSpan, {
+        return attachBarPlot(layer,ringSpan, {
             ...scheme,
             span: 1,
             position: 0.0,
         })
-        const bars = barPlot.bars.map(bar => {
-            const value = layer.values.real(0)
-            const height = bar.height;
 
-            Reactive.do([value],()=>{
-                height.value = (value.value-minVal)/diff*maxHeight;
-                if(bar.valueLabel){
-                    bar.valueLabel.value = value.value.toFixed(2);
-                }
-            })
 
-            return {...bar, height: value}
-        });
-        return {...barPlot,bars}
     }
 }
 

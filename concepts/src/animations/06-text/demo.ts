@@ -41,7 +41,7 @@ export function run(div: HTMLDivElement) {
             onComplete: () => {
                 // Toggle the boolean value after text animation completes
                 // This triggers the next reactive block to advance the index
-                Animate.set(toggle, !toggle.value, 500)
+                Animate.setBool(toggle, !toggle.value, 500)
             },
             durationMode: "per-character",
             deconstruction: "stepwise"

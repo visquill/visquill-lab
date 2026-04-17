@@ -53,6 +53,14 @@ export function labelsAlongPolyline(
  *
  * @param group - Group that owns the labels
  * @param options - Configuration object containing rectangles, labels, placement, and styling
+ * @param options.rectangles - Array of rectangles to attach labels to. Each label corresponds to one rectangle
+ * @param options.labels - Either an array of label strings/descriptions, or a number specifying how many empty labels to create
+ * @param options.distance - Optional distance offset from the rectangle edge where labels are positioned. Can be a number, Real, or array of Real values for per-label distances. Defaults to 0
+ * @param options.style - Optional default style directive applied to labels without explicit style
+ * @param options.placement - Optional edge placement for labels: "left", "right", "top", or "bottom"
+ * @param options.position - Optional position along the edge: "start", "center", "end", or a number/Real value
+ * @param options.angle - Optional rotation angle for labels in degrees. Defaults to 0
+ * @param options.autoFlip - Optional flag to automatically flip label orientation based on rectangle orientation. Defaults to false
  * @returns Array of RvgAnchoredText elements
  */
 export function labelsAtRectangles(
@@ -60,7 +68,7 @@ export function labelsAtRectangles(
     options: {
         rectangles: Rectangle[],
         labels: string[] | LabelDescription[] | number,
-        distance?: number | Real,
+        distance?: number | Real | Real[],
         style?: string,
         placement?: "left" | "right" | "top" | "bottom",
         position?: "start" | "center" | "end" | Real | number,
@@ -69,7 +77,7 @@ export function labelsAtRectangles(
     }
 ): RvgAnchoredText[] {
     const style = options.style ?? DEFAULT_LABEL_STYLE
-    const distance = Conversion.toReal(options.distance ?? 0)
+    const distance = Array.isArray(options.distance) ?  options.distance: Conversion.toReal(options.distance ?? 0)
     const angle = options.angle ?? 0
     const autoFlip = options.autoFlip ?? false
     const rectangles = options.rectangles
@@ -89,7 +97,7 @@ export function labelsAtRectangles(
         Attach.pointToRectangleEdge(text, rectangle, {
             placement: options.placement,
             anchorPosition: options.position,
-            distance: distance,
+            distance: Array.isArray(distance) ? distance[index] : distance,
             orientation: "relative"
         })
         outLabels.push(text)

@@ -52,7 +52,7 @@ export function run(div: HTMLDivElement) {
                 onComplete: () => {
                     // Toggle the boolean value after text animation completes
                     // This triggers the next reactive block to advance the index
-                    Animate.set(toggle, !toggle.value, 500)
+                    Animate.setBool(toggle, !toggle.value, 500)
                 },
                 durationMode: "per-character",
                 deconstruction: "instantly"
@@ -86,9 +86,6 @@ const sharedPlot: Omit<BarPlotScheme, "aspect" | "baselineStyle" | "categories">
     barOffset: 11,
     barCaptions: {style: "bar-caption", autoFlip: true},
     valueLabels: {style: "value-label", autoFlip: true, distance: 9},
-    minValue: 0,
-    maxValue: 100,
-    maxHeight: 100
 }
 
 // ─── Age breakdown plot (5 categories → larger arc share) ─────────────────────

@@ -1,0 +1,47 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   Radar Charts — animation concept styles
+   Prefix chain: demos-  +  animations-radar-charts-  +  <n>
+   e.g. "ray" → .demos-animations-radar-charts-ray
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* ── Outer circle (boundary ring) ─────────────────────────────────────────── */
+
+.demos-animations-radar-charts-outer-circle {
+    stroke: #3a4870;
+    stroke-width: 1.5px;
+    fill: rgba(30, 40, 80, 0.35);
+    filter: drop-shadow(0 0 14px rgba(80, 120, 255, 0.18));
+}
+
+/* ── Inner circle (dead-zone ring) ────────────────────────────────────────── */
+
+.demos-animations-radar-charts-inner-circle {
+    stroke: #3a4870;
+    stroke-width: 1.5px;
+    stroke-dasharray: 3 4;
+    fill: none;
+    opacity: 0.6;
+}
+
+/* ── Ray lines ────────────────────────────────────────────────────────────── */
+
+.demos-animations-radar-charts-ray {
+    stroke: #3d4f7a;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    fill: none;
+}
+
+/* ── Draggable chart handle — invisible, but still catches pointer events ─── */
+
+.demos-animations-radar-charts-chart-handle {
+    fill: none;
+    stroke: none;
+    cursor: grab;
+    pointer-events: all;
+    r: 100px;
+}
+
+.demos-animations-radar-charts-chart-handle:active {
+    cursor: grabbing;
+}

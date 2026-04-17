@@ -3,6 +3,17 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { marked } from 'marked'
 
+
+const renderer = {
+    link(href: any, _: any, text: any) {
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer">
+              ${text}
+            </a>`;
+    }
+};
+
+marked.use({ renderer });
+
 interface DemoFile {
     name: string
     category: string

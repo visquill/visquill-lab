@@ -65,7 +65,9 @@ export interface BarPlotOptions {
         /** Distance from the bar tip to the label in canvas units. */
         distance: number,
         /** When `true`, flips the label on the lower half of the arc to keep it readable. */
-        autoFlip?: boolean
+        autoFlip?: boolean,
+        /** When `true`, creates individual reactive `Real` values for each bar's label distance, allowing per-bar dynamic positioning. */
+        reactiveDistance?: boolean,
     },
     /** Configuration for category name labels rendered on the bars. */
     barCaptions?: {
@@ -364,13 +366,25 @@ export function attachBarPlot(layer: RvgGroup, ringSpan: RingSpan, options: BarP
         vertexCount: options.categories.length + 1,
         style: options.baselineStyle,
     })
+    const valueLabels = createValueLabelsOptions()
     const bars = labeledHedgeHogBars(layer, {
         ...options,
         baseline,
         bars: options.categories.map(cat => ({ style: cat.style, caption: cat.name })),
         barDistance: options.barOffset,
+        valueLabels
     })
+
     return { bars, position, span, offset,layer}
+
+    function createValueLabelsOptions(){
+        if(!options.valueLabels || !options.valueLabels.reactiveDistance) return options.valueLabels
+        const distance: Real[] =[]
+        for(let i=0; i < options.categories.length; i++){
+            distance.push(layer.values.real(options.valueLabels.distance))
+        }
+        return {...options.valueLabels,distance}
+    }
 }
 
 /**
