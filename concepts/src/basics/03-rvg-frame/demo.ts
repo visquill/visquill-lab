@@ -58,6 +58,7 @@ export function run(div: HTMLDivElement) {
 
     for (const { point, text, ox, oy, side } of corners) {
         const label = canvas.text.label(text, "corner-label-" + side);
+        console.log(label)
         Attach.pointToPoint(label, point, { offset: { x: ox, y: oy } });
     }
 

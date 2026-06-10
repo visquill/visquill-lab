@@ -1,0 +1,72 @@
+/* demos-curves-polygon-<element> */
+
+/* Convex octagon baseline — thin grey fill with border. */
+.demos-curves-polygon-baseline {
+    fill: #f8fafc;
+    stroke: #cbd5e1;
+    stroke-width: 1.5px;
+    stroke-linejoin: round;
+}
+
+.demos-curves-polygon-sample-dot {
+    fill: #94a3b8;
+    stroke: #fff;
+    stroke-width: 1.5px;
+    r: 4px;
+}
+
+/* Offset curve — closed polygon, no fill, orange stroke. */
+.demos-curves-polygon-curve {
+    fill: none;
+    stroke: #f97316;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.demos-curves-polygon-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-curves-polygon-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-curves-polygon-slider-handle:hover { fill: #334155; }
+
+.demos-curves-polygon-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-curves-polygon-info-label {
+    fill: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: start;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-curves-polygon-slider-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

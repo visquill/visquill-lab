@@ -1,0 +1,85 @@
+/* demos-polyline-batch-<element> */
+
+.demos-polyline-batch-polyline-guide {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 4;
+}
+
+.demos-polyline-batch-polyline-raw {
+    fill: none;
+    stroke: none;
+}
+
+.demos-polyline-batch-polyline-smooth {
+    fill: none;
+    stroke: #334155;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.demos-polyline-batch-sample-dot {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 5px;
+}
+
+.demos-polyline-batch-arrow-tangent {
+    fill: none;
+    stroke: #22c55e;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    marker-end: url(#arrow-tangent-head);
+}
+
+.demos-polyline-batch-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-polyline-batch-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-polyline-batch-slider-handle:hover {
+    fill: #334155;
+}
+
+.demos-polyline-batch-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-polyline-batch-count-label {
+    fill: #334155;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: start;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-polyline-batch-slider-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

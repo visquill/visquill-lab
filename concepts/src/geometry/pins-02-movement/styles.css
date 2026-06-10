@@ -1,0 +1,112 @@
+/* demos-pins-movement-<class> */
+
+/* ─── Tip handle ─────────────────────────────────────────────────────── */
+
+/* White handle at the arrow tip — the only draggable element */
+.demos-pins-movement-handle-tip {
+    fill: #fff;
+    stroke: #1e293b;
+    stroke-width: 2.5px;
+    r: 9px;
+    cursor: grab;
+}
+
+/* ─── Source arrow ───────────────────────────────────────────────────── */
+
+.demos-pins-movement-source-shaft {
+    stroke: #475569;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-dasharray: 5, 3;
+}
+
+.demos-pins-movement-source-tip {
+    fill: #475569;
+}
+
+/* ─── Derived arrows ─────────────────────────────────────────────────── */
+
+.demos-pins-movement-forward-shaft {
+    stroke: #10b981;
+    stroke-width: 2px;
+    stroke-linecap: round;
+}
+.demos-pins-movement-forward-label {
+    fill: #10b981;
+}
+
+.demos-pins-movement-backward-shaft {
+    stroke: #ef4444;
+    stroke-width: 2px;
+    stroke-linecap: round;
+}
+.demos-pins-movement-backward-label {
+    fill: #ef4444;
+}
+
+.demos-pins-movement-left-shaft {
+    stroke: #3b82f6;
+    stroke-width: 2px;
+    stroke-linecap: round;
+}
+.demos-pins-movement-left-label {
+    fill: #3b82f6;
+}
+
+.demos-pins-movement-right-shaft {
+    stroke: #f97316;
+    stroke-width: 2px;
+    stroke-linecap: round;
+}
+.demos-pins-movement-right-label {
+    fill: #f97316;
+}
+
+.demos-pins-movement-forward-label,
+.demos-pins-movement-backward-label,
+.demos-pins-movement-left-label,
+.demos-pins-movement-right-label {
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Move buttons ───────────────────────────────────────────────────── */
+
+.demos-pins-movement-button {
+    fill: #3b82f6;
+    rx: 5px;
+    ry: 5px;
+    cursor: pointer;
+    transition: fill 0.15s ease;
+}
+
+.demos-pins-movement-button:hover {
+    fill: #2563eb;
+}
+
+.demos-pins-movement-button-label {
+    fill: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Instructions ───────────────────────────────────────────────────── */
+
+.demos-pins-movement-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

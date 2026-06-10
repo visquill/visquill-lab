@@ -232,7 +232,7 @@ export function run(div: HTMLDivElement) {
 
     function createLensHome(lens: DataLens, title: string, css: string, x: number, y: number) {
         const box = Boxes.box([x, y], 80, 80, background.visuals.box(css + "-home"))
-        const labelAnchor = Points.moveDown(5, Boxes.bottomLeft(box))
+        const labelAnchor = Points.moveDown( Boxes.bottomLeft(box),5)
         background.text.labelAt(title, labelAnchor, "home-label")
         createDropBox(box, lens, {animationDuration: 1000})
     }
@@ -244,7 +244,7 @@ export function run(div: HTMLDivElement) {
         },false)
         Reactive.do([state],()=>{
             if(state.value == 1){
-                Animate.eased(lens.outerRadius,10,1000,{
+                Animate.real.eased(lens.outerRadius,10,1000,{
                     onComplete: () => {
                         lens.aspect.value = currentAspect.value
                         state.value = 0
@@ -252,7 +252,7 @@ export function run(div: HTMLDivElement) {
                 })
             }
             if(state.value == 0){
-                Animate.eased(lens.outerRadius,sharedLens.outerRadius,1000)
+                Animate.real.eased(lens.outerRadius,sharedLens.outerRadius,1000)
             }
         },false)
     }

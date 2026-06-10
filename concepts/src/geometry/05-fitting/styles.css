@@ -1,0 +1,46 @@
+/* demos-fits-<class> */
+
+/* ─── Target shapes ──────────────────────────────────────────────────── */
+
+.demos-fits-target-box,
+.demos-fits-target-circle {
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    stroke-dasharray: 6, 3;
+}
+
+/* ─── Fitted source shapes ───────────────────────────────────────────── */
+
+.demos-fits-source-box,
+.demos-fits-source-circle {
+    fill: rgba(99, 102, 241, 0.15);
+    stroke: #6366f1;
+    stroke-width: 2px;
+}
+
+/* ─── Handles ────────────────────────────────────────────────────────── */
+
+.demos-fits-handle {
+    fill: #3b82f6;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-fits-handle:hover {
+    fill: #60a5fa;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-fits-panel-label {
+    fill: #475569;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

@@ -1,0 +1,73 @@
+/* demos-curves-polyline-<element> */
+
+.demos-curves-polyline-baseline-raw { fill: none; stroke: none; }
+
+.demos-curves-polyline-baseline {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.demos-curves-polyline-sample-dot {
+    fill: #94a3b8;
+    stroke: #fff;
+    stroke-width: 1.5px;
+    r: 4px;
+}
+
+.demos-curves-polyline-curve {
+    fill: none;
+    stroke: #f97316;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.demos-curves-polyline-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-curves-polyline-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-curves-polyline-slider-handle:hover { fill: #334155; }
+
+.demos-curves-polyline-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-curves-polyline-info-label {
+    fill: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: start;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-curves-polyline-slider-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

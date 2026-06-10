@@ -98,15 +98,15 @@ export function run(div: HTMLDivElement) {
     Reactive.do([lens.location], () => {
         const spans = [spanA, spanB, spanC]
         if (collapsed.value) {
-            Animate.eased(lens.radius,      COLLAPSE_RADIUS, ANIMATION_MS)
-            Animate.eased(band.outerRadius, 6,               ANIMATION_MS)
-            Animate.eased(band.innerRadius, 2,               ANIMATION_MS)
-            spans.forEach(s => Animate.eased(s.extent, 0, ANIMATION_MS))
+            Animate.real.eased(lens.radius,      COLLAPSE_RADIUS, ANIMATION_MS)
+            Animate.real.eased(band.outerRadius, 6,               ANIMATION_MS)
+            Animate.real.eased(band.innerRadius, 2,               ANIMATION_MS)
+            spans.forEach(s => Animate.real.eased(s.extent, 0, ANIMATION_MS))
         } else {
-            Animate.eased(lens.radius,      EXPAND_RADIUS, ANIMATION_MS)
-            Animate.eased(band.outerRadius, BAND_OUTER,    ANIMATION_MS)
-            Animate.eased(band.innerRadius, BAND_INNER,    ANIMATION_MS)
-            spans.forEach(s => Animate.eased(s.extent, 0.29, ANIMATION_MS))
+            Animate.real.eased(lens.radius,      EXPAND_RADIUS, ANIMATION_MS)
+            Animate.real.eased(band.outerRadius, BAND_OUTER,    ANIMATION_MS)
+            Animate.real.eased(band.innerRadius, BAND_INNER,    ANIMATION_MS)
+            spans.forEach(s => Animate.real.eased(s.extent, 0.29, ANIMATION_MS))
         }
     })
 

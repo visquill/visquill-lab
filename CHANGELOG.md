@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented here.
 
+## [1.0.0] — 2026-06-10
+
+### Concepts
+
+- Added 64 new demos across Basics, Reactions, Animations, Geometry, Plots, Lenses, and Viewports categories: see the explorer for the full list
+
+### GDK
+
+- Migrated to `visquill-gdk` 1.0.0
+
+### Explorer
+
+- Added link to GitHub repository
+- Demos are now grouped by category and sub-group in the sidebar
+
 ## [1.0.0-alpha.2] — 2026-04-17
 
 ### Concepts

@@ -1,0 +1,127 @@
+/* demos-arcs-sampling-<class> */
+
+.demos-arcs-sampling-arc {
+    fill: none;
+    stroke: #6366f1;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+.demos-arcs-sampling-ghost-circle {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 4;
+}
+
+.demos-arcs-sampling-center-handle {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-arcs-sampling-angle-handle {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-arcs-sampling-center-handle:hover,
+.demos-arcs-sampling-angle-handle:hover {
+    opacity: 0.8;
+}
+
+/* Sampled point */
+.demos-arcs-sampling-sample-dot {
+    fill: #0ea5e9;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+/* Direction arrow — tangent direction */
+.demos-arcs-sampling-direction-arrow {
+    stroke: #0ea5e9;
+    stroke-width: 2px;
+    marker-end: url(#arrow-dir);
+}
+
+/* Normal arrow — rotateLeft of direction */
+.demos-arcs-sampling-normal-arrow {
+    stroke: #10b981;
+    stroke-width: 2px;
+    marker-end: url(#arrow-normal);
+}
+
+.demos-arcs-sampling-arrow-label-dir {
+    fill: #0ea5e9;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-arcs-sampling-arrow-label-normal {
+    fill: #10b981;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Slider */
+.demos-arcs-sampling-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 4px;
+    stroke-linecap: round;
+}
+
+.demos-arcs-sampling-slider-handle {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-arcs-sampling-slider-handle:hover {
+    opacity: 0.8;
+}
+
+.demos-arcs-sampling-slider-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-arcs-sampling-slider-value {
+    fill: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-arcs-sampling-instructions {
+    fill: #94a3b8;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

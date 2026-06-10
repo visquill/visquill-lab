@@ -1,0 +1,154 @@
+/* demos-segments-basics-<class> */
+
+/* ─── Segments ───────────────────────────────────────────────────────── */
+
+.demos-segments-basics-segment {
+    stroke: #6366f1;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    fill: none;
+}
+
+.demos-segments-basics-directed-segment {
+    stroke: #f97316;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    fill: none;
+}
+
+.demos-segments-basics-dir-line {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+    fill: none;
+}
+
+/* ─── Markers ────────────────────────────────────────────────────────── */
+
+.demos-segments-basics-midpoint-marker {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 5px;
+    pointer-events: none;
+}
+
+.demos-segments-basics-point-at-marker {
+    fill: #10b981;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 6px;
+    pointer-events: none;
+}
+
+.demos-segments-basics-dir-arrow-tip {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 1.5px;
+    r: 5px;
+    pointer-events: none;
+}
+
+/* ─── Handles ────────────────────────────────────────────────────────── */
+
+.demos-segments-basics-endpoint {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-segments-basics-endpoint:hover { fill: #334155; }
+
+.demos-segments-basics-dir-handle {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-segments-basics-dir-handle:hover { fill: #fb923c; }
+
+/* ─── Slider ─────────────────────────────────────────────────────────── */
+
+.demos-segments-basics-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-segments-basics-slider-handle {
+    fill: #10b981;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-segments-basics-slider-handle:hover { fill: #34d399; }
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-segments-basics-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-segments-basics-measurement-label {
+    fill: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-segments-basics-mid-label,
+.demos-segments-basics-point-at-label {
+    fill: #10b981;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-segments-basics-mid-label { fill: #6366f1; }
+
+.demos-segments-basics-slider-label,
+.demos-segments-basics-slider-value {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-segments-basics-slider-label { font-weight: 600; }
+
+.demos-segments-basics-divider {
+    stroke: #e2e8f0;
+    stroke-width: 1px;
+}
+
+.demos-segments-basics-panel-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

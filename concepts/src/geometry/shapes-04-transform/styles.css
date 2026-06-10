@@ -1,0 +1,88 @@
+/* ─── Transform demo ──────────────────────────────────────────────────────
+   Prefix: demos-shapes-transform-                                          */
+
+/* Ghost — original unmodified reference */
+.demos-shapes-transform-ghost {
+    fill: rgba(99, 102, 241, 0.06);
+    stroke: #6366f1;
+    stroke-width: 1.5px;
+    stroke-dasharray: 5, 4;
+}
+
+/* Transformed shape */
+.demos-shapes-transform-arrow {
+    fill: rgba(99, 102, 241, 0.18);
+    stroke: #6366f1;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+/* Axis line from anchor to tip */
+.demos-shapes-transform-axis {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 4;
+    fill: none;
+}
+
+/* Anchor dot */
+.demos-shapes-transform-anchor-dot {
+    r: 5px;
+    fill: #94a3b8;
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+/* Tip dot */
+.demos-shapes-transform-tip-dot {
+    r: 5px;
+    fill: #a855f7;
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+/* Anchor handle (white — translation) */
+.demos-shapes-transform-handle-anchor {
+    r: 10px;
+    fill: #fff;
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    cursor: grab;
+}
+.demos-shapes-transform-handle-anchor:hover {
+    fill: #e2e8f0;
+}
+
+/* Tip handle (purple — rotation + scale) */
+.demos-shapes-transform-handle-tip {
+    r: 10px;
+    fill: #a855f7;
+    stroke: #fff;
+    stroke-width: 2px;
+    cursor: grab;
+}
+.demos-shapes-transform-handle-tip:hover {
+    fill: #c084fc;
+}
+
+/* Info panel labels */
+.demos-shapes-transform-info-label {
+    fill: #475569;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Instruction label */
+.demos-shapes-transform-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

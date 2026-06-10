@@ -1,5 +1,6 @@
-// @name Polygon Offset
+// @name Offset
 // @category Geometry
+// @group Misc
 
 import { type Point, Reactive, VisQuill, ConvexHulls, Offsets, Vectors, Segments } from "@visquill/visquill-gdk";
 import './styles.css';
@@ -16,6 +17,7 @@ export function run(div: HTMLDivElement) {
     const rvg = VisQuill.create(div, "demos-geometry-polygon-offset-");
     const canvas = rvg.canvas.layer();
     const controls = rvg.canvas.layer();
+    controls.handles.defaultZIndex = 1
     const distance = canvas.values.real(50);
 
     // ─── Create Handles ──────────────────────────────────────────────────────
@@ -23,7 +25,6 @@ export function run(div: HTMLDivElement) {
     const handles: Point[] = [];
     for (let i = 0; i < 20; i++) {
         const handle = controls.handles.disk("handle", [100 + Math.random() * 500, 200 + Math.random() * 500])
-        handle.zIndex.value = 1
         handles.push(handle);
     }
 

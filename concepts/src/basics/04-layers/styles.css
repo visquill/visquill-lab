@@ -1,0 +1,126 @@
+/* ─── Instructions ───────────────────────────────────────────────────────── */
+/* "instructions"  →  demos-basics-layers-instructions */
+.demos-basics-layers-instructions {
+    fill: #555;
+    font-size: 13px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Layer A badge ───────────────────────────────────────────────────────── */
+/* "badge" on layer-a-  →  demos-basics-layers-layer-a-badge */
+.demos-basics-layers-layer-a-badge {
+    fill: #dbeafe;
+    stroke: #3b82f6;
+    stroke-width: 2px;
+    rx: 6px;
+}
+
+/* ─── Layer B badge ───────────────────────────────────────────────────────── */
+/* "badge" on layer-b-  →  demos-basics-layers-layer-b-badge */
+.demos-basics-layers-layer-b-badge {
+    fill: #fce7f3;
+    stroke: #ec4899;
+    stroke-width: 2px;
+    rx: 6px;
+}
+
+/* ─── Layer C badge ───────────────────────────────────────────────────────── */
+/* "badge" on layer-c-  →  demos-basics-layers-layer-c-badge */
+.demos-basics-layers-layer-c-badge {
+    fill: #dcfce7;
+    stroke: #22c55e;
+    stroke-width: 2px;
+    rx: 6px;
+}
+
+/* ─── Sub-layer badge ─────────────────────────────────────────────────────── */
+/* "badge" on sub-  →  demos-basics-layers-sub-badge */
+.demos-basics-layers-layer-b-sub-badge {
+    fill: #fef9c3;
+    stroke: #eab308;
+    stroke-width: 1.5px;
+    rx: 4px;
+}
+
+/* ─── Badge labels ────────────────────────────────────────────────────────── */
+/* "badge-label"  →  demos-basics-layers-layer-{a,b,c}-badge-label */
+.demos-basics-layers-layer-a-badge-label,
+.demos-basics-layers-layer-b-badge-label,
+.demos-basics-layers-layer-c-badge-label {
+    fill: #1e293b;
+    font-size: 13px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* "sub-label"  →  demos-basics-layers-sub-sub-label */
+.demos-basics-layers-layer-b-sub-sub-label {
+    fill: #713f12;
+    font-size: 11px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Anchor label ────────────────────────────────────────────────────────── */
+/* "anchor-label"  →  demos-basics-layers-anchor-label */
+.demos-basics-layers-anchor-label {
+    fill: #94a3b8;
+    font-size: 11px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    dominant-baseline: central;
+}
+
+/* ─── Crosshairs ──────────────────────────────────────────────────────────── */
+/* All crosshair segments — mark the local (0,0) of each layer */
+.demos-basics-layers-layer-a-crosshair,
+.demos-basics-layers-layer-b-crosshair,
+.demos-basics-layers-layer-c-crosshair,
+.demos-basics-layers-layer-rot-crosshair-rotated {
+    stroke: rgba(0, 0, 0, 0.3);
+    stroke-width: 1px;
+}
+
+.demos-basics-layers-sub-sub-crosshair {
+    stroke: rgba(0, 0, 0, 0.25);
+    stroke-width: 1px;
+}
+
+/* ─── Rotated layer badge ─────────────────────────────────────────────────── */
+/* "badge-rotated"  →  demos-basics-layers-layer-rot-badge-rotated */
+.demos-basics-layers-layer-rot-badge-rotated {
+    fill: #f1f0ff;
+    stroke: #7c3aed;
+    stroke-width: 2px;
+    rx: 6px;
+}
+
+/* "badge-label-rotated"  →  demos-basics-layers-layer-rot-badge-label-rotated */
+.demos-basics-layers-layer-rot-badge-label-rotated {
+    fill: #4c1d95;
+    font-size: 12px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Caption ─────────────────────────────────────────────────────────────── */
+/* "caption"  →  demos-basics-layers-caption */
+.demos-basics-layers-caption {
+    fill: #888;
+    font-size: 12px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+text {
+    user-select: none;
+    -webkit-user-select: none;
+}

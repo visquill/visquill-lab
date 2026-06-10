@@ -1,0 +1,136 @@
+/* demos-pins-placement-<class> */
+
+/* ─── Segment handles ────────────────────────────────────────────────── */
+
+.demos-pins-placement-handle-endpoint {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 3px;
+    r: 11px;
+    cursor: grab;
+}
+
+/* ─── Target handle (lookAt) ─────────────────────────────────────────── */
+
+.demos-pins-placement-handle-target {
+    fill: #a855f7;
+    stroke: #fff;
+    stroke-width: 2.5px;
+    r: 9px;
+    cursor: grab;
+}
+
+/* ─── Segment line ───────────────────────────────────────────────────── */
+
+.demos-pins-placement-segment-line {
+    stroke: #475569;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+/* ─── Slider ─────────────────────────────────────────────────────────── */
+
+.demos-pins-placement-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-pins-placement-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-pins-placement-slider-label,
+.demos-pins-placement-ratio-value {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── placeOnSegment ─────────────────────────────────────────────────── */
+
+/* Orientation unchanged — muted so the contrast with align-on is clear */
+.demos-pins-placement-place-on-dot   { fill: #94a3b8; }
+.demos-pins-placement-place-on-shaft {
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    stroke-linecap: round;
+}
+
+/* ─── placeAndAlignOnSegment ─────────────────────────────────────────── */
+
+.demos-pins-placement-align-on-dot   { fill: #10b981; }
+.demos-pins-placement-align-on-shaft {
+    stroke: #10b981;
+    stroke-width: 2px;
+    stroke-linecap: round;
+}
+
+/* ─── placeBesideSegment ─────────────────────────────────────────────── */
+
+.demos-pins-placement-place-beside-dot   { fill: #94a3b8; }
+.demos-pins-placement-place-beside-shaft {
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-dasharray: 4, 3;
+}
+
+/* ─── placeAndAlignBesideSegment ─────────────────────────────────────── */
+
+.demos-pins-placement-align-beside-dot   { fill: #f97316; }
+.demos-pins-placement-align-beside-shaft {
+    stroke: #f97316;
+    stroke-width: 2px;
+    stroke-linecap: round;
+}
+
+/* ─── lookAt ─────────────────────────────────────────────────────────── */
+
+.demos-pins-placement-lookat-dot   { fill: #a855f7; }
+.demos-pins-placement-lookat-shaft {
+    stroke: #a855f7;
+    stroke-width: 2px;
+    stroke-linecap: round;
+}
+
+.demos-pins-placement-lookat-connector {
+    stroke: #a855f7;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 4;
+    opacity: 0.5;
+}
+
+.demos-pins-placement-lookat-label,
+.demos-pins-placement-target-label {
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-pins-placement-lookat-label  { fill: #a855f7; }
+.demos-pins-placement-target-label  { fill: #a855f7; }
+.demos-pins-placement-target-dot    { fill: #a855f7; }
+
+/* ─── Instructions ───────────────────────────────────────────────────── */
+
+.demos-pins-placement-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

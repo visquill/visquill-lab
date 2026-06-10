@@ -1,0 +1,88 @@
+
+/* Prefix chain:  "demos-"  +  "polyline-closest-"  +  class name */
+
+.demos-polyline-closest-polyline-guide {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 4;
+}
+
+.demos-polyline-closest-polyline-raw {
+    fill: none;
+    stroke: none;
+}
+
+.demos-polyline-closest-polyline-smooth {
+    fill: none;
+    stroke: #334155;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ─── Handle ──────────────────────────────────────────────────────────── */
+
+.demos-polyline-closest-handle {
+    fill: #3b82f6;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 10px;
+    cursor: grab;
+}
+
+.demos-polyline-closest-handle:hover {
+    fill: #60a5fa;
+}
+
+/* ─── Closest point dot ──────────────────────────────────────────────── */
+
+.demos-polyline-closest-closest-dot {
+    fill: #ef4444;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 6px;
+    pointer-events: none;
+}
+
+/* ─── Connector segment ──────────────────────────────────────────────── */
+
+.demos-polyline-closest-connector {
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 5, 4;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-polyline-closest-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-polyline-closest-info-label {
+    fill: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: start;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-polyline-closest-dist-label {
+    fill: #64748b;
+    font-size: 11px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

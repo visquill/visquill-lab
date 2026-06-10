@@ -25,7 +25,7 @@ export const PACKAGES: PackageConfig[] = [
         manifestFile: 'concepts.json',
         folder: 'concepts',
         expandByDefault: true,
-        categoryOrder: ['Basics', 'Reactions', 'Attachments',"Geometry", 'Animations', 'Lenses', "Maps"]
+        categoryOrder: ['Basics', 'Reactions', 'Attachments',"Geometry", 'Animations', 'Viewports','Plots', 'Lenses', "Maps"]
     },
     {
         name: 'Blueprints',

@@ -1,0 +1,72 @@
+/* ─── Mirror demo ─────────────────────────────────────────────────────────
+   Prefix: demos-shapes-mirror-                                             */
+
+/* Original shape */
+.demos-shapes-mirror-original {
+    fill: rgba(99, 102, 241, 0.14);
+    stroke: #6366f1;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+/* Mirrored shape — distinct teal colour */
+.demos-shapes-mirror-mirrored {
+    fill: rgba(20, 184, 166, 0.14);
+    stroke: #14b8a6;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+/* Reflection axis line */
+.demos-shapes-mirror-axis-line {
+    stroke: #f97316;
+    stroke-width: 1.5px;
+    stroke-dasharray: 6, 4;
+    fill: none;
+}
+
+/* Axis handles */
+.demos-shapes-mirror-handle-axis {
+    r: 9px;
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    cursor: grab;
+}
+.demos-shapes-mirror-handle-axis:hover {
+    fill: #fb923c;
+}
+
+/* Shape labels */
+.demos-shapes-mirror-shape-label {
+    fill: #6366f1;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-shapes-mirror-shape-label-mirrored {
+    fill: #14b8a6;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Instruction label */
+.demos-shapes-mirror-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

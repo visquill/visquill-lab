@@ -1,0 +1,122 @@
+/* demos-points-reflect-<class> */
+
+.demos-points-reflect-mirror-line {
+    stroke: #94a3b8;
+    stroke-width: 2px;
+}
+
+.demos-points-reflect-guide-line {
+    stroke: #cbd5e1;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+.demos-points-reflect-pivot-mark {
+    fill: #6366f1;
+    stroke: none;
+}
+
+.demos-points-reflect-result-dot {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+/* ─── Handles ────────────────────────────────────────────────────────── */
+
+.demos-points-reflect-source-handle {
+    fill: #3b82f6;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-points-reflect-pivot-handle {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-points-reflect-line-handle {
+    fill: #64748b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-points-reflect-source-handle:hover,
+.demos-points-reflect-pivot-handle:hover,
+.demos-points-reflect-line-handle:hover { opacity: 0.8; }
+
+/* ─── Sliders ────────────────────────────────────────────────────────── */
+
+.demos-points-reflect-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-points-reflect-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-points-reflect-slider-handle:hover { fill: #334155; }
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-points-reflect-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-points-reflect-panel-label {
+    fill: #475569;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-points-reflect-point-label {
+    fill: #94a3b8;
+    font-size: 11px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-points-reflect-result-label {
+    fill: #f97316;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-points-reflect-slider-label {
+    fill: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

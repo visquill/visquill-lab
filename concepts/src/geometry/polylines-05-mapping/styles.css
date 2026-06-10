@@ -1,0 +1,77 @@
+/* Prefix chain:  "demos-"  +  "polyline-map-"  +  class name */
+
+/* ─── Shape reference (original zigzag, shown faintly) ──────────────── */
+
+.demos-polyline-map-shape-reference {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 4;
+}
+
+/* ─── Smooth path ────────────────────────────────────────────────────── */
+
+.demos-polyline-map-path-smooth {
+    fill: none;
+    stroke: #3b82f6;
+    stroke-width: 1.5px;
+    stroke-dasharray: 6, 4;
+    opacity: 0.5;
+}
+
+/* ─── Mapped result ──────────────────────────────────────────────────── */
+
+.demos-polyline-map-mapped {
+    fill: none;
+    stroke: #f97316;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ─── Path handles ───────────────────────────────────────────────────── */
+
+.demos-polyline-map-path-handle {
+    fill: #3b82f6;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 9px;
+    cursor: grab;
+}
+
+.demos-polyline-map-path-handle:hover { fill: #60a5fa; }
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-polyline-map-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-polyline-map-info-label {
+    fill: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: start;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Shape handles ──────────────────────────────────────────────────── */
+
+.demos-polyline-map-shape-handle {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 9px;
+    cursor: grab;
+}
+
+.demos-polyline-map-shape-handle:hover { fill: #fb923c; }

@@ -1,0 +1,28 @@
+/* Prefix chain:  "demos-"  +  "card-deal-"  +  class name
+                   ↓               ↓               ↓
+                   demos-card-deal-<class>                     */
+
+/* ─── Deck shadow cards (static, background) ─────────────────────────── */
+
+.demos-card-deal-deck-shadow {
+    fill: #c8b89a;
+    stroke: #a08060;
+    stroke-width: 1px;
+    rx: 4px;
+}
+
+/* ─── Animated cards ─────────────────────────────────────────────────── */
+
+.demos-card-deal-card {
+    fill: #fffdf8;
+    stroke: #2c2c2c;
+    stroke-width: 1.5px;
+    rx: 4px;
+}
+
+/* ─── Position tracker points (invisible) ────────────────────────────── */
+
+.demos-card-deal-card-pos {
+    r: 0;
+    pointer-events: none;
+}

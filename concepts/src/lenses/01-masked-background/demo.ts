@@ -1,7 +1,7 @@
 // @name Masked Background
 // @category Lenses
 
-import {VisQuill, Reactive, Attach, Boxes} from "@visquill/visquill-gdk"
+import {VisQuill, Reactive, Attach, Boxes, Circles} from "@visquill/visquill-gdk"
 import {Options, Controls} from "@visquill/visquill-blueprints";
 import './styles.css'
 import {createPoints} from "../../utils/decoration";
@@ -51,8 +51,14 @@ export function run(div: HTMLDivElement) {
         Reactive.do([rvg.frame], () => {
             Boxes.copy(rvg.frame, box)
         })
-        cover.mask.box(rvg.frame, "white")
-        cover.mask.circle(handle, lensRadius, "black")
+        const frameMask = cover.mask.box("white")
+        Reactive.do([rvg.frame],()=>{
+            Boxes.copy(rvg.frame, frameMask);
+        })
+        const circleMask = cover.mask.circle("black")
+        Reactive.do([handle,lensRadius],()=>{
+            Circles.circleAt(handle,lensRadius,circleMask)
+        })
     }
 
     function createLens() {

@@ -1,0 +1,137 @@
+/* demos-extremes-custom-<class> */
+
+/* ─── Point cloud ────────────────────────────────────────────────────── */
+
+.demos-extremes-custom-cloud-handle {
+    fill: #cbd5e1;
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-extremes-custom-cloud-handle:hover {
+    fill: #94a3b8;
+}
+
+/* ─── Extreme marker ─────────────────────────────────────────────────── */
+
+.demos-extremes-custom-marker {
+    fill: rgba(139, 92, 246, 0.2);
+    stroke: #8b5cf6;
+    stroke-width: 2.5px;
+    pointer-events: none;
+}
+
+/* ─── Projection line ────────────────────────────────────────────────── */
+
+.demos-extremes-custom-projection-line {
+    stroke: #8b5cf6;
+    stroke-width: 1.5px;
+    stroke-dasharray: 5, 4;
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+/* ─── Direction arrow ────────────────────────────────────────────────── */
+
+.demos-extremes-custom-arrow-shaft {
+    stroke: #1e293b;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    pointer-events: none;
+}
+
+.demos-extremes-custom-arrow-tip {
+    fill: #1e293b;
+    pointer-events: none;
+    r: 4px;
+}
+
+/* ─── Divider ────────────────────────────────────────────────────────── */
+
+.demos-extremes-custom-divider {
+    stroke: #e2e8f0;
+    stroke-width: 1px;
+}
+
+/* ─── Slider ─────────────────────────────────────────────────────────── */
+
+.demos-extremes-custom-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-extremes-custom-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-extremes-custom-slider-handle:hover {
+    fill: #334155;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-extremes-custom-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-extremes-custom-marker-label {
+    fill: #8b5cf6;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-extremes-custom-arrow-label {
+    fill: #475569;
+    font-size: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-extremes-custom-slider-label {
+    fill: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-extremes-custom-slider-value {
+    fill: #94a3b8;
+    font-size: 11px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-extremes-custom-panel-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

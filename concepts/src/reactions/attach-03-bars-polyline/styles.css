@@ -1,0 +1,64 @@
+/* demos-attach-bars-<class> */
+
+.demos-attach-bars-path {
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.demos-attach-bars-polyline-handle {
+    fill: #3b82f6;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-attach-bars-polyline-handle:hover { fill: #60a5fa; }
+
+/* Primary bars — grow left (above the line) */
+.demos-attach-bars-bar {
+    fill: rgba(99, 102, 241, 0.3);
+    stroke: #6366f1;
+    stroke-width: 1.5px;
+}
+
+/* Secondary bars — grow right (below the line), smaller */
+.demos-attach-bars-bar-aligned {
+    fill: rgba(249, 115, 22, 0.2);
+    stroke: #f97316;
+    stroke-width: 1px;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-attach-bars-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-attach-bars-section-label {
+    fill: #6366f1;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-attach-bars-section-label-sub {
+    fill: #f97316;
+    font-size: 11px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

@@ -1,0 +1,153 @@
+/* demos-segments-positioned-<class> */
+
+/* ─── Base segments ──────────────────────────────────────────────────── */
+
+.demos-segments-positioned-base-segment {
+    stroke: #94a3b8;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    fill: none;
+}
+
+.demos-segments-positioned-dir-line {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+    fill: none;
+}
+
+.demos-segments-positioned-distance-line {
+    stroke: #64748b;
+    stroke-width: 1px;
+    stroke-dasharray: 3, 3;
+    fill: none;
+}
+
+/* ─── Result segments ────────────────────────────────────────────────── */
+
+.demos-segments-positioned-along-result {
+    stroke: #6366f1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    fill: none;
+}
+
+.demos-segments-positioned-at-point-result {
+    stroke: #f97316;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    fill: none;
+}
+
+/* ─── Handles ────────────────────────────────────────────────────────── */
+
+.demos-segments-positioned-base-endpoint {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-segments-positioned-base-endpoint:hover { fill: #334155; }
+
+.demos-segments-positioned-point-handle {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-segments-positioned-point-handle:hover { fill: #fb923c; }
+
+.demos-segments-positioned-dir-handle {
+    fill: #94a3b8;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-segments-positioned-dir-handle:hover { fill: #64748b; }
+
+.demos-segments-positioned-side-toggle {
+    fill: #0ea5e9;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-segments-positioned-side-toggle:hover { fill: #38bdf8; }
+
+/* ─── Slider ─────────────────────────────────────────────────────────── */
+
+.demos-segments-positioned-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-segments-positioned-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-segments-positioned-slider-handle:hover { fill: #334155; }
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-segments-positioned-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-segments-positioned-toggle-label {
+    fill: #0ea5e9;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-segments-positioned-slider-label {
+    fill: #475569;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-segments-positioned-slider-value {
+    fill: #94a3b8;
+    font-size: 11px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-segments-positioned-panel-label {
+    fill: #64748b;
+    font-size: 11px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

@@ -1,0 +1,103 @@
+/* demos-points-analysis-<class> */
+
+/* ─── Point cloud handles ────────────────────────────────────────────── */
+
+.demos-points-analysis-point-handle {
+    fill: #3b82f6;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-points-analysis-point-handle:hover { fill: #60a5fa; }
+
+.demos-points-analysis-ref-handle {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 9px;
+    cursor: grab;
+}
+
+.demos-points-analysis-ref-handle:hover { fill: #fb923c; }
+
+/* ─── Centroid ───────────────────────────────────────────────────────── */
+
+.demos-points-analysis-centroid-mark {
+    fill: #10b981;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+/* ─── Diagonal ───────────────────────────────────────────────────────── */
+
+.demos-points-analysis-diagonal-line {
+    stroke: #8b5cf6;
+    stroke-width: 2px;
+    stroke-dasharray: 6, 3;
+}
+
+.demos-points-analysis-diagonal-endpoint {
+    fill: #8b5cf6;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+/* ─── Nearest / farthest ─────────────────────────────────────────────── */
+
+.demos-points-analysis-nearest-line {
+    stroke: #10b981;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+.demos-points-analysis-nearest-mark {
+    fill: #10b981;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+.demos-points-analysis-farthest-line {
+    stroke: #ef4444;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+.demos-points-analysis-farthest-mark {
+    fill: #ef4444;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-points-analysis-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-points-analysis-centroid-label {
+    fill: #10b981;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-points-analysis-annotation-label {
+    fill: #475569;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

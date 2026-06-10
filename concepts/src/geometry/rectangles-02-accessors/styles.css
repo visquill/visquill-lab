@@ -1,0 +1,141 @@
+/* demos-rect-accessors-<class> */
+
+/* ─── Rectangle ──────────────────────────────────────────────────────── */
+
+.demos-rect-accessors-rect {
+    fill: rgba(99, 102, 241, 0.08);
+    stroke: #6366f1;
+    stroke-width: 2px;
+}
+
+/* ─── Side highlights ────────────────────────────────────────────────── */
+
+.demos-rect-accessors-side-top    { stroke: #8b5cf6; stroke-width: 3.5px; stroke-linecap: round; fill: none; }
+.demos-rect-accessors-side-bottom { stroke: #f97316; stroke-width: 3.5px; stroke-linecap: round; fill: none; }
+.demos-rect-accessors-side-left   { stroke: #ef4444; stroke-width: 3.5px; stroke-linecap: round; fill: none; }
+.demos-rect-accessors-side-right  { stroke: #10b981; stroke-width: 3.5px; stroke-linecap: round; fill: none; }
+
+/* ─── Corner dots ────────────────────────────────────────────────────── */
+
+.demos-rect-accessors-corner-dot {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 5px;
+    pointer-events: none;
+}
+
+/* ─── Handles ────────────────────────────────────────────────────────── */
+
+.demos-rect-accessors-pin-handle {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-rect-accessors-pin-handle:hover { fill: #818cf8; }
+
+/* ─── Slider ─────────────────────────────────────────────────────────── */
+
+.demos-rect-accessors-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-rect-accessors-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-rect-accessors-slider-handle:hover { fill: #334155; }
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-rect-accessors-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-rect-accessors-corner-label-tl { fill: #1e293b; font-size: 10px; font-weight: 600; font-family: 'Segoe UI', sans-serif; text-anchor: middle; pointer-events: none; user-select: none; }
+.demos-rect-accessors-corner-label-tr { fill: #1e293b; font-size: 10px; font-weight: 600; font-family: 'Segoe UI', sans-serif; text-anchor: middle; pointer-events: none; user-select: none; }
+.demos-rect-accessors-corner-label-bl { fill: #1e293b; font-size: 10px; font-weight: 600; font-family: 'Segoe UI', sans-serif; text-anchor: middle; pointer-events: none; user-select: none; }
+.demos-rect-accessors-corner-label-br { fill: #1e293b; font-size: 10px; font-weight: 600; font-family: 'Segoe UI', sans-serif; text-anchor: middle; pointer-events: none; user-select: none; }
+
+.demos-rect-accessors-side-label {
+    fill: #475569;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-rect-accessors-divider {
+    stroke: #e2e8f0;
+    stroke-width: 1px;
+}
+
+.demos-rect-accessors-section-title {
+    fill: #1e293b;
+    font-size: 14px;
+    font-weight: 700;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-rect-accessors-measure-key {
+    fill: #64748b;
+    font-size: 13px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: start;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-rect-accessors-measurement {
+    fill: #1e293b;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: start;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-rect-accessors-slider-label {
+    fill: #475569;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-rect-accessors-slider-value {
+    fill: #94a3b8;
+    font-size: 11px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

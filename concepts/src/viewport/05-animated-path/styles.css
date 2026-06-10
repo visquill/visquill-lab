@@ -1,0 +1,99 @@
+/* Prefix chain:  "demos-"  +  "viewport-path-"  +  class name
+                   ↓              ↓                    ↓
+                   demos-viewport-path-<class>                  */
+
+/* ─── Boundary rim ───────────────────────────────────────────────────── */
+
+.demos-viewport-path-rim {
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    stroke-dasharray: 8, 4;
+}
+
+/* ─── Centre marker ──────────────────────────────────────────────────── */
+
+.demos-viewport-path-center-marker {
+    fill: rgba(59, 130, 246, 0.5);
+    stroke: #3b82f6;
+    stroke-width: 1.5px;
+}
+
+/* ─── Content shapes ─────────────────────────────────────────────────── */
+
+.demos-viewport-path-shape {
+    fill: rgba(99, 102, 241, 0.15);
+    stroke: #6366f1;
+    stroke-width: 1.5px;
+}
+
+/* ─── Camera path ────────────────────────────────────────────────────── */
+
+/* Coarse control-point polyline — dashed so the user can distinguish
+   the original waypoints from the smooth trajectory. */
+.demos-viewport-path-path-control {
+    fill: none;
+    stroke: #f97316;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 4;
+    opacity: 0.6;
+}
+
+/* Hidden duplicate used only as input to Polylines.smooth(). */
+.demos-viewport-path-path-control-hidden {
+    fill: none;
+    stroke: none;
+}
+
+/* The smooth interpolated trajectory the camera follows. */
+.demos-viewport-path-path-smooth {
+    fill: none;
+    stroke: #f97316;
+    stroke-width: 2px;
+}
+
+/* ─── Sliders ────────────────────────────────────────────────────────── */
+
+/* Horizontal track that the slider handle slides along. */
+.demos-viewport-path-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+/* Draggable slider handle. */
+.demos-viewport-path-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-viewport-path-slider-handle:hover {
+    fill: #334155;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-viewport-path-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Label above each slider track. */
+.demos-viewport-path-slider-label {
+    fill: #334155;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

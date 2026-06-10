@@ -102,7 +102,7 @@ export function run(div: HTMLDivElement) {
 function assignData(chart: RadarChart, values: number[][]): void {
     for (let i = 0; i < values.length; i++) {
         for (let j = 0; j < values[i].length; j++) {
-            Animate.eased(chart.data[i][j], values[i][j] / maxStackedValue, 1000)
+            Animate.real.eased(chart.data[i][j], values[i][j] / maxStackedValue, 1000)
         }
     }
 }

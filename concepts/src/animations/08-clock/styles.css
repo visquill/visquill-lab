@@ -1,0 +1,73 @@
+/* Prefix chain:  "demos-"  +  "clock-"  +  class name
+                   ↓              ↓             ↓
+                   demos-clock-<class>                        */
+
+/* ─── Face ───────────────────────────────────────────────────────────── */
+
+.demos-clock-face {
+    fill: #f8f6f0;
+    stroke: #2c2c2c;
+    stroke-width: 3px;
+}
+
+/* ─── Tick marks ─────────────────────────────────────────────────────── */
+
+.demos-clock-tick-major {
+    stroke: #2c2c2c;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+.demos-clock-tick-minor {
+    stroke: #666;
+    stroke-width: 1.5px;
+    stroke-linecap: round;
+}
+
+/* ─── Centre cap ─────────────────────────────────────────────────────── */
+
+.demos-clock-cap {
+    fill: #2c2c2c;
+    r: 5px;
+}
+
+/* ─── Hour hand ──────────────────────────────────────────────────────── */
+
+.demos-clock-hour {
+    stroke: #2c2c2c;
+    stroke-width: 4.5px;
+    stroke-linecap: round;
+}
+
+/* ─── Minute hand ────────────────────────────────────────────────────── */
+
+.demos-clock-minute {
+    stroke: #2c2c2c;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+/* ─── Second hand ────────────────────────────────────────────────────── */
+
+.demos-clock-second {
+    stroke: #c0392b;
+    stroke-width: 1.5px;
+    stroke-linecap: round;
+}
+
+/* ─── Pendulum arm ───────────────────────────────────────────────────── */
+
+.demos-clock-arm {
+    stroke: #555;
+    stroke-width: 2px;
+    stroke-linecap: round;
+}
+
+/* ─── Pendulum bob ───────────────────────────────────────────────────── */
+
+.demos-clock-bob {
+    fill: #b8860b;
+    stroke: #8b6914;
+    stroke-width: 2px;
+    r: 12px;
+}

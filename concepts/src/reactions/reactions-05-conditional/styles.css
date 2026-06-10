@@ -1,0 +1,86 @@
+/* ─── Instructions ───────────────────────────────────────────────────────── */
+/* "instructions"  →  demos-reactive-conditional-instructions */
+.demos-reactive-conditional-instructions {
+    fill: #555;
+    font-size: 13px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Status label ────────────────────────────────────────────────────────── */
+/* "status-label"  →  demos-reactive-conditional-status-label
+   Fill is overridden at runtime; only layout properties set here. */
+.demos-reactive-conditional-status-label {
+    fill: #aaa;
+    font-size: 18px;
+    font-weight: 600;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Segment ─────────────────────────────────────────────────────────────── */
+/* "segment"  →  demos-reactive-conditional-segment */
+.demos-reactive-conditional-segment {
+    stroke: #333;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+/* ─── Endpoint handles ────────────────────────────────────────────────────── */
+/* "handle-endpoint"  →  demos-reactive-conditional-handle-endpoint */
+.demos-reactive-conditional-handle-endpoint {
+    fill: #333;
+    r: 8px;
+    cursor: grab;
+}
+
+/* ─── Probe handle ────────────────────────────────────────────────────────── */
+/* "probe"  →  demos-reactive-conditional-probe
+   Fill is overridden at runtime to reflect near/far state. */
+.demos-reactive-conditional-probe {
+    fill: #f7a020;
+    r: 12px;
+    cursor: grab;
+}
+
+/* ─── Threshold ring ──────────────────────────────────────────────────────── */
+/* "threshold-ring"  →  demos-reactive-conditional-threshold-ring */
+.demos-reactive-conditional-threshold-ring {
+    fill: none;
+    stroke: #f7a020;
+    stroke-width: 1.5px;
+    stroke-dasharray: 5 4;
+    opacity: 0.5;
+}
+
+/* ─── Closest point dot ───────────────────────────────────────────────────── */
+/* "closest-dot"  →  demos-reactive-conditional-closest-dot */
+.demos-reactive-conditional-closest-dot {
+    fill: #e04040;
+    r: 6px;
+}
+
+/* ─── Connector ───────────────────────────────────────────────────────────── */
+/* "connector"  →  demos-reactive-conditional-connector
+   Opacity is overridden at runtime. */
+.demos-reactive-conditional-connector {
+    stroke: #e04040;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4 3;
+}
+
+/* ─── Distance label ──────────────────────────────────────────────────────── */
+/* "dist-label"  →  demos-reactive-conditional-dist-label */
+.demos-reactive-conditional-dist-label {
+    fill: #888;
+    font-size: 12px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    dominant-baseline: central;
+}
+
+text {
+    user-select: none;
+    -webkit-user-select: none;
+}

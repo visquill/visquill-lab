@@ -1,8 +1,15 @@
 //@name Text Animation
 //@category Animations
 
-import {VisQuill, Animate, Reactive, type RvgGroup} from "@visquill/visquill-gdk"
+import {
+    Animate,
+    Reactive,
+    type RvgGroup,
+    RvgTextDurationMode,
+    VisQuill
+} from "@visquill/visquill-gdk"
 import './styles.css'
+import {DataLens, LensKit} from "@visquill/visquill-blueprints";
 
 // ─── Configuration ──────────────────────────────────────────────────────────
 
@@ -43,36 +50,29 @@ export function run(div: HTMLDivElement) {
 
         // Reactive value to track the current string index (-1 means not started)
         const currentIndex = textLayer.values.real(-1)
-        // Toggle value used to trigger the next animation in the sequence
-        const toggle = textLayer.values.bool()
 
         // React to changes in currentIndex and animate the text to the next string
         Reactive.do([currentIndex], () => {
-            Animate.text(label, strings[currentIndex.value], 100, {
-                onComplete: () => {
-                    // Toggle the boolean value after text animation completes
-                    // This triggers the next reactive block to advance the index
-                    Animate.setBool(toggle, !toggle.value, 500)
-                },
-                durationMode: "per-character",
-                deconstruction: "instantly"
+            Animate.string.animate(label, strings[currentIndex.value], 100, {
+                onComplete: ()=>Animate.after(500,advance),
+                durationMode: RvgTextDurationMode.PerCharacter,
+                skipWhitespace: true
             })
         }, false)
 
-        // React to toggle changes and increment the index if not at the end
-        Reactive.do([toggle], () => {
+        return currentIndex
+
+        function advance(){
+            console.log("advance")
             // Advance to next string if there are more strings to display
             if (currentIndex.value < strings.length - 1) {
                 currentIndex.value += 1
             }
-        }, false)
-
-        return currentIndex
+        }
     }
 }
 
 
-import { DataLens, LensKit } from "@visquill/visquill-blueprints";
 type BarPlotScheme = DataLens.BarPlotScheme;
 type DataLensScheme = DataLens.DataLensScheme;
 type DataLensTitleScheme = DataLens.DataLensTitleScheme;
@@ -225,7 +225,7 @@ export function createLenses(canvas: RvgGroup) {
         if(step.value < lenses.length){
             const lens = lenses[step.value]
             lens.layer.visible.value = true
-            Animate.eased(lens.radius, 100, 1000,{
+            Animate.real.eased(lens.radius, 100, 1000,{
                 onComplete:()=>{
                     step.value +=1
                 }

@@ -1,0 +1,90 @@
+/* ─── Bounding Box demo ───────────────────────────────────────────────────
+   Prefix: demos-shapes-boundingbox-                                        */
+
+/* ─── Shape fills — each a distinct colour ───────────────────────────── */
+
+.demos-shapes-boundingbox-shape-a {
+    fill: rgba(99, 102, 241, 0.15);
+    stroke: #6366f1;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+.demos-shapes-boundingbox-shape-b {
+    fill: rgba(20, 184, 166, 0.15);
+    stroke: #14b8a6;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+.demos-shapes-boundingbox-shape-c {
+    fill: rgba(249, 115, 22, 0.15);
+    stroke: #f97316;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+.demos-shapes-boundingbox-shape-d {
+    fill: rgba(244, 63, 94, 0.15);
+    stroke: #f43f5e;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+.demos-shapes-boundingbox-shape-e {
+    fill: rgba(234, 179, 8, 0.15);
+    stroke: #eab308;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+/* ─── Drag handles (invisible disk, just for interaction) ────────────── */
+
+.demos-shapes-boundingbox-shape-handle {
+    r: 40px;
+    fill: transparent;
+    stroke: none;
+    cursor: grab;
+}
+
+/* ─── Individual bounding boxes ──────────────────────────────────────── */
+
+.demos-shapes-boundingbox-individual-box {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 3;
+}
+
+/* ─── Collective bounding box ────────────────────────────────────────── */
+
+.demos-shapes-boundingbox-collective-box {
+    fill: none;
+    stroke: #1e293b;
+    stroke-width: 2px;
+    stroke-dasharray: 8, 4;
+}
+
+/* ─── Collective box label ───────────────────────────────────────────── */
+
+.demos-shapes-boundingbox-collective-label {
+    fill: #1e293b;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Instruction label ──────────────────────────────────────────────── */
+
+.demos-shapes-boundingbox-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

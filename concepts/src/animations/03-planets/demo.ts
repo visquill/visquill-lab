@@ -6,7 +6,7 @@
 // follows it with Animate.followPoint, showing the contrast between
 // eased and exponential interpolation in 2D space.
 
-import {VisQuill, Animate, Reactive, Vectors, Attach, type Point} from "@visquill/visquill-gdk"
+import {VisQuill, Animate, Reactive, Vectors, Attach, type Point, EasingFunctions} from "@visquill/visquill-gdk"
 import './styles.css'
 
 // ─── Planet positions ─────────────────────────────────────────────────────
@@ -23,11 +23,11 @@ const HOP_DURATION = 1000
 
 // Easing alternates per hop to show that it applies uniformly across both axes
 const EASINGS = [
-    Animate.easeInOutCubic,
-    Animate.linear,
-    Animate.easeInOutSine,
-    Animate.easeOutCubic,
-    Animate.easeInOutSine,
+    EasingFunctions.easeInOutCubic,
+    EasingFunctions.linear,
+    EasingFunctions.easeInOutSine,
+    EasingFunctions.easeOutCubic,
+    EasingFunctions.easeInOutSine,
 ]
 
 export function run(div: HTMLDivElement) {
@@ -66,7 +66,7 @@ export function run(div: HTMLDivElement) {
     // position drives the courier visual and re-aims the ghost follow each
     // time moveTo writes a new interpolated value into it
     Reactive.do([courier], () => {
-        Animate.followPoint(ghost, courier, { alpha: 0.06 })
+        Animate.point.follow(ghost, courier, { alpha: 0.06 })
     })
 
     // ─── State machine ────────────────────────────────────────────────────
@@ -77,7 +77,7 @@ export function run(div: HTMLDivElement) {
         const target = planets[idx]
         const easing = EASINGS[idx]
 
-        Animate.moveTo(courier, target, HOP_DURATION, {
+        Animate.point.eased(courier, target, HOP_DURATION, {
             easing,
             onComplete: () => { state.value += 1 }
         })

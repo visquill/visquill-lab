@@ -39,7 +39,7 @@ export function run(div: HTMLDivElement) {
 
     // Animates a variable to a target value, then advances the state machine
     function animate(variable: Real, value: number){
-        Animate.eased(variable, value, 1000, {onComplete: ()=>state.value+=1})
+        Animate.real.eased(variable, value, 1000, {onComplete: ()=>state.value+=1})
     }
 
     // Execute the current state's animation when state changes; reset cycle after last state
@@ -55,6 +55,6 @@ export function run(div: HTMLDivElement) {
     Reactive.do([x, y, angle], () => {
         Vectors.copy([x.value, y.value], token)
         Vectors.copy(token, group.anchor)
-        Pins.orientate(Vectors.fromAngle(angle.value), group.anchor)
+        Pins.withOrientation(group.anchor,Vectors.fromAngle(angle),group.anchor)
     })
 }

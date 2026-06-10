@@ -6,7 +6,7 @@ import {
     Vectors,
     type RvgGroup,
     type Bool,
-    type Real, type Box, Boxes, type StringValue, Circles
+    type Real, type Box, Boxes, type StringValue, Circles, EasingFunctions
 } from "@visquill/visquill-gdk";
 import type { BarPlotScheme, DataLensScheme } from "./schemes";
 import {
@@ -364,8 +364,8 @@ export function createProximityGroup(
 
             for (const assignment of assignments) {
                 if (animationDuration > 0) {
-                    Animate.eased(assignment.lens.radialSpan, assignment.radialSpan, animationDuration,{easing: Animate.easeOutBack})
-                    Animate.eased(assignment.lens.anchorAngle, assignment.anchorAngle, animationDuration,{easing: Animate.easeOutBack})
+                    Animate.real.eased(assignment.lens.radialSpan, assignment.radialSpan, animationDuration,{easing: EasingFunctions.easeOutBack})
+                    Animate.real.eased(assignment.lens.anchorAngle, assignment.anchorAngle, animationDuration,{easing: EasingFunctions.easeOutBack})
                 } else {
                     assignment.lens.radialSpan.value = assignment.radialSpan
                     assignment.lens.anchorAngle.value = assignment.anchorAngle
@@ -566,7 +566,7 @@ export function createDropBox(box: Box, lens: DataLens, options?: {
     })
     Reactive.do([collapsed], () => {
         if (options?.animationDuration) {
-            Animate.eased(lens.size, collapsed.value ? 0 : 1, options.animationDuration);
+            Animate.real.eased(lens.size, collapsed.value ? 0 : 1, options.animationDuration);
         } else {
             lens.size.value = collapsed.value ? 0 : 1;
         }

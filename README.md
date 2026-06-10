@@ -21,12 +21,15 @@ The repository is a monorepo with four packages:
 
 ### Concepts
 
-Structured to build understanding from first principles:
+Structured to build understanding from first principles across different categories — see the explorer for the full list:
 
-- **Basics** — Hello World, shapes & styles
-- **Reactions** — reactive values, distances
-- **Animations** — easing functions, text animation
-- **Geometry** — convex hull and more
+- **Basics** — Hello World, shapes & styles, frame & center, layers, attach
+- **Reactions** — reactive values, chains, conditionals, distances, and the full Attach group
+- **Animations** — easing, state machines, orbits, waveforms, breathing, text, radar charts, clock, card deal, swarm
+- **Geometry** — arcs, boxes, circles, pins, polylines, polygons, shapes, extremes, fitting, convex hull, and more
+- **Plots** — bar charts and curves along polylines, polygons, and circles
+- **Lenses** — interactive data lenses with masked backgrounds and hedgehog bar overlays
+- **Viewports** — box and circle viewports, animated panning, path navigation, nested viewports
 
 ### Blueprints
 

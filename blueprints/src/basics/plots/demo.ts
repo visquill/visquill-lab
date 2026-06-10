@@ -4,7 +4,7 @@
 import {
     VisQuill,
     Animate,
-    Svg,
+    Svg, EasingFunctions,
 } from "@visquill/visquill-gdk"
 import {Plots, Controls} from "@visquill/visquill-blueprints"
 import './demo.css';
@@ -126,8 +126,8 @@ export function run(div: HTMLDivElement) {
         Svg.get(animateButton.frame).addEventListener("click", () => {
             bars.forEach(bar => {
                 const targetHeight = 50 + Math.random() * 100
-                Animate.eased(bar.height, targetHeight, 1000, {
-                    easing: Animate.easeOutCubic,
+                Animate.real.eased(bar.height, targetHeight, 1000, {
+                    easing: EasingFunctions.easeOutCubic,
                 })
             })
         })

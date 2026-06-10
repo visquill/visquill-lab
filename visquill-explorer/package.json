@@ -1,6 +1,6 @@
 {
   "name": "visquill-explorer",
-  "version": "1.0.0-alpha.2",
+  "version": "1.0.0",
   "type": "module",
   "description": "Explorer for VisQuill demos and blueprints",
   "scripts": {
@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@visquill/visquill-gdk": "^1.0.0-alpha.2",
+    "@visquill/visquill-gdk": "^1.0.0",
     "marked": "^11.1.1",
     "prismjs": "^1.29.0"
   },

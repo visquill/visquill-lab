@@ -81,7 +81,7 @@ class NumberBasedOptions extends Options<number, Real> {
 
     protected update(v: Real, value: number): void {
         if(this.animationTime){
-            Animate.eased(v, value, this.animationTime)
+            Animate.real.eased(v, value, this.animationTime)
         }else{
             v.value = value
         }

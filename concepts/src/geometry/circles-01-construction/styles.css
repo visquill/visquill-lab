@@ -1,0 +1,63 @@
+/* demos-circles-construction-<class> */
+
+.demos-circles-construction-circle {
+    fill: rgba(99, 102, 241, 0.1);
+    stroke: #6366f1;
+    stroke-width: 2px;
+}
+
+.demos-circles-construction-radius-line,
+.demos-circles-construction-diameter-line {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+.demos-circles-construction-triangle-edge {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+.demos-circles-construction-center-handle {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-circles-construction-radius-handle,
+.demos-circles-construction-point-handle {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-circles-construction-radius-handle:hover,
+.demos-circles-construction-point-handle:hover,
+.demos-circles-construction-center-handle:hover {
+    opacity: 0.8;
+}
+
+.demos-circles-construction-measurement-label {
+    fill: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-circles-construction-panel-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

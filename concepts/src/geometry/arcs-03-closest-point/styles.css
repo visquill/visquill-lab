@@ -1,0 +1,86 @@
+/* ── Shared by both demos ─────────────────────────────────────────────── */
+
+/* ── Closest Point  (demos-arcs-closest-) ────────────────────────────── */
+
+.demos-arcs-closest-arc {
+    fill: none;
+    stroke: #6366f1;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+.demos-arcs-closest-ghost-circle {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 4;
+}
+
+.demos-arcs-closest-center-handle {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-arcs-closest-angle-handle {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-arcs-closest-center-handle:hover,
+.demos-arcs-closest-angle-handle:hover {
+    opacity: 0.8;
+}
+
+/* Freely draggable query point */
+.demos-arcs-closest-query-handle {
+    fill: #0ea5e9;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-arcs-closest-query-handle:hover {
+    opacity: 0.8;
+}
+
+/* Result dot snapped to arc */
+.demos-arcs-closest-closest-dot {
+    fill: #10b981;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+/* Connector from query to closest point */
+.demos-arcs-closest-connector {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+.demos-arcs-closest-measurement-label {
+    fill: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-arcs-closest-instructions {
+    fill: #94a3b8;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+

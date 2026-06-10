@@ -1,0 +1,111 @@
+/* ─── Scale By demo ───────────────────────────────────────────────────────
+   Prefix: demos-shapes-scaleby-                                            */
+
+/* Ghost — original unscaled reference */
+.demos-shapes-scaleby-ghost {
+    fill: rgba(99, 102, 241, 0.06);
+    stroke: #6366f1;
+    stroke-width: 1.5px;
+    stroke-dasharray: 5, 4;
+}
+
+/* Scaled shape */
+.demos-shapes-scaleby-scaled {
+    fill: rgba(99, 102, 241, 0.18);
+    stroke: #6366f1;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+/* Anchor dot */
+.demos-shapes-scaleby-anchor {
+    r: 5px;
+    fill: #94a3b8;
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+/* X scale handle (horizontal axis — amber) */
+.demos-shapes-scaleby-handle-x {
+    r: 9px;
+    fill: #f59e0b;
+    stroke: #fff;
+    stroke-width: 2px;
+    cursor: ew-resize;
+}
+.demos-shapes-scaleby-handle-x:hover {
+    fill: #fbbf24;
+}
+
+/* Y scale handle (vertical axis — rose) */
+.demos-shapes-scaleby-handle-y {
+    r: 9px;
+    fill: #f43f5e;
+    stroke: #fff;
+    stroke-width: 2px;
+    cursor: ns-resize;
+}
+.demos-shapes-scaleby-handle-y:hover {
+    fill: #fb7185;
+}
+
+/* Track lines along each axis */
+.demos-shapes-scaleby-track-x {
+    stroke: #f59e0b;
+    stroke-width: 1px;
+    stroke-dasharray: 3, 5;
+    fill: none;
+    opacity: 0.5;
+}
+
+.demos-shapes-scaleby-track-y {
+    stroke: #f43f5e;
+    stroke-width: 1px;
+    stroke-dasharray: 3, 5;
+    fill: none;
+    opacity: 0.5;
+}
+
+/* Handle axis labels ("X" / "Y") */
+.demos-shapes-scaleby-handle-label {
+    fill: #475569;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Info panel — scaleX / scaleY readout */
+.demos-shapes-scaleby-scale-label-x {
+    fill: #f59e0b;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-shapes-scaleby-scale-label-y {
+    fill: #f43f5e;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Instruction label */
+.demos-shapes-scaleby-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

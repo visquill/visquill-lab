@@ -1,5 +1,6 @@
 // @name Convex Hull
 // @category Geometry
+// @group Misc
 
 import { type Point, Reactive, VisQuill, ConvexHulls } from "@visquill/visquill-gdk";
 import './styles.css';
@@ -16,13 +17,13 @@ export function run(div: HTMLDivElement) {
     const rvg = VisQuill.create(div, "demos-geometry-convex-hull-");
     const canvas = rvg.canvas.layer();
     const controls = rvg.canvas.layer();
+    controls.handles.defaultZIndex=1
 
     // ─── Create Handles ──────────────────────────────────────────────────────
 
     const handles: Point[] = [];
     for (let i = 0; i < 20; i++) {
         const handle = controls.handles.disk("handle", [100 + Math.random() * 500, 200 + Math.random() * 500])
-        handle.zIndex.value = 1
         handles.push(handle);
     }
 

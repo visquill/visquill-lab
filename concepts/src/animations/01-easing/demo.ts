@@ -1,21 +1,21 @@
 // @name Easing
 // @category Animations
 
-import {VisQuill, Svg, Animate, Attach, Rectangles} from "@visquill/visquill-gdk";
+import {VisQuill, Svg, Animate, Attach, Rectangles, EasingFunctions} from "@visquill/visquill-gdk";
 import {Controls, Options} from "@visquill/visquill-blueprints";
 import './styles.css';
 
 // Configuration
 
 const easingFunctions = [
-    {name: "linear", fn: Animate.linear, color: "linear"},
-    {name: "easeOutCubic", fn: Animate.easeOutCubic, color: "out-cubic"},
-    {name: "easeInCubic", fn: Animate.easeInCubic, color: "in-cubic"},
-    {name: "easeInOutCubic", fn: Animate.easeInOutCubic, color: "in-out-cubic"},
-    {name: "easeOutSine", fn: Animate.easeOutSine, color: "out-sine"},
-    {name: "easeInSine", fn: Animate.easeInSine, color: "in-sine"},
-    {name: "easeInOutSine", fn: Animate.easeInOutSine, color: "in-out-sine"},
-    {name: "easeOutBack", fn: Animate.easeOutBack, color: "out-back"},
+    {name: "linear", fn: EasingFunctions.linear, color: "linear"},
+    {name: "easeOutCubic", fn: EasingFunctions.easeOutCubic, color: "out-cubic"},
+    {name: "easeInCubic", fn: EasingFunctions.easeInCubic, color: "in-cubic"},
+    {name: "easeInOutCubic", fn: EasingFunctions.easeInOutCubic, color: "in-out-cubic"},
+    {name: "easeOutSine", fn: EasingFunctions.easeOutSine, color: "out-sine"},
+    {name: "easeInSine", fn: EasingFunctions.easeInSine, color: "in-sine"},
+    {name: "easeInOutSine", fn: EasingFunctions.easeInOutSine, color: "in-out-sine"},
+    {name: "easeOutBack", fn: EasingFunctions.easeOutBack, color: "out-back"},
 ];
 
 const values = new Options.Pixels({values: [50, 120, 200, 320, 450], title: "Cubic"});
@@ -50,7 +50,7 @@ export function run(div: HTMLDivElement) {
         });
         Svg.get(button.frame).addEventListener("click", () => {
             const targetValue = values.next();
-            Animate.eased(barValue, targetValue, 1000, {easing: ease.fn});
+            Animate.real.eased(barValue, targetValue, 1000, {easing: ease.fn});
         });
     })
     ;

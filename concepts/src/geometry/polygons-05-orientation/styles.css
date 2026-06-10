@@ -1,0 +1,48 @@
+/* demos-polygon-vertex-<element> */
+
+.demos-polygon-vertex-polygon {
+    fill: #f1f5f9;
+    stroke: #334155;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+.demos-polygon-vertex-vertex {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-polygon-vertex-vertex:hover {
+    fill: #334155;
+}
+
+/* Tangent bisector — green. */
+.demos-polygon-vertex-arrow-orientation {
+    fill: none;
+    stroke: #22c55e;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    marker-end: url(#arrow-orientation-head);
+}
+
+/* Outward normal — purple. */
+.demos-polygon-vertex-arrow-normal {
+    fill: none;
+    stroke: #a855f7;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    marker-end: url(#arrow-normal-head);
+}
+
+.demos-polygon-vertex-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

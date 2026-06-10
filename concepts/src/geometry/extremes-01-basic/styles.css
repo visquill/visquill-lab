@@ -1,0 +1,101 @@
+/* demos-extremes-<class> */
+
+/* ─── Point cloud ────────────────────────────────────────────────────── */
+
+.demos-extremes-cloud-handle {
+    fill: #cbd5e1;
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-extremes-cloud-handle:hover {
+    fill: #94a3b8;
+}
+
+/* ─── Reference handle ───────────────────────────────────────────────── */
+
+.demos-extremes-reference-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 9px;
+    cursor: grab;
+}
+
+.demos-extremes-reference-handle:hover {
+    fill: #334155;
+}
+
+/* ─── Directional extreme markers ────────────────────────────────────── */
+
+.demos-extremes-marker-top    { fill: #8b5cf6; stroke: #fff; stroke-width: 2px; r: 10px; pointer-events: none; }
+.demos-extremes-marker-bottom { fill: #f97316; stroke: #fff; stroke-width: 2px; r: 10px; pointer-events: none; }
+.demos-extremes-marker-left   { fill: #ef4444; stroke: #fff; stroke-width: 2px; r: 10px; pointer-events: none; }
+.demos-extremes-marker-right  { fill: #10b981; stroke: #fff; stroke-width: 2px; r: 10px; pointer-events: none; }
+
+/* ─── Closest / farthest markers ─────────────────────────────────────── */
+
+.demos-extremes-marker-closest  { fill: #10b981; stroke: #fff; stroke-width: 2px; r: 10px; pointer-events: none; }
+.demos-extremes-marker-farthest { fill: #ef4444; stroke: #fff; stroke-width: 2px; r: 10px; pointer-events: none; }
+
+/* ─── Connector lines ────────────────────────────────────────────────── */
+
+.demos-extremes-closest-line {
+    stroke: #10b981;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+.demos-extremes-farthest-line {
+    stroke: #ef4444;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+/* ─── Divider ────────────────────────────────────────────────────────── */
+
+.demos-extremes-divider {
+    stroke: #e2e8f0;
+    stroke-width: 1px;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-extremes-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-extremes-extreme-label-top    { fill: #8b5cf6; font-size: 11px; font-weight: 700; font-family: 'Segoe UI', sans-serif; text-anchor: middle; pointer-events: none; user-select: none; }
+.demos-extremes-extreme-label-bottom { fill: #f97316; font-size: 11px; font-weight: 700; font-family: 'Segoe UI', sans-serif; text-anchor: middle; pointer-events: none; user-select: none; }
+.demos-extremes-extreme-label-left   { fill: #ef4444; font-size: 11px; font-weight: 700; font-family: 'Segoe UI', sans-serif; text-anchor: middle; pointer-events: none; user-select: none; }
+.demos-extremes-extreme-label-right  { fill: #10b981; font-size: 11px; font-weight: 700; font-family: 'Segoe UI', sans-serif; text-anchor: middle; pointer-events: none; user-select: none; }
+
+.demos-extremes-extreme-label-closest  { fill: #10b981; font-size: 11px; font-weight: 700; font-family: 'Segoe UI', sans-serif; text-anchor: middle; pointer-events: none; user-select: none; }
+.demos-extremes-extreme-label-farthest { fill: #ef4444; font-size: 11px; font-weight: 700; font-family: 'Segoe UI', sans-serif; text-anchor: middle; pointer-events: none; user-select: none; }
+
+.demos-extremes-distance-label {
+    fill: #475569;
+    font-size: 11px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-extremes-panel-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

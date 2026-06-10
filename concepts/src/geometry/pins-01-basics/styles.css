@@ -1,0 +1,68 @@
+/* demos-pins-basics-<class> */
+
+.demos-pins-basics-handle {
+    fill: #34495e;
+    stroke: #fff;
+    stroke-width: 3px;
+    r: 11px;
+    cursor: grab;
+}
+
+.demos-pins-basics-arrow-shaft {
+    stroke: #e74c3c;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+/* Info panel — fixed to the top-left corner */
+.demos-pins-basics-info-label {
+    fill: #334155;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-variant-numeric: tabular-nums;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-pins-basics-button {
+    fill: #3b82f6;
+    rx: 5px;
+    ry: 5px;
+    cursor: pointer;
+    transition: fill 0.15s ease;
+}
+
+.demos-pins-basics-button:hover {
+    fill: #2563eb;
+}
+
+/* Move buttons get a different colour to distinguish the three rows visually */
+.demos-pins-basics-button-move {
+    fill: #10b981;
+}
+
+.demos-pins-basics-button-move:hover {
+    fill: #059669;
+}
+
+.demos-pins-basics-button-label {
+    fill: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-pins-basics-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

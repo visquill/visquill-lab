@@ -1,0 +1,36 @@
+/* demos-bars-polygon-<element> */
+
+.demos-bars-polygon-baseline {
+    fill: #f8fafc;
+    stroke: #cbd5e1;
+    stroke-width: 1.5px;
+    stroke-linejoin: round;
+}
+
+.demos-bars-polygon-bar {
+    fill: #fed7aa;
+    fill-opacity: 0.8;
+    stroke: #f97316;
+    stroke-width: 1.5px;
+    stroke-linejoin: round;
+}
+
+.demos-bars-polygon-vertex {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 6px;
+    cursor: grab;
+}
+
+.demos-bars-polygon-vertex:hover { fill: #334155; }
+
+.demos-bars-polygon-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

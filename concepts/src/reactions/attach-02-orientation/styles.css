@@ -1,0 +1,81 @@
+/* demos-attach-orientation-<class> */
+
+.demos-attach-orientation-path {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 2px;
+}
+
+/* Relative — rectangle that rotates with the tangent */
+.demos-attach-orientation-arrow-relative {
+    fill: rgba(99, 102, 241, 0.25);
+    stroke: #6366f1;
+    stroke-width: 2px;
+}
+
+/* Absolute — rectangle that keeps fixed orientation */
+.demos-attach-orientation-arrow-absolute {
+    fill: rgba(249, 115, 22, 0.25);
+    stroke: #f97316;
+    stroke-width: 2px;
+}
+
+/* ─── Sliders ────────────────────────────────────────────────────────── */
+
+.demos-attach-orientation-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-attach-orientation-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-attach-orientation-slider-handle:hover { fill: #334155; }
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-attach-orientation-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-attach-orientation-panel-label {
+    fill: #334155;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-attach-orientation-panel-sub {
+    fill: #94a3b8;
+    font-size: 11px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-attach-orientation-slider-label {
+    fill: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

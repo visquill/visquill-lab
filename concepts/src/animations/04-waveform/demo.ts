@@ -5,7 +5,7 @@
 // A polyline cycles through signal waveforms — flat, sine, square, sawtooth —
 // each transition using easing that matches the character of the target shape.
 
-import {VisQuill, Animate, Reactive, Vectors, type Point} from "@visquill/visquill-gdk"
+import {VisQuill, Animate, Reactive, Vectors, type Point, EasingFunctions} from "@visquill/visquill-gdk"
 import './styles.css'
 
 // ─── Layout ───────────────────────────────────────────────────────────────
@@ -34,10 +34,10 @@ const poses = [flat, sine, square, sawtooth, flat]
 type Step = { duration: number; easing: (t: number) => number }
 
 const steps: Step[] = [
-    { duration: 1200, easing: Animate.easeInOutSine  },  // flat   → sine
-    { duration:  600, easing: Animate.easeInOutCubic },  // sine   → square
-    { duration:  900, easing: Animate.easeInCubic    },  // square → sawtooth
-    { duration: 1000, easing: Animate.easeInOutSine  },  // sawtooth → flat
+    { duration: 1200, easing: EasingFunctions.easeInOutSine  },  // flat   → sine
+    { duration:  600, easing: EasingFunctions.easeInOutCubic },  // sine   → square
+    { duration:  900, easing: EasingFunctions.easeInCubic    },  // square → sawtooth
+    { duration: 1000, easing: EasingFunctions.easeInOutSine  },  // sawtooth → flat
 ]
 
 export function run(div: HTMLDivElement) {
@@ -62,7 +62,7 @@ export function run(div: HTMLDivElement) {
         const { duration, easing } = steps[idx]
         console.log("state"+idx)
 
-        Animate.morph(waveform, poses[idx + 1], duration, {
+        Animate.shape.morph(waveform, poses[idx + 1], duration, {
             easing,
             onComplete: () => { state.value += 1 }
         })

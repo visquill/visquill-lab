@@ -1,0 +1,140 @@
+/* demos-distance-types-<class> */
+
+.demos-distance-types-shape-segment {
+    stroke: #475569;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+/* The extended portion of the infinite line — faded to show it's virtual */
+.demos-distance-types-extended-line {
+    stroke: #cbd5e1;
+    stroke-width: 1.5px;
+    stroke-dasharray: 5, 4;
+}
+
+.demos-distance-types-shape-line {
+    stroke: #475569;
+    stroke-width: 2.5px;
+}
+
+.demos-distance-types-endpoint {
+    fill: #475569;
+    stroke: none;
+}
+
+/* Connector to closest point on segment — clamps to endpoints */
+.demos-distance-types-connector-segment {
+    stroke: #6366f1;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+/* Connector to closest point on infinite line */
+.demos-distance-types-connector-line {
+    stroke: #f97316;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+/* ─── Horizontal / vertical panel ────────────────────────────────────── */
+
+.demos-distance-types-h-line {
+    stroke: #6366f1;
+    stroke-width: 2px;
+}
+
+.demos-distance-types-v-line {
+    stroke: #10b981;
+    stroke-width: 2px;
+}
+
+.demos-distance-types-guide-line {
+    stroke: #cbd5e1;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+.demos-distance-types-corner-dot {
+    fill: #94a3b8;
+    stroke: none;
+}
+
+/* ─── Handles & dots ─────────────────────────────────────────────────── */
+
+.demos-distance-types-point-handle {
+    fill: #3b82f6;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-distance-types-point-handle:hover { fill: #60a5fa; }
+
+.demos-distance-types-point-dot {
+    fill: #3b82f6;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-distance-types-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-distance-types-panel-label {
+    fill: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-distance-types-panel-sub {
+    fill: #94a3b8;
+    font-size: 11px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-distance-types-distance-label {
+    fill: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-distance-types-h-label {
+    fill: #6366f1;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-distance-types-v-label {
+    fill: #10b981;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

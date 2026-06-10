@@ -1,0 +1,45 @@
+/* demos-curves-circle-<element> */
+
+/* Circle baseline — thin grey ring. */
+.demos-curves-circle-baseline-circle {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 1.5px;
+}
+
+/* Filled polar area — light blue, semi-transparent. */
+.demos-curves-circle-filled-area {
+    fill: #bfdbfe;
+    fill-opacity: 0.7;
+    stroke: none;
+}
+
+/* Curve outline on top — solid blue. */
+.demos-curves-circle-curve-outline {
+    fill: none;
+    stroke: #3b82f6;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Rotation handle. */
+.demos-curves-circle-rot-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-curves-circle-rot-handle:hover { fill: #334155; }
+
+.demos-curves-circle-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

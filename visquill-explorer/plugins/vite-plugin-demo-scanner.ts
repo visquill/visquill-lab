@@ -13,10 +13,10 @@ const renderer = {
 };
 
 marked.use({ renderer });
-
 interface DemoFile {
     name: string
     category: string
+    group?: string
     description?: string
     folderPath: string
     tsFiles: Array<{
@@ -225,6 +225,7 @@ export function demoScannerPlugin(options: {
 
                 const demo: DemoFile = {
                     name: demoName,
+                    group: metadata.group,
                     category,
                     description: metadata.description,
                     slug: relativePath || folderName,
@@ -287,6 +288,11 @@ export function demoScannerPlugin(options: {
         demos.sort((a, b) => {
             if (a.category !== b.category) {
                 return a.category.localeCompare(b.category)
+            }
+            const groupA = a.group ?? '\uffff'
+            const groupB = b.group ?? '\uffff'
+            if (groupA !== groupB) {
+                return groupA.localeCompare(groupB)
             }
             return a.folderPath.localeCompare(b.folderPath)
         })
@@ -357,6 +363,7 @@ function extractMetadata(content: string): {
     name?: string
     category?: string
     description?: string
+    group?: string
 } {
     const metadata: any = {}
 
@@ -369,6 +376,9 @@ function extractMetadata(content: string): {
     const descMatch = content.match(/\/\/\s*@description\s+(.+)/i)
     if (descMatch) metadata.description = descMatch[1].trim()
 
+    const groupMatch = content.match(/\/\/\s*@group\s+(.+)/i)
+    if (groupMatch) metadata.group = groupMatch[1].trim()
+
     return metadata
 }
 
@@ -376,7 +386,7 @@ function extractMetadata(content: string): {
  * Remove metadata comments and clean up source for display
  */
 function cleanSourceCode(content: string): string {
-    let cleaned = content.replace(/\/\/\s*@(name|category|description)\s+.+\n/gi, '')
+    let cleaned = content.replace(/\/\/\s*@(name|category|description|group)\s+.+\n/gi, '')
     cleaned = cleaned.trim()
     return cleaned
 }

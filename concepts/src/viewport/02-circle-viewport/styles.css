@@ -1,0 +1,61 @@
+/* Prefix chain:  "demos-"  +  "viewport-circle-"  +  class name
+                   ↓              ↓                      ↓
+                   demos-viewport-circle-<class>                  */
+
+/* ─── Boundary rim ───────────────────────────────────────────────────── */
+
+/* Circular border drawn on the frame layer so it remains visible
+   regardless of pan/zoom state.  The dashed stroke makes it clear
+   this is a clipping boundary, not content. */
+.demos-viewport-circle-rim {
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    stroke-dasharray: 8, 4;
+}
+
+/* ─── Content shapes ─────────────────────────────────────────────────── */
+
+/* Diamond shapes scattered inside the viewport.  A subtle fill and
+   thin stroke keep the focus on the clipping behaviour rather than
+   the shapes themselves. */
+.demos-viewport-circle-shape {
+    fill: rgba(99, 102, 241, 0.15);
+    stroke: #6366f1;
+    stroke-width: 1.5px;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+/* Interaction hint shown above the viewport. */
+.demos-viewport-circle-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Annotation labels inside the content layer — they pan and zoom
+   with the shapes, helping the user see the coordinate system. */
+.demos-viewport-circle-content-label {
+    fill: #94a3b8;
+    font-size: 11px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Annotation label on the frame layer — stays fixed on screen. */
+.demos-viewport-circle-frame-label {
+    fill: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

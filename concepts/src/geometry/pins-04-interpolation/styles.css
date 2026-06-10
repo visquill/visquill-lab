@@ -1,0 +1,128 @@
+/* demos-pins-interp-<class> */
+
+/* ─── Source pin handles ─────────────────────────────────────────────── */
+
+.demos-pins-interp-handle-a-origin {
+    fill: #3b82f6;
+    stroke: #fff;
+    stroke-width: 3px;
+    r: 11px;
+    cursor: grab;
+}
+
+.demos-pins-interp-handle-a-tip {
+    fill: #fff;
+    stroke: #3b82f6;
+    stroke-width: 2.5px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-pins-interp-handle-b-origin {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 3px;
+    r: 11px;
+    cursor: grab;
+}
+
+.demos-pins-interp-handle-b-tip {
+    fill: #fff;
+    stroke: #f97316;
+    stroke-width: 2.5px;
+    r: 8px;
+    cursor: grab;
+}
+
+/* ─── Source arrows ──────────────────────────────────────────────────── */
+
+.demos-pins-interp-arrow-a-dot   { fill: #3b82f6; }
+.demos-pins-interp-arrow-a-shaft {
+    stroke: #3b82f6;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+.demos-pins-interp-arrow-b-dot   { fill: #f97316; }
+.demos-pins-interp-arrow-b-shaft {
+    stroke: #f97316;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+/* ─── Ghost trail ────────────────────────────────────────────────────── */
+
+.demos-pins-interp-ghost-dot {
+    fill: #94a3b8;
+    opacity: 0.5;
+}
+
+.demos-pins-interp-ghost-shaft {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-linecap: round;
+    opacity: 0.4;
+}
+
+/* ─── Interpolated pin ───────────────────────────────────────────────── */
+
+.demos-pins-interp-interp-dot {
+    fill: #10b981;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+.demos-pins-interp-interp-shaft {
+    stroke: #10b981;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-pins-interp-interp-label {
+    fill: #10b981;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Slider ─────────────────────────────────────────────────────────── */
+
+.demos-pins-interp-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-pins-interp-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-pins-interp-slider-label,
+.demos-pins-interp-t-value {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Instructions ───────────────────────────────────────────────────── */
+
+.demos-pins-interp-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

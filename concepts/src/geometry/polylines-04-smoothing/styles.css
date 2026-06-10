@@ -1,0 +1,112 @@
+/* Prefix chain:  "demos-"  +  "polyline-smoothing-"  +  class name */
+
+/* ─── Draggable handles ──────────────────────────────────────────────── */
+
+.demos-polyline-smoothing-handle {
+    fill: #334155;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-polyline-smoothing-handle:hover { fill: #475569; }
+
+/* ─── Smoothed curves (darkest = fewest iterations) ─────────────────── */
+
+.demos-polyline-smoothing-curve-0 {
+    fill: none;
+    stroke: #1e293b;
+    stroke-width: 2px;
+    stroke-dasharray: 5, 3;
+    opacity: 0.5;
+}
+
+.demos-polyline-smoothing-curve-1 {
+    fill: none;
+    stroke: #3b82f6;
+    stroke-width: 2px;
+    opacity: 0.5;
+}
+
+.demos-polyline-smoothing-curve-2 {
+    fill: none;
+    stroke: #22c55e;
+    stroke-width: 2px;
+    opacity: 0.5;
+}
+
+.demos-polyline-smoothing-curve-4 {
+    fill: none;
+    stroke: #f97316;
+    stroke-width: 2px;
+    opacity: 0.5;
+}
+
+.demos-polyline-smoothing-curve-8 {
+    fill: none;
+    stroke: #a855f7;
+    stroke-width: 2px;
+    opacity: 0.5;
+}
+
+/* When highlighted (z-index raised by reactive block), boost visibility. */
+.demos-polyline-smoothing-curve-0[data-highlight],
+.demos-polyline-smoothing-curve-1[data-highlight],
+.demos-polyline-smoothing-curve-2[data-highlight],
+.demos-polyline-smoothing-curve-4[data-highlight],
+.demos-polyline-smoothing-curve-8[data-highlight] {
+    stroke-width: 3.5px;
+    opacity: 1;
+}
+
+/* ─── Slider ─────────────────────────────────────────────────────────── */
+
+.demos-polyline-smoothing-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-polyline-smoothing-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-polyline-smoothing-slider-handle:hover { fill: #334155; }
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-polyline-smoothing-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-polyline-smoothing-info-label {
+    fill: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: start;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-polyline-smoothing-slider-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

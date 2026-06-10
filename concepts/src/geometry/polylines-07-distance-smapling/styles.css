@@ -1,0 +1,108 @@
+/* demos-polyline-distance-<element> */
+
+.demos-polyline-distance-polyline-guide {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 4;
+}
+
+.demos-polyline-distance-polyline-raw {
+    fill: none;
+    stroke: none;
+}
+
+.demos-polyline-distance-polyline-smooth {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Highlighted active range — drawn on top of the faded main curve. */
+.demos-polyline-distance-polyline-highlight {
+    fill: none;
+    stroke: #334155;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.demos-polyline-distance-sample-dot {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 5px;
+}
+
+.demos-polyline-distance-arrow-tangent {
+    fill: none;
+    stroke: #22c55e;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    marker-end: url(#arrow-tangent-head);
+}
+
+/* Start handle — blue. */
+.demos-polyline-distance-slider-handle-a {
+    fill: #3b82f6;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-polyline-distance-slider-handle-a:hover {
+    fill: #2563eb;
+}
+
+/* End handle — amber. */
+.demos-polyline-distance-slider-handle-b {
+    fill: #f59e0b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-polyline-distance-slider-handle-b:hover {
+    fill: #d97706;
+}
+
+.demos-polyline-distance-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-polyline-distance-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-polyline-distance-info-label {
+    fill: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: start;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-polyline-distance-slider-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

@@ -1,0 +1,138 @@
+/* demos-arcs-construction-<class> */
+
+.demos-arcs-construction-arc {
+    fill: none;
+    stroke: #6366f1;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+/* The alternate (clockwise) arc in the arcBetween panel */
+.demos-arcs-construction-arc-alternate {
+    fill: none;
+    stroke: #f97316;
+    stroke-width: 2px;
+    stroke-dasharray: 6, 4;
+    stroke-linecap: round;
+}
+
+/* Ghost circle shows the underlying full circle */
+.demos-arcs-construction-ghost-circle {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 4;
+}
+
+.demos-arcs-construction-chord-line {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+.demos-arcs-construction-sagitta-line {
+    stroke: #f97316;
+    stroke-width: 1.5px;
+    stroke-dasharray: 3, 3;
+}
+
+.demos-arcs-construction-center-handle {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-arcs-construction-radius-handle {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 6px;
+    cursor: grab;
+    opacity: 0.6;
+}
+
+.demos-arcs-construction-angle-handle {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-arcs-construction-sagitta-handle {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-arcs-construction-point-handle {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-arcs-construction-center-handle:hover,
+.demos-arcs-construction-radius-handle:hover,
+.demos-arcs-construction-angle-handle:hover,
+.demos-arcs-construction-sagitta-handle:hover,
+.demos-arcs-construction-point-handle:hover {
+    opacity: 0.8;
+}
+
+.demos-arcs-construction-measurement-label {
+    fill: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-arcs-construction-panel-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-arcs-construction-instructions {
+    fill: #94a3b8;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-arcs-construction-button-toggle {
+    fill: #6366f1;
+    stroke: #4f46e5;
+    stroke-width: 1.5px;
+    rx: 6px;
+    cursor: pointer;
+}
+
+.demos-arcs-construction-button-toggle:hover {
+    fill: #4f46e5;
+}
+
+.demos-arcs-construction-button-label {
+    fill: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

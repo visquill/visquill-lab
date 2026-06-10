@@ -124,7 +124,7 @@ export function run(div: HTMLDivElement) {
         Reactive.do([lens.anchor, radius], () => {
             for (let i = 0; i < dataTypes.length; i++) {
                 const count = countPoints(points[i])
-                Animate.follow(heights[i], count / numberOfDataPoints * 400)
+                Animate.real.follow(heights[i], count / numberOfDataPoints * 400)
                 valueLabels[i].value = count.toString()
             }
         })

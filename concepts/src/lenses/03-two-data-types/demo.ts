@@ -148,7 +148,7 @@ export function run(div: HTMLDivElement) {
                         }
                     }
                 }
-                Animate.follow(heights[i], count / numberOfDataPoints * 400)
+                Animate.real.follow(heights[i], count / numberOfDataPoints * 400)
                 labels[i].value = count.toString()
             }
         }

@@ -1,0 +1,86 @@
+/* Prefix chain:  "demos-"  +  "viewport-nested-"  +  class name
+                   ↓              ↓                      ↓
+                   demos-viewport-nested-<class>                  */
+
+/* ─── Parent boundary rim ────────────────────────────────────────────── */
+
+.demos-viewport-nested-parent-rim {
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    stroke-dasharray: 8, 4;
+}
+
+/* ─── Child boundary rims ────────────────────────────────────────────── */
+
+/* Box children get a solid border to contrast with the dashed parent. */
+.demos-viewport-nested-child-rim-box {
+    fill: none;
+    stroke: #6366f1;
+    stroke-width: 2px;
+}
+
+/* Circle children use the same weight but a different colour. */
+.demos-viewport-nested-child-rim-circle {
+    fill: none;
+    stroke: #f97316;
+    stroke-width: 2px;
+}
+
+/* ─── Content shapes ─────────────────────────────────────────────────── */
+
+.demos-viewport-nested-shape {
+    fill: rgba(99, 102, 241, 0.15);
+    stroke: #6366f1;
+    stroke-width: 1.5px;
+}
+
+/* ─── Fit All button ─────────────────────────────────────────────────── */
+
+.demos-viewport-nested-button {
+    fill: #3b82f6;
+    rx: 6px;
+    ry: 6px;
+    cursor: pointer;
+    transition: fill 0.15s ease;
+}
+
+.demos-viewport-nested-button:hover {
+    fill: #2563eb;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-viewport-nested-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Label inside the Fit All button. */
+.demos-viewport-nested-button-label {
+    fill: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Type labels on each child viewport's frame layer. */
+.demos-viewport-nested-child-label {
+    fill: #94a3b8;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

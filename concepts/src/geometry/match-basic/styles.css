@@ -1,0 +1,77 @@
+/* demos-match-<class> */
+
+/* ─── Point handles ──────────────────────────────────────────────────── */
+
+.demos-match-point-1 {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 9px;
+    cursor: grab;
+}
+
+.demos-match-point-1:hover {
+    fill: #818cf8;
+}
+
+.demos-match-point-2 {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 9px;
+    cursor: grab;
+}
+
+.demos-match-point-2:hover {
+    fill: #fb923c;
+}
+
+/* ─── Match connectors ───────────────────────────────────────────────── */
+
+.demos-match-connector {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 5, 4;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-match-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-match-set-label-1 {
+    fill: #6366f1;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-match-set-label-2 {
+    fill: #f97316;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-match-note-label {
+    fill: #94a3b8;
+    font-size: 12px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

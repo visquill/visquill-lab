@@ -1,0 +1,85 @@
+/* demos-point-placement-<class> */
+
+.demos-point-placement-shape {
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 2px;
+}
+
+.demos-point-placement-arc-endpoint {
+    fill: #94a3b8;
+    stroke: none;
+}
+
+.demos-point-placement-guide-line {
+    stroke: #cbd5e1;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+}
+
+.demos-point-placement-dot {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+/* ─── Sliders ────────────────────────────────────────────────────────── */
+
+.demos-point-placement-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-point-placement-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-point-placement-slider-handle:hover { fill: #334155; }
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-point-placement-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-point-placement-panel-label {
+    fill: #475569;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-point-placement-slider-label {
+    fill: #64748b;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-point-placement-value-label {
+    fill: #f97316;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

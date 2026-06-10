@@ -1,0 +1,88 @@
+/* ─── Instructions ───────────────────────────────────────────────────────── */
+/* "instructions"  →  demos-reactive-values-instructions */
+.demos-reactive-values-instructions {
+    fill: #555;
+    font-size: 13px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Counter number ──────────────────────────────────────────────────────── */
+/* "counter-number"  →  demos-reactive-values-counter-number */
+.demos-reactive-values-counter-number {
+    fill: #120b12;
+    font-size: 96px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Status text ─────────────────────────────────────────────────────────── */
+/* "status"  →  demos-reactive-values-status */
+.demos-reactive-values-status {
+    fill: #777;
+    font-size: 15px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Bar background ──────────────────────────────────────────────────────── */
+/* "bar-bg"  →  demos-reactive-values-bar-bg */
+.demos-reactive-values-bar-bg {
+    fill: #e8e4e8;
+    rx: 4px;
+}
+
+/* ─── Bar fill ────────────────────────────────────────────────────────────── */
+/* "bar"  →  demos-reactive-values-bar */
+.demos-reactive-values-bar {
+    fill: rebeccapurple;
+    rx: 4px;
+}
+
+/* ─── Buttons ─────────────────────────────────────────────────────────────── */
+/* "button"  →  demos-reactive-values-button */
+.demos-reactive-values-button {
+    fill: rebeccapurple;
+    rx: 6px;
+    cursor: pointer;
+}
+.demos-reactive-values-button:hover {
+    fill: #5a2d8a;
+}
+
+/* "button-minus"  →  demos-reactive-values-button-minus */
+.demos-reactive-values-button-minus {
+    fill: #555;
+    rx: 6px;
+    cursor: pointer;
+}
+.demos-reactive-values-button-minus:hover {
+    fill: #333;
+}
+
+/* "button-reset"  →  demos-reactive-values-button-reset */
+.demos-reactive-values-button-reset {
+    fill: none;
+    stroke: #aaa;
+    stroke-width: 1.5px;
+    rx: 6px;
+    cursor: pointer;
+}
+.demos-reactive-values-button-reset:hover {
+    stroke: #555;
+}
+
+/* "button-label"  →  demos-reactive-values-button-label */
+.demos-reactive-values-button-label {
+    fill: white;
+    font-size: 18px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+}

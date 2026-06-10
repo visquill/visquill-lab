@@ -1,0 +1,63 @@
+/* ─── Instructions ───────────────────────────────────────────────────────── */
+/* "instructions"  →  demos-reactive-chains-instructions */
+.demos-reactive-chains-instructions {
+    fill: #555;
+    font-size: 13px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Circle ──────────────────────────────────────────────────────────────── */
+/* "circle"  →  demos-reactive-chains-circle
+   Fill is overridden at runtime by block C via Svg.get(circle).style.fill,
+   so only stroke needs to be set here. */
+.demos-reactive-chains-circle {
+    fill: steelblue;         /* initial colour before block C fires */
+    stroke: rgba(0,0,0,0.15);
+    stroke-width: 1.5px;
+}
+
+/* ─── Value readout labels ────────────────────────────────────────────────── */
+/* "value-label"  →  demos-reactive-chains-value-label */
+.demos-reactive-chains-value-label {
+    fill: #333;
+    font-size: 14px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Slider ──────────────────────────────────────────────────────────────── */
+/* "slider-track"  →  demos-reactive-chains-slider-track */
+.demos-reactive-chains-slider-track {
+    stroke: #ccc;
+    stroke-width: 4px;
+    stroke-linecap: round;
+}
+
+/* "slider-handle"  →  demos-reactive-chains-slider-handle */
+.demos-reactive-chains-slider-handle {
+    fill: #333;
+    r: 10px;
+    cursor: ew-resize;
+}
+
+/* "slider-label"  →  demos-reactive-chains-slider-label */
+.demos-reactive-chains-slider-label {
+    fill: #888;
+    font-size: 12px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+text {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+text {
+    user-select: none;
+    -webkit-user-select: none;
+}

@@ -1,0 +1,96 @@
+/* demos-boxes-inflate-<class> */
+
+/* ─── Source box ─────────────────────────────────────────────────────── */
+
+.demos-boxes-inflate-source-box {
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    stroke-dasharray: 6, 4;
+}
+
+/* ─── Inflate result (blue) ──────────────────────────────────────────── */
+
+.demos-boxes-inflate-inflate-result {
+    fill: rgba(59, 130, 246, 0.12);
+    stroke: #3b82f6;
+    stroke-width: 2px;
+}
+
+/* ─── Pad result (orange) ────────────────────────────────────────────── */
+
+.demos-boxes-inflate-pad-result {
+    fill: rgba(249, 115, 22, 0.12);
+    stroke: #f97316;
+    stroke-width: 2px;
+}
+
+/* ─── Sliders ────────────────────────────────────────────────────────── */
+
+.demos-boxes-inflate-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-boxes-inflate-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2.5px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-boxes-inflate-slider-label {
+    fill: #475569;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-boxes-inflate-slider-value {
+    fill: #1e293b;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    dominant-baseline: central;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Section labels ─────────────────────────────────────────────────── */
+
+.demos-boxes-inflate-section-label-inflate {
+    fill: #3b82f6;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-boxes-inflate-section-label-pad {
+    fill: #f97316;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Instructions ───────────────────────────────────────────────────── */
+
+.demos-boxes-inflate-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

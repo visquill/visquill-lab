@@ -1,0 +1,124 @@
+/* ─── Instructions ───────────────────────────────────────────────────────── */
+/* "instructions"  →  demos-basics-attach-instructions */
+.demos-basics-attach-instructions {
+    fill: #555;
+    font-size: 13px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── API label (panel captions) ──────────────────────────────────────────── */
+/* "api-label"  →  demos-basics-attach-api-label */
+.demos-basics-attach-api-label {
+    fill: #888;
+    font-size: 11px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Handles ─────────────────────────────────────────────────────────────── */
+/* "handle"  →  demos-basics-attach-handle */
+.demos-basics-attach-handle {
+    fill: #1e293b;
+    r: 9px;
+    cursor: grab;
+}
+
+/* "handle-anchor"  →  demos-basics-attach-handle-anchor */
+.demos-basics-attach-handle-anchor {
+    fill: rebeccapurple;
+    r: 11px;
+    cursor: grab;
+}
+
+/* ─── Connector (dashed line in panel 1) ─────────────────────────────────── */
+/* "connector"  →  demos-basics-attach-connector */
+.demos-basics-attach-connector {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4 3;
+}
+
+/* ─── Follower label (panel 1) ───────────────────────────────────────────── */
+/* "follower-label"  →  demos-basics-attach-follower-label */
+.demos-basics-attach-follower-label {
+    fill: #0f172a;
+    font-size: 13px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    font-weight: 500;
+    text-anchor: middle;
+    dominant-baseline: central;
+}
+
+/* ─── Segment ─────────────────────────────────────────────────────────────── */
+/* "segment"  →  demos-basics-attach-segment */
+.demos-basics-attach-segment {
+    stroke: #475569;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+/* ─── Midpoint diamond ────────────────────────────────────────────────────── */
+/* "midpoint-diamond"  →  demos-basics-attach-midpoint-diamond */
+.demos-basics-attach-midpoint-diamond {
+    fill: #f43f5e;
+    stroke: white;
+    stroke-width: 1.5px;
+}
+
+/* ─── Bar (rectangleToSegment) ────────────────────────────────────────────── */
+/* "bar"  →  demos-basics-attach-bar */
+.demos-basics-attach-bar {
+    fill: #93c5fd;
+    stroke: #3b82f6;
+    stroke-width: 1.5px;
+    rx: 3px;
+}
+
+/* ─── Inner / outer circles ───────────────────────────────────────────────── */
+/* "inner-circle"  →  demos-basics-attach-inner-circle */
+.demos-basics-attach-inner-circle {
+    fill: #fde68a;
+    stroke: #d97706;
+    stroke-width: 2px;
+}
+
+/* "outer-circle"  →  demos-basics-attach-outer-circle */
+.demos-basics-attach-outer-circle {
+    fill: none;
+    stroke: #d97706;
+    stroke-width: 1.5px;
+    stroke-dasharray: 5 4;
+}
+
+/* ─── Group (layer anchor demo) ───────────────────────────────────────────── */
+/* "group-box"  →  demos-basics-attach-group-group-box */
+.demos-basics-attach-group-group-box {
+    fill: #f3e8ff;
+    stroke: #7c3aed;
+    stroke-width: 2px;
+    rx: 5px;
+}
+
+/* "group-dot"  →  demos-basics-attach-group-group-dot */
+.demos-basics-attach-group-group-dot {
+    fill: #7c3aed;
+}
+
+/* "group-label"  →  demos-basics-attach-group-group-label */
+.demos-basics-attach-group-group-label {
+    fill: #4c1d95;
+    font-size: 12px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+}
+
+text {
+    user-select: none;
+    -webkit-user-select: none;
+}

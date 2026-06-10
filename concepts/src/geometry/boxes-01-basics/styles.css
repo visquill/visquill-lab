@@ -1,0 +1,111 @@
+/* demos-boxes-inspection-<class> */
+
+/* ─── Handles ────────────────────────────────────────────────────────── */
+
+.demos-boxes-inspection-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 3px;
+    r: 10px;
+    cursor: grab;
+}
+
+/* ─── Box fill ───────────────────────────────────────────────────────── */
+
+.demos-boxes-inspection-box-fill {
+    fill: rgba(99, 102, 241, 0.07);
+    stroke: none;
+}
+
+/* ─── Sides ──────────────────────────────────────────────────────────── */
+
+.demos-boxes-inspection-side-top {
+    stroke: #ef4444;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+.demos-boxes-inspection-side-bottom {
+    stroke: #f97316;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+.demos-boxes-inspection-side-left {
+    stroke: #3b82f6;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+.demos-boxes-inspection-side-right {
+    stroke: #10b981;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+}
+
+.demos-boxes-inspection-side-label {
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Match side label colour to its side */
+.demos-boxes-inspection-side-top    + .demos-boxes-inspection-side-label { fill: #ef4444; }
+.demos-boxes-inspection-side-bottom + .demos-boxes-inspection-side-label { fill: #f97316; }
+.demos-boxes-inspection-side-left   + .demos-boxes-inspection-side-label { fill: #3b82f6; }
+.demos-boxes-inspection-side-right  + .demos-boxes-inspection-side-label { fill: #10b981; }
+
+/* ─── Corners ────────────────────────────────────────────────────────── */
+
+.demos-boxes-inspection-corner-tl,
+.demos-boxes-inspection-corner-tr,
+.demos-boxes-inspection-corner-bl,
+.demos-boxes-inspection-corner-br {
+    fill: #fff;
+    stroke: #64748b;
+    stroke-width: 1.5px;
+}
+
+/* Center is distinct */
+.demos-boxes-inspection-corner-c {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+.demos-boxes-inspection-corner-label {
+    fill: #475569;
+    font-size: 10px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Info panel ─────────────────────────────────────────────────────── */
+
+.demos-boxes-inspection-info-label {
+    fill: #334155;
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Instructions ───────────────────────────────────────────────────── */
+
+.demos-boxes-inspection-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

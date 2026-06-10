@@ -1,0 +1,81 @@
+/* ─── Cycle By demo ───────────────────────────────────────────────────────
+   Prefix: demos-shapes-cycleby-                                            */
+
+/* Shape */
+.demos-shapes-cycleby-arrow {
+    fill: rgba(99, 102, 241, 0.12);
+    stroke: #6366f1;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+/* All vertex dots */
+.demos-shapes-cycleby-vertex-dot {
+    r: 4px;
+    fill: #cbd5e1;
+    stroke: #fff;
+    stroke-width: 1.5px;
+    pointer-events: none;
+}
+
+/* Vertex 0 highlight dot */
+.demos-shapes-cycleby-vertex-zero {
+    r: 8px;
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    pointer-events: none;
+}
+
+/* "0" label next to vertex 0 */
+.demos-shapes-cycleby-vertex-zero-label {
+    fill: #f97316;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Slider track */
+.demos-shapes-cycleby-slider-track {
+    fill: #e2e8f0;
+    rx: 2px;
+}
+
+/* Slider thumb */
+.demos-shapes-cycleby-slider-thumb {
+    r: 10px;
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2.5px;
+    cursor: ew-resize;
+}
+.demos-shapes-cycleby-slider-thumb:hover {
+    fill: #818cf8;
+}
+
+/* Offset readout */
+.demos-shapes-cycleby-offset-label {
+    fill: #1e293b;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Instruction label */
+.demos-shapes-cycleby-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

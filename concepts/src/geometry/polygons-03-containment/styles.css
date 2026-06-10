@@ -1,0 +1,95 @@
+/* Prefix chain:  "demos-"  +  "polygon-contains-"  +  class name
+                   ↓              ↓                        ↓
+                   demos-polygon-contains-<class>                  */
+
+/* ─── Polygon ────────────────────────────────────────────────────────── */
+
+/* Light fill so the inside/outside probe colour reads clearly against
+   the background rather than the polygon fill. */
+.demos-polygon-contains-polygon {
+    fill: rgba(99, 102, 241, 0.08);
+    stroke: #6366f1;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+/* ─── Vertex handles ─────────────────────────────────────────────────── */
+
+.demos-polygon-contains-vertex {
+    r: 8px;
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    cursor: grab;
+}
+
+.demos-polygon-contains-vertex:hover {
+    fill: #818cf8;
+}
+
+/* ─── Probe handle ───────────────────────────────────────────────────── */
+
+/* Initial fill is the "inside" colour; overridden by JS in the
+   reactive block.  Larger radius makes it visually primary. */
+.demos-polygon-contains-probe {
+    r: 11px;
+    fill: #10b981;
+    stroke: #fff;
+    stroke-width: 2.5px;
+    cursor: grab;
+}
+
+/* ─── Closest boundary point ─────────────────────────────────────────── */
+
+.demos-polygon-contains-closest-point {
+    r: 6px;
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+/* ─── Connector line ─────────────────────────────────────────────────── */
+
+/* Dashed segment from probe to closest boundary point. */
+.demos-polygon-contains-connector {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 5, 4;
+    fill: none;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-polygon-contains-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* "Inside" / "Outside" label that floats above the probe. */
+.demos-polygon-contains-status-label {
+    fill: #1e293b;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Distance readout on the connector midpoint. */
+.demos-polygon-contains-distance-label {
+    fill: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

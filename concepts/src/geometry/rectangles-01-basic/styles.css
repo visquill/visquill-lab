@@ -1,0 +1,133 @@
+/* demos-rect-construction-<class> */
+
+/* ─── Rectangles ─────────────────────────────────────────────────────── */
+
+.demos-rect-construction-rect {
+    fill: rgba(99, 102, 241, 0.12);
+    stroke: #6366f1;
+    stroke-width: 2px;
+}
+
+.demos-rect-construction-base-seg {
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    stroke-dasharray: 5, 3;
+    fill: none;
+}
+
+/* Dot marking the anchor point in anchoredRectangle panel */
+.demos-rect-construction-anchor-dot {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 5px;
+    pointer-events: none;
+}
+
+/* ─── Handles ────────────────────────────────────────────────────────── */
+
+.demos-rect-construction-pin-handle {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-rect-construction-pin-handle:hover { fill: #818cf8; }
+
+.demos-rect-construction-endpoint {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-rect-construction-endpoint:hover { fill: #334155; }
+
+.demos-rect-construction-side-toggle {
+    fill: #0ea5e9;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-rect-construction-side-toggle:hover { fill: #38bdf8; }
+
+/* ─── Slider ─────────────────────────────────────────────────────────── */
+
+.demos-rect-construction-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-rect-construction-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-rect-construction-slider-handle:hover { fill: #334155; }
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-rect-construction-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-rect-construction-slider-label {
+    fill: #475569;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-rect-construction-slider-value {
+    fill: #94a3b8;
+    font-size: 11px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-rect-construction-toggle-label {
+    fill: #0ea5e9;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-rect-construction-divider {
+    stroke: #e2e8f0;
+    stroke-width: 1px;
+}
+
+.demos-rect-construction-panel-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

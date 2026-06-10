@@ -1,0 +1,61 @@
+/* Prefix chain:  "demos-"  +  "viewport-focus-"  +  class name
+                   ↓              ↓                     ↓
+                   demos-viewport-focus-<class>                  */
+
+/* ─── Boundary rim ───────────────────────────────────────────────────── */
+
+.demos-viewport-focus-rim {
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    stroke-dasharray: 8, 4;
+}
+
+/* ─── Centre marker ──────────────────────────────────────────────────── */
+
+.demos-viewport-focus-center-marker {
+    fill: rgba(59, 130, 246, 0.5);
+    stroke: #3b82f6;
+    stroke-width: 1.5px;
+}
+
+/* ─── Pin markers ────────────────────────────────────────────────────── */
+
+/* Clickable circles at each pin's origin.  The pointer cursor and
+   hover highlight signal interactivity. */
+.demos-viewport-focus-pin-marker {
+    fill: #10b981;
+    stroke: #065f46;
+    stroke-width: 1.5px;
+    cursor: pointer;
+    transition: fill 0.15s ease, r 0.15s ease;
+}
+
+.demos-viewport-focus-pin-marker:hover {
+    fill: #34d399;
+    r: 7px;
+}
+
+/* ─── Direction indicators ───────────────────────────────────────────── */
+
+/* A thin line extending from each pin along its forward direction.
+   The length is proportional to the pin's scale, giving a visual
+   hint of how far the viewport will zoom when the pin is clicked. */
+.demos-viewport-focus-direction-line {
+    fill: none;
+    stroke: #374151;
+    stroke-width: 1px;
+    pointer-events: none;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-viewport-focus-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

@@ -1,0 +1,169 @@
+/* Prefix chain:  "demos-"  +  "polygon-slice-"  +  class name
+                   ↓              ↓                    ↓
+                   demos-polygon-slice-<class>                  */
+
+/* ─── Polygon fill ───────────────────────────────────────────────────── */
+
+/* Fill only — boundary is drawn by the two arc polylines so that the
+   selected and remainder portions can be styled independently. */
+.demos-polygon-slice-polygon {
+    fill: rgba(99, 102, 241, 0.08);
+    stroke: none;
+}
+
+/* ─── Boundary arcs ──────────────────────────────────────────────────── */
+
+/* The selected slice from A → B. */
+.demos-polygon-slice-slice-arc {
+    fill: none;
+    stroke: #f97316;
+    stroke-width: 4px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* The complement from B → A — dimmed so the selected arc stands out. */
+.demos-polygon-slice-remain-arc {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ─── Vertex handles ─────────────────────────────────────────────────── */
+
+.demos-polygon-slice-vertex {
+    r: 7px;
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    cursor: grab;
+}
+
+.demos-polygon-slice-vertex:hover {
+    fill: #818cf8;
+}
+
+/* ─── Vertex 0 marker ────────────────────────────────────────────────── */
+
+.demos-polygon-slice-vertex-index {
+    fill: #6366f1;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ─── Slice handles ──────────────────────────────────────────────────── */
+
+/* Handle A — orange to match the selected arc. */
+.demos-polygon-slice-handle-a {
+    r: 10px;
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2.5px;
+    cursor: grab;
+}
+
+.demos-polygon-slice-handle-a:hover {
+    fill: #fb923c;
+}
+
+/* Handle B — teal to contrast with A. */
+.demos-polygon-slice-handle-b {
+    r: 10px;
+    fill: #0ea5e9;
+    stroke: #fff;
+    stroke-width: 2.5px;
+    cursor: grab;
+}
+
+.demos-polygon-slice-handle-b:hover {
+    fill: #38bdf8;
+}
+
+/* ─── Boundary markers ───────────────────────────────────────────────── */
+
+.demos-polygon-slice-marker-a {
+    r: 6px;
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+.demos-polygon-slice-marker-b {
+    r: 6px;
+    fill: #0ea5e9;
+    stroke: #fff;
+    stroke-width: 2px;
+}
+
+/* ─── Snap lines ─────────────────────────────────────────────────────── */
+
+/* Thin dashed lines connecting each drag handle to its boundary marker. */
+.demos-polygon-slice-snap-line-a {
+    stroke: #f97316;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 3;
+    fill: none;
+    opacity: 0.5;
+}
+
+.demos-polygon-slice-snap-line-b {
+    stroke: #0ea5e9;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 3;
+    fill: none;
+    opacity: 0.5;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-polygon-slice-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Ratio value labels floating above the A and B handles. */
+.demos-polygon-slice-handle-label-a {
+    fill: #f97316;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-polygon-slice-handle-label-b {
+    fill: #0ea5e9;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Wrap indicator near vertex 0 — appears only when A > B. */
+.demos-polygon-slice-wrap-label {
+    fill: #f97316;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

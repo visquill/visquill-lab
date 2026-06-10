@@ -68,8 +68,14 @@ export function createRadarChart(canvas: RvgGroup, options: {
         }
 
         Reactive.linkVertices(curves[0])
-        curveCanvas.mask.circle([0, 0], outerRadius, "white")
-        curveCanvas.mask.circle([0, 0], innerRadius, "black")
+        const outerMask = curveCanvas.mask.circle("white" )
+        const innerMask = curveCanvas.mask.circle("black")
+        Reactive.do([outerRadius],()=>{
+            Circles.circleAt([0,0],outerRadius,outerMask)
+        })
+        Reactive.do([innerRadius],()=>{
+            Circles.circleAt([0,0],innerRadius,innerMask)
+        })
         return curves
     }
 

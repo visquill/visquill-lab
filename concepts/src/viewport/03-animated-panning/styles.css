@@ -1,0 +1,54 @@
+/* Prefix chain:  "demos-"  +  "viewport-panning-"  +  class name
+                   ↓              ↓                       ↓
+                   demos-viewport-panning-<class>                  */
+
+/* ─── Boundary rim ───────────────────────────────────────────────────── */
+
+/* Rectangular border drawn on the frame layer. */
+.demos-viewport-panning-rim {
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    stroke-dasharray: 8, 4;
+}
+
+/* ─── Centre marker ──────────────────────────────────────────────────── */
+
+/* A small dot on the frame layer showing the viewport centre — the
+   target point that clicked shapes animate toward. */
+.demos-viewport-panning-center-marker {
+    fill: rgba(59, 130, 246, 0.5);
+    stroke: #3b82f6;
+    stroke-width: 1.5px;
+}
+
+/* ─── Content shapes ─────────────────────────────────────────────────── */
+
+/* Clickable diamond shapes.  The pointer cursor and hover highlight
+   signal that they are interactive, unlike the static shapes in the
+   earlier viewport demos. */
+.demos-viewport-panning-shape {
+    fill: rgba(99, 102, 241, 0.15);
+    stroke: #6366f1;
+    stroke-width: 1.5px;
+    cursor: pointer;
+    transition: fill 0.15s ease, stroke-width 0.15s ease;
+}
+
+.demos-viewport-panning-shape:hover {
+    fill: rgba(99, 102, 241, 0.35);
+    stroke-width: 2.5px;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+/* Interaction hint shown above the viewport. */
+.demos-viewport-panning-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

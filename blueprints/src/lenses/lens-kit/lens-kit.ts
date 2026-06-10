@@ -258,8 +258,14 @@ export function createBoundedRing(parent: Ring, options: BoundedRingOptions): Bo
         globalInnerRadius.value = radius.value - innerRadius.value
         globalOuterRadius.value = radius.value + outerRadius.value
     })
-    layer.mask.circle({ x: 0, y: 0 }, globalOuterRadius, "white")
-    layer.mask.circle({ x: 0, y: 0 }, globalInnerRadius, "black")
+    const outerMask =   layer.mask.circle("white")
+    const innerMask =   layer.mask.circle("black")
+    Reactive.do([globalOuterRadius],()=>{
+        Circles.circleAt({ x: 0, y: 0 }, globalOuterRadius,outerMask)
+    })
+    Reactive.do([globalInnerRadius],()=>{
+        Circles.circleAt({ x: 0, y: 0 }, globalInnerRadius,innerMask)
+    })
     return { ...ring, innerRadius, outerRadius }
 }
 

@@ -1,0 +1,112 @@
+/* ─── Orientate demo ──────────────────────────────────────────────────────
+   Prefix: demos-shapes-orientate-                                          */
+
+/* Ghost — original position, faint reference */
+.demos-shapes-orientate-ghost {
+    fill: rgba(99, 102, 241, 0.06);
+    stroke: #6366f1;
+    stroke-width: 1.5px;
+    stroke-dasharray: 5, 4;
+}
+
+/* Oriented shape */
+.demos-shapes-orientate-arrow {
+    fill: rgba(99, 102, 241, 0.18);
+    stroke: #6366f1;
+    stroke-width: 2px;
+    stroke-linejoin: round;
+}
+
+/* Anchor dot at centroid */
+.demos-shapes-orientate-anchor {
+    r: 5px;
+    fill: #94a3b8;
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+/* Source orientation handle (white) */
+.demos-shapes-orientate-handle-source {
+    r: 9px;
+    fill: #fff;
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    cursor: grab;
+}
+.demos-shapes-orientate-handle-source:hover {
+    fill: #e2e8f0;
+}
+
+/* Target orientation handle (purple) */
+.demos-shapes-orientate-handle-target {
+    r: 9px;
+    fill: #a855f7;
+    stroke: #fff;
+    stroke-width: 2px;
+    cursor: grab;
+}
+.demos-shapes-orientate-handle-target:hover {
+    fill: #c084fc;
+}
+
+/* Source axis line */
+.demos-shapes-orientate-axis-source {
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 4;
+    fill: none;
+}
+
+/* Target axis line */
+.demos-shapes-orientate-axis-target {
+    stroke: #a855f7;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 4;
+    fill: none;
+}
+
+/* Axis labels */
+.demos-shapes-orientate-axis-label-source {
+    fill: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-shapes-orientate-axis-label-target {
+    fill: #a855f7;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Angle readout near anchor */
+.demos-shapes-orientate-angle-label {
+    fill: #1e293b;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Instruction label */
+.demos-shapes-orientate-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

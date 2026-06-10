@@ -1,0 +1,116 @@
+/* Prefix chain:  "demos-"  +  "polyline-sampling-"  +  class name
+                   ↓              ↓                         ↓
+                   demos-polyline-sampling-<class>                  */
+
+/* ─── Polyline ───────────────────────────────────────────────────────── */
+
+/* Original control-point guide — faint and dashed so the smooth curve
+   reads as the primary element. */
+.demos-polyline-sampling-polyline-guide {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 4;
+}
+
+/* Hidden raw polyline used only as input to Polylines.smooth(). */
+.demos-polyline-sampling-polyline-raw {
+    fill: none;
+    stroke: none;
+}
+
+/* The smooth Chaikin curve — the main subject of the demo. */
+.demos-polyline-sampling-polyline-smooth {
+    fill: none;
+    stroke: #334155;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ─── Sampled dot ────────────────────────────────────────────────────── */
+
+/* pointAt() result — a prominent dot at the sampled position. */
+.demos-polyline-sampling-sample-dot {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 6px;
+}
+
+/* ─── Direction arrow (tangent) ──────────────────────────────────────── */
+
+/* directionAt() result — green arrow along the curve's travel direction. */
+.demos-polyline-sampling-arrow-direction {
+    fill: none;
+    stroke: #22c55e;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    marker-end: url(#arrow-direction-head);
+}
+
+/* ─── Normal arrow (perpendicular) ──────────────────────────────────── */
+
+/* normalAt() result — purple arrow perpendicular to the tangent. */
+.demos-polyline-sampling-arrow-normal {
+    fill: none;
+    stroke: #a855f7;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    marker-end: url(#arrow-normal-head);
+}
+
+/* ─── Slider ─────────────────────────────────────────────────────────── */
+
+.demos-polyline-sampling-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+}
+
+.demos-polyline-sampling-slider-handle {
+    fill: #1e293b;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-polyline-sampling-slider-handle:hover {
+    fill: #334155;
+}
+
+/* ─── Labels ─────────────────────────────────────────────────────────── */
+
+.demos-polyline-sampling-instructions {
+    fill: #64748b;
+    font-size: 13px;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Fixed info labels below the polyline — three columns for ratio,
+   direction angle, and normal angle. */
+.demos-polyline-sampling-info-label {
+    fill: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: start;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-polyline-sampling-slider-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
