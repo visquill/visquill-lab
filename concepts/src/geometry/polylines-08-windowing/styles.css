@@ -1,0 +1,89 @@
+/* demos-polyline-windowing-<class> */
+
+/* ── Base polyline (hidden — source geometry only) ──────────────────────── */
+
+.demos-polyline-windowing-raw {
+    fill: none;
+    stroke: none;
+}
+
+/* ── Prefix and suffix — dimmed portions outside the window ─────────────── */
+
+.demos-polyline-windowing-seg-prefix,
+.demos-polyline-windowing-seg-suffix {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ── Slice — the highlighted windowed segment ───────────────────────────── */
+
+.demos-polyline-windowing-seg-slice {
+    fill: none;
+    stroke: #6366f1;
+    stroke-width: 3.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ── Window rectangle ───────────────────────────────────────────────────── */
+
+.demos-polyline-windowing-window-rect {
+    fill: #6366f108;
+    stroke: #6366f1;
+    stroke-width: 1.5px;
+    stroke-dasharray: 6, 4;
+}
+
+/* ── Corner handles ─────────────────────────────────────────────────────── */
+
+.demos-polyline-windowing-window-handle {
+    fill: #6366f1;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-polyline-windowing-window-handle:hover {
+    opacity: 0.8;
+}
+
+/* ── Entry / exit markers ───────────────────────────────────────────────── */
+
+.demos-polyline-windowing-entry-dot {
+    fill: #10b981;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 6px;
+}
+
+.demos-polyline-windowing-exit-dot {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 6px;
+}
+
+/* ── Labels ─────────────────────────────────────────────────────────────── */
+
+.demos-polyline-windowing-instructions {
+    fill: #94a3b8;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+.demos-polyline-windowing-range-label {
+    fill: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

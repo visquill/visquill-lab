@@ -1,0 +1,89 @@
+/* demos-curve-baseline-<class> */
+
+/* ── Source polyline (invisible) ────────────────────────────────────────── */
+
+.demos-curve-baseline-raw {
+    fill: none;
+    stroke: none;
+}
+
+/* ── Prefix and suffix ──────────────────────────────────────────────────── */
+
+.demos-curve-baseline-seg-prefix,
+.demos-curve-baseline-seg-suffix {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ── Windowed slice ─────────────────────────────────────────────────────── */
+
+.demos-curve-baseline-seg-slice {
+    fill: none;
+    stroke: #6366f1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ── Window rectangle ───────────────────────────────────────────────────── */
+
+.demos-curve-baseline-window-rect {
+    fill: #6366f108;
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 6, 4;
+}
+
+.demos-curve-baseline-window-handle {
+    fill: #94a3b8;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-curve-baseline-window-handle:hover {
+    opacity: 0.8;
+}
+
+/* ── Baseline ───────────────────────────────────────────────────────────── */
+
+.demos-curve-baseline-baseline {
+    fill: none;
+    stroke: #64748b;
+    stroke-width: 1.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 5, 3;
+}
+
+/* ── Filled area ────────────────────────────────────────────────────────── */
+
+.demos-curve-baseline-curve-fill {
+    fill: #6366f130;
+    stroke: none;
+}
+
+/* ── Curve outline ──────────────────────────────────────────────────────── */
+
+.demos-curve-baseline-curve-outline {
+    fill: none;
+    stroke: #6366f1;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ── Labels ─────────────────────────────────────────────────────────────── */
+
+.demos-curve-baseline-instructions {
+    fill: #94a3b8;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

@@ -1,0 +1,20 @@
+/* maps-data-layers-<class> */
+
+/* ── Glass pane ─────────────────────────────────────────────────────────── */
+
+.maps-data-layers-glass-pane {
+    fill: transparent;
+    stroke: none;
+}
+
+/* ── Zoom label ─────────────────────────────────────────────────────────── */
+
+.maps-data-layers-info-zoom-label {
+    fill: #1e293b;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

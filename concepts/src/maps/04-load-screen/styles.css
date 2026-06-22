@@ -1,0 +1,26 @@
+/* maps-loading-<class> */
+
+/* ── Glass pane ─────────────────────────────────────────────────────────── */
+
+.maps-loading-glass-pane {
+    fill: transparent;
+    stroke: none;
+}
+
+/* ── Loading overlay ────────────────────────────────────────────────────── */
+
+.maps-loading-loading-pane {
+    fill: #f8fafc;
+    stroke: none;
+}
+
+.maps-loading-loading-label {
+    fill: #64748b;
+    font-size: 15px;
+    font-weight: 500;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

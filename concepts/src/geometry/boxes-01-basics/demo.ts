@@ -19,7 +19,7 @@ const infoLineH        = 20
 export function run(div: HTMLDivElement) {
     const rvg    = VisQuill.create(div, "demos-boxes-inspection-")
     const canvas = rvg.canvas
-    canvas.handles.defaultZIndex = 1
+
     // ─── Instruction label ────────────────────────────────────────────
     const instructions = canvas.text.label(
         "Drag the corner handles to resize the box",
@@ -38,7 +38,7 @@ export function run(div: HTMLDivElement) {
     // so either handle can be dragged past the other without breaking.
     const hTL = canvas.handles.disk("handle", startTopLeft)
     const hBR = canvas.handles.disk("handle", startBottomRight)
-
+    canvas.handles.defaultZIndex = 1
 
     const box = canvas.shapes.box()
     Reactive.do([hTL, hBR], () => {

@@ -1,0 +1,64 @@
+/* maps-reprojection-<class> */
+
+/* ── Glass pane ─────────────────────────────────────────────────────────── */
+
+/* Transparent full-frame overlay; pointer-events toggled in JS */
+.maps-reprojection-glass-pane {
+    fill: transparent;
+    stroke: none;
+}
+
+/* ── Route line ─────────────────────────────────────────────────────────── */
+
+.maps-reprojection-route-line {
+    fill: none;
+    stroke: #3b82f6;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ── Snap indicator ─────────────────────────────────────────────────────── */
+
+/* The dot that shows where the handle will snap to on the route */
+.maps-reprojection-snap-dot {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 6px;
+}
+
+/* Dashed line connecting the handle to the snap dot */
+.maps-reprojection-snap-connector {
+    fill: none;
+    stroke: #f97316;
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 4;
+}
+
+/* ── Draggable handle ───────────────────────────────────────────────────── */
+
+.maps-reprojection-handle-handle {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 9px;
+    cursor: grab;
+    pointer-events: all;
+}
+
+.maps-reprojection-handle-handle:hover {
+    opacity: 0.85;
+}
+
+/* ── Position label ─────────────────────────────────────────────────────── */
+
+.maps-reprojection-handle-pos-label {
+    fill: #1e293b;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}

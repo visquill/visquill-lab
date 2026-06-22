@@ -1,15 +1,19 @@
 # MapLibre + VisQuill
 
-Combining a VisQuill SVG scene with a MapLibre map using a pointer-event routing strategy.
+Combining a VisQuill SVG scene with a MapLibre map using a shared `MapAdapter` that handles all overlay boilerplate.
 
 ## What you see
 
-A MapLibre map with a draggable handle floating over it in screen space. The handle is not reprojected when the map pans or zooms — it stays where it is. Two labels follow the handle and update reactively: one shows its pixel position on screen, the other shows the corresponding geographic coordinates. The world label also updates when the map moves, since the same screen position maps to a different lat/lng after a pan or zoom.
+A MapLibre map centred on London with two kinds of marker:
+
+- **Screen-space handle** — a draggable ring that stays at its pixel position when the map pans or zooms. Two labels follow it: one shows its pixel coordinates, the other shows the corresponding lat/lng. The lat/lng label also updates when the map moves, since the same screen position maps to different geography after a pan or zoom.
+- **Geo-anchored marker** — a fixed point at Big Ben's coordinates. Unlike the handle, this marker moves with the map on every pan and zoom, staying locked to the geography.
+
+Comparing the two markers makes the core distinction tangible: screen space versus world space.
 
 ## Key concepts
 
-- **DOM layering** — `mapDiv` (z-index 1) and `sceneDiv` (z-index 2) share the same footprint inside `container`; the SVG floats visually on top but is invisible to pointer events by default
-- **Three-layer pointer routing** — `sceneDiv`, the SVG root, and all purely visual SVG elements are `pointer-events:none`; only interactive elements (handles, buttons) opt in with `pointer-events:all` in CSS; this lets the map receive all input by default
-- **Glass pane** — a transparent `RvgBox` covering the full frame; normally `pointer-events:none`, it switches to `all` while a handle drag is active so the map cannot pan underneath; released immediately on drag end
-- **Wheel forwarding** — wheel events landing on SVG elements with `pointer-events:all` are re-dispatched onto the MapLibre canvas element so scroll-to-zoom always works
-- **Two update sources for the world label** — the screen label only needs to update when the handle moves; the world label must also update when the map moves, because the same pixel position corresponds to a different lat/lng after a pan or zoom; `updateWorldLabel` is therefore called from both `Reactive.do([markerHandle], ...)` and `map.onMove()`
+- **`MapAdapter.create()`** — static factory that handles all overlay boilerplate: two stacked divs, pointer-event routing, wheel forwarding, and the glass pane. Returns `{ map, rvg }`. Nothing in `run()` deals with DOM setup.
+- **`map.trackHandle(handle)`** — registers a draggable handle so the glass pane activates automatically during drag, preventing the map from panning underneath. Multiple handles are reference-counted; the pane stays active until all are released.
+- **`screenToLatLng` + `onMove`** — the screen-space handle reads its geographic meaning via `screenToLatLng`. This must be called both when the handle moves (new pixel, same view) and when the map moves (same pixel, new view), so `updateWorldLabel` is registered with both `Reactive.do` and `map.onMove`.
+- **`latLngToScreen` + `onRender`** — the geo-anchored marker calls `latLngToScreen` on every MapLibre render frame to stay locked to geography. `onRender` is used rather than `onMove` because it fires on every draw — including tile-loading redraws and animated pans — so the marker never lags.

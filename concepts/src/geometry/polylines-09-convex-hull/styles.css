@@ -1,0 +1,109 @@
+/* demos-hull-baseline-<class> */
+
+/* ── Source polyline (invisible — source geometry only) ─────────────────── */
+
+.demos-hull-baseline-raw {
+    fill: none;
+    stroke: none;
+}
+
+/* ── Prefix and suffix — dimmed portions outside the window ─────────────── */
+
+.demos-hull-baseline-seg-prefix,
+.demos-hull-baseline-seg-suffix {
+    fill: none;
+    stroke: #cbd5e1;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ── Windowed slice ─────────────────────────────────────────────────────── */
+
+.demos-hull-baseline-seg-slice {
+    fill: none;
+    stroke: #6366f1;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ── Window rectangle ───────────────────────────────────────────────────── */
+
+.demos-hull-baseline-window-rect {
+    fill: #6366f108;
+    stroke: #94a3b8;
+    stroke-width: 1.5px;
+    stroke-dasharray: 6, 4;
+}
+
+.demos-hull-baseline-window-handle {
+    fill: #94a3b8;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 7px;
+    cursor: grab;
+}
+
+.demos-hull-baseline-window-handle:hover {
+    opacity: 0.8;
+}
+
+/* ── Convex hull ────────────────────────────────────────────────────────── */
+
+.demos-hull-baseline-hull {
+    fill: #6366f110;
+    stroke: #6366f1;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 3;
+}
+
+/* ── Baseline ───────────────────────────────────────────────────────────── */
+
+.demos-hull-baseline-baseline {
+    fill: none;
+    stroke: #f97316;
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* ── Offset slider ──────────────────────────────────────────────────────── */
+
+.demos-hull-baseline-slider-track {
+    stroke: #cbd5e1;
+    stroke-width: 4px;
+    stroke-linecap: round;
+}
+
+.demos-hull-baseline-slider-handle {
+    fill: #f97316;
+    stroke: #fff;
+    stroke-width: 2px;
+    r: 8px;
+    cursor: grab;
+}
+
+.demos-hull-baseline-slider-handle:hover {
+    opacity: 0.8;
+}
+
+.demos-hull-baseline-slider-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}
+
+/* ── Labels ─────────────────────────────────────────────────────────────── */
+
+.demos-hull-baseline-instructions {
+    fill: #94a3b8;
+    font-size: 12px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    pointer-events: none;
+    user-select: none;
+}

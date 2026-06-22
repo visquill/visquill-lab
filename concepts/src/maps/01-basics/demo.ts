@@ -2,123 +2,66 @@
 // @category Maps
 
 /**
- * demo.ts
+ * Demonstrates the two fundamental coordinate directions in a map overlay:
  *
- * Demonstrates how to combine a VisQuill SVG scene with a MapLibre map.
+ *   screen → world   A draggable handle lives in screen space. Its pixel
+ *                    position is converted to lat/lng on every handle move
+ *                    and on every map move (screenToLatLng + onMove).
  *
- * A draggable handle floats freely over the map. It is not reprojected when
- * the map pans or zooms — it simply stays where it is in screen space.
- * Two labels update reactively whenever the handle moves:
- *   - screen coordinates (px)
- *   - world coordinates (lat / lng), read from the map at the handle's position
+ *   world → screen   A fixed geographic point (Big Ben) is projected to
+ *                    screen pixels on every render frame so the SVG marker
+ *                    stays locked to the geography as the user pans and zooms
+ *                    (latLngToScreen + onRender).
  */
 
 import {
-    VisQuill, Reactive, Svg,
-    Circles, Boxes, Attach, type RvgBox,
+     Reactive,
+    Circles, Vectors,  Attach, Points,
 } from "@visquill/visquill-gdk";
-import { MapAdapter } from "./map-adapter";
-import "maplibre-gl/dist/maplibre-gl.css"; // required for MapLibre UI controls to render
+import { MapAdapter } from "../utils/map-adapter";
+import "maplibre-gl/dist/maplibre-gl.css";
 import "./styles.css";
+
+// A fixed world-space landmark used to demonstrate geo-anchored reprojection.
+const BIG_BEN = { lat: 51.5007, lon: -0.1246 };
 
 export function run(container: HTMLDivElement): void {
 
-    // ── 1. DOM layout ─────────────────────────────────────────────────────────
+    // ── 1. Mount ──────────────────────────────────────────────────────────────
     //
-    // Two absolutely positioned divs share the same footprint inside container:
-    //
-    //   container  (position: relative, fills its parent)
-    //   ├── mapDiv    z-index 1  ← MapLibre renders here
-    //   └── sceneDiv  z-index 2  ← VisQuill SVG renders here
-    //
-    // sceneDiv sits on top visually, but pointer-events:none makes it
-    // transparent to mouse and touch — events fall through to mapDiv by default.
+    // MapAdapter.create() handles all overlay boilerplate:
+    //   - two stacked divs (map below, SVG above)
+    //   - pointer-events routing so the map receives input by default
+    //   - wheel event forwarding so scroll-to-zoom works over SVG elements
+    //   - a glass pane that blocks map input while a handle is being dragged
 
-    container.style.position = "relative";
-    container.style.width    = "100%";
-    container.style.height   = "100%";
-
-    const mapDiv = document.createElement("div");
-    mapDiv.className = "demo-map";
-    container.appendChild(mapDiv);
-
-    const sceneDiv = document.createElement("div");
-    sceneDiv.className = "demo-scene";
-    sceneDiv.style.pointerEvents = "none"; // passes all events to the map by default
-    container.appendChild(sceneDiv);
-
-    // ── 2. Initialise map and VisQuill scene ──────────────────────────────────
-
-    const map = new MapAdapter();
-    map.mount(mapDiv);
-
-    const rvg    = VisQuill.create(sceneDiv, "demo-");
-    const canvas = rvg.canvas;
-
-    // The SVG root also needs pointer-events:none — without this, the <svg>
-    // element itself would form a blocking surface on top of the map.
-    Svg.get(canvas).style.pointerEvents = "none";
-
-    // ── 3. Glass pane ─────────────────────────────────────────────────────────
-    //
-    // A transparent rectangle covering the entire SVG frame.
-    //
-    // Normally it is pointer-events:none, so the map receives all input.
-    // When a handle drag starts, it switches to pointer-events:all — this
-    // prevents the map from panning while the user is dragging the handle.
-    // As soon as the drag ends it switches back to none.
-    //
-    // Without this, a slow drag would both move the handle and pan the map.
-
-    const glassPane = canvas.visuals.box("glass-pane") as RvgBox;
-    Reactive.do([rvg.frame], () => { Boxes.copy(rvg.frame, glassPane); });
-
-    function setGlassPane(active: boolean): void {
-        Svg.get(glassPane).style.pointerEvents = active ? "all" : "none";
-    }
-
-    // ── 4. Wheel forwarding ───────────────────────────────────────────────────
-    //
-    // SVG elements with pointer-events:all (like the handle) absorb wheel events
-    // before they can reach the MapLibre canvas. We intercept them on the SVG
-    // root and re-dispatch onto the map canvas so scroll-to-zoom always works.
-
-    const mapCanvas = map.getCanvas();
-    if (mapCanvas) {
-        Svg.get(canvas).addEventListener("wheel", (e: WheelEvent) => {
-            e.preventDefault();
-            mapCanvas.dispatchEvent(new WheelEvent("wheel", e));
-        }, { passive: false });
-    }
-
-    // ── 5. Draggable handle ───────────────────────────────────────────────────
-
-    const markerLayer  = canvas.layer();
-    const markerHandle = markerLayer.handles.disk("marker-handle", { x: 300, y: 200 });
-    const markerCircle = markerLayer.visuals.circle("marker-ring");
-
-    // Keep the ring centred on the handle as it moves
-    Reactive.do([markerHandle], () => {
-        Circles.circleAt(markerHandle, 24, markerCircle);
+    const { map, rvg } = MapAdapter.create(container, "maps-basics-", {
+        center: [-0.12, 51.5],
+        zoom:   10,
     });
 
-    // Engage / release the glass pane in sync with the drag state
-    Reactive.do([markerHandle.active], () => {
-        setGlassPane(markerHandle.active.value);
-    }, false);
+    const canvas = rvg.canvas;
 
-    // ── 6. Coordinate labels ──────────────────────────────────────────────────
+    // ── 2. Screen-space handle (screen → world) ───────────────────────────────
     //
-    // Both labels follow the handle via Attach.pointToPoint.
+    // The handle lives in SVG pixel space. It does NOT follow the map when the
+    // user pans or zooms — it stays at its screen position.
     //
-    // The screen label only needs to update when the handle moves — its value
-    // is the handle's pixel position, which does not change on map pan/zoom.
-    //
-    // The world label must update in two situations:
-    //   a) when the handle moves   → new pixel position means new lat/lng
-    //   b) when the map moves      → same pixel position means different lat/lng
-    //
-    // updateWorldLabel is therefore called from both Reactive.do and map.onMove.
+    // screenToLatLng reads the geographic meaning of that pixel position.
+    // It must be called both when the handle moves (new pixel, same view) and
+    // when the map moves (same pixel, new view).
+
+    const markerLayer  = canvas.layer("marker-");
+    const markerHandle = markerLayer.handles.disk("handle", { x: 300, y: 200 });
+    const markerRing   = markerLayer.visuals.circle("ring");
+
+    // Register the handle so the glass pane activates during drag,
+    // preventing the map from panning underneath.
+    map.trackHandle(markerHandle);
+
+    Reactive.do([markerHandle], () => {
+        Circles.circleAt(markerHandle, 24, markerRing);
+    });
 
     const screenLabel = markerLayer.text.label("", "coord-label");
     const worldLabel  = markerLayer.text.label("", "coord-label");
@@ -128,17 +71,43 @@ export function run(container: HTMLDivElement): void {
 
     function updateWorldLabel(): void {
         const ll = map.screenToLatLng(Math.round(markerHandle.x), Math.round(markerHandle.y));
-        worldLabel.value = `world   ${ll.lat.toFixed(2)}° / ${ll.lng.toFixed(2)}°`;
+        worldLabel.value = `${ll.lat.toFixed(4)}° / ${ll.lng.toFixed(4)}°`;
     }
 
     Reactive.do([markerHandle], () => {
-        const x = Math.round(markerHandle.x);
-        const y = Math.round(markerHandle.y);
-        screenLabel.value = `screen  ${x} / ${y} px`;
+        screenLabel.value = `${Math.round(markerHandle.x)} / ${Math.round(markerHandle.y)} px`;
         updateWorldLabel();
     });
 
-    // Re-read lat/lng whenever the map moves — the handle hasn't moved but the
+    // Re-read lat/lng on every map move — the handle hasn't moved but the
     // geographic meaning of its screen position has changed.
     map.onMove(updateWorldLabel);
+
+    // ── 3. Geo-anchored marker (world → screen) ───────────────────────────────
+    //
+    // Big Ben is defined as a fixed lat/lng. On every render frame we call
+    // latLngToScreen to find where it falls in the current viewport, then
+    // move the SVG elements to that pixel position.
+    //
+    // This is the inverse of the handle above:
+    //   - The handle stays fixed on pan/zoom (screen space).
+    //   - This marker moves with the geography on pan/zoom (world space).
+    //
+    // onRender is used rather than onMove because it fires on every MapLibre
+    // draw — including tile-loading redraws and animated pans — so the marker
+    // never lags behind.
+
+    const landmarkLayer = canvas.layer("landmark-");
+    const landmarkDot   = landmarkLayer.visuals.point("dot");
+    const landmarkRing  = landmarkLayer.visuals.circle("ring");
+    const landmarkLabel = landmarkLayer.text.label("Big Ben", "label");
+
+    function reprojectLandmark(): void {
+        const s = map.latLngToScreen(BIG_BEN);
+        Vectors.copy(s, landmarkDot);
+        Circles.circleAt(s, 10, landmarkRing);
+        Points.moveRight(Points.moveUp(s, 20), 14, landmarkLabel);
+    }
+
+    map.onRender(reprojectLandmark);
 }

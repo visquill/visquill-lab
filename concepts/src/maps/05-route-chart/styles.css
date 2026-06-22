@@ -1,0 +1,60 @@
+/* maps-focused-<class> */
+
+/* ── Glass pane ─────────────────────────────────────────────────────────── */
+
+.maps-focused-glass-pane {
+    fill: transparent;
+    stroke: none;
+}
+
+/* ── Route ──────────────────────────────────────────────────────────────── */
+
+.maps-focused-route-seg-prefix,
+.maps-focused-route-seg-suffix {
+    fill: none;
+    stroke: #94a3b8;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.maps-focused-route-seg-slice {
+    fill: none;
+    stroke: #3b82f6;
+    stroke-width: 3px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* The source polyline — never rendered directly */
+.maps-focused-route-line {
+    fill: none;
+    stroke: none;
+}
+
+/* ── Baseline ───────────────────────────────────────────────────────────── */
+
+.maps-focused-chart-baseline {
+    fill: none;
+    stroke: #64748b;
+    stroke-width: 1px;
+    stroke-dasharray: 4, 3;
+    stroke-linecap: round;
+}
+
+/* ── Filled curve area ──────────────────────────────────────────────────── */
+
+.maps-focused-chart-curve-fill {
+    fill: #3b82f640;
+    stroke: none;
+}
+
+/* ── Curve outline ──────────────────────────────────────────────────────── */
+
+.maps-focused-chart-curve-outline {
+    fill: none;
+    stroke: #3b82f6;
+    stroke-width: 2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
