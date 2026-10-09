@@ -3,7 +3,7 @@
 // @group Polylines
 
 import {
-    VisQuill, Reactive, Boxes, Segments, Points, Vectors,
+    VisQuill, Reactive, Boxes, Segments, Points, Pins, Values,
     Circles, Polylines,
     type Real, type RvgGraphic, type RvgGroup
 } from "@visquill/visquill-gdk"
@@ -67,10 +67,7 @@ export function run(div: HTMLDivElement) {
 
     const polyline = canvas.visuals.polyline(
         "polyline-smooth",
-        Polylines.smooth(
-            canvas.visuals.polyline("polyline-raw", polylinePoints),
-            smoothingIterations
-        )
+        Polylines.smooth(polylinePoints, smoothingIterations)
     )
 
     // ─── Pre-allocate sample markers ───────────────────────────────────
@@ -99,18 +96,15 @@ export function run(div: HTMLDivElement) {
     Reactive.do([countVal], () => {
         const n       = Math.round(countVal.value)
         const ratios  = Array.from({ length: n }, (_, i) => ({value: i / (n - 1)}))
-        // Build sorted ratio list and call PinsAt
+        // Evenly spaced ratios from 0 to 1, sampled in one walk
         const pins = Polylines.pinsAt(polyline, ratios)
 
         for (let i = 0; i < maxSamples; i++) {
             if (i < n) {
                 const pin = pins[i]!
-                const pt  = { x: pin.x, y: pin.y }
-                const dir = { x: pin.dx, y: pin.dy }
-
-                Circles.circleAt(pt, 5, dots[i])
-                Points.copy(pt, arrowStarts[i])
-                Vectors.add(pt, Vectors.scale(dir, arrowLength), arrowEnds[i])
+                Circles.circleAt(pin, 5, dots[i])
+                Points.copy(pin, arrowStarts[i])
+                Pins.getPosition(Pins.moveForward(pin, arrowLength), arrowEnds[i])
 
                 dots[i].visible.value = true
                 arrowSegs[i].visible.value = true
@@ -153,8 +147,7 @@ function buildSlider(
 
     Reactive.do([handle], () => {
         Points.closestPointOnSegment(handle, track, handle)
-        const raw = canvas.values.real()
-        Points.relativePositionOnSegment(handle, track, raw)
-        value.value = Math.round(min + raw.value * (max - min))
+        const t = Points.relativePositionOnSegment(handle, track)
+        value.value = Math.round(Values.lerp(min, max, t).value)
     })
 }

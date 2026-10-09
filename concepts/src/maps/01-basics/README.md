@@ -1,19 +1,44 @@
-# MapLibre + VisQuill
+# MapLibre Basics
 
-Combining a VisQuill SVG scene with a MapLibre map using a shared `MapAdapter` that handles all overlay boilerplate.
+A VisQuill graphic on top of a MapLibre map, with conversions in both directions between screen pixels and lat/lng.
 
-## What you see
+## How it works
 
-A MapLibre map centred on London with two kinds of marker:
+`MapAdapter.create` (in `maps/utils`) stacks the SVG graphic over the map. The graphic ignores the pointer, so the map gets all input. `map.trackHandle` makes a handle draggable without panning the map underneath.
 
-- **Screen-space handle** — a draggable ring that stays at its pixel position when the map pans or zooms. Two labels follow it: one shows its pixel coordinates, the other shows the corresponding lat/lng. The lat/lng label also updates when the map moves, since the same screen position maps to different geography after a pan or zoom.
-- **Geo-anchored marker** — a fixed point at Big Ben's coordinates. Unlike the handle, this marker moves with the map on every pan and zoom, staying locked to the geography.
+The handle lives in screen pixels. Its lat/lng changes when the handle moves and when the map moves, so the label is updated from both.
 
-Comparing the two markers makes the core distinction tangible: screen space versus world space.
+```ts
+Reactive.do([markerHandle], () => {
+    screenLabel.value = `${Math.round(markerHandle.x)} / ${Math.round(markerHandle.y)} px`;
+    updateWorldLabel();
+});
 
-## Key concepts
+map.onMove(updateWorldLabel);
+```
 
-- **`MapAdapter.create()`** — static factory that handles all overlay boilerplate: two stacked divs, pointer-event routing, wheel forwarding, and the glass pane. Returns `{ map, rvg }`. Nothing in `run()` deals with DOM setup.
-- **`map.trackHandle(handle)`** — registers a draggable handle so the glass pane activates automatically during drag, preventing the map from panning underneath. Multiple handles are reference-counted; the pane stays active until all are released.
-- **`screenToLatLng` + `onMove`** — the screen-space handle reads its geographic meaning via `screenToLatLng`. This must be called both when the handle moves (new pixel, same view) and when the map moves (same pixel, new view), so `updateWorldLabel` is registered with both `Reactive.do` and `map.onMove`.
-- **`latLngToScreen` + `onRender`** — the geo-anchored marker calls `latLngToScreen` on every MapLibre render frame to stay locked to geography. `onRender` is used rather than `onMove` because it fires on every draw — including tile-loading redraws and animated pans — so the marker never lags.
+Big Ben goes the other way: a fixed lat/lng, projected to the screen on every map frame.
+
+```ts
+function reprojectLandmark(): void {
+    const s = map.latLngToScreen(BIG_BEN);
+    Vectors.copy(s, landmarkDot);
+    Circles.circleAt(s, 10, landmarkRing);
+    Points.moveRight(Points.moveUp(s, 20), 14, landmarkLabel);
+}
+
+map.onRender(reprojectLandmark);
+```
+
+## API
+
+- `Circles.circleAt`, `Vectors.copy`, `Points.moveUp`, `Points.moveRight`: place the marker at the projected point
+- `Attach.pointToPoint`: the labels follow the handle
+
+## Notes
+
+The map tiles come from OpenFreeMap and need the network.
+
+## See also
+
+- `maps/02-attached-polyline`

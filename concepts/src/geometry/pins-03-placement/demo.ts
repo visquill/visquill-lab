@@ -90,11 +90,8 @@ export function run(div: HTMLDivElement) {
 
     // ─── Placed pins ──────────────────────────────────────────────────
     // Four variants shown simultaneously.  The "place only" variants
-    // keep a fixed reference orientation (pointing right) so the
+    // keep their initial orientation (pointing right) so the
     // difference from the "place+align" variants is immediately visible.
-
-    const refPin = canvas.values.pin([0, 0])
-    Pins.withLength(refPin, arrowLength, refPin)  // fixed rightward orientation
 
     // 1. placeOnSegment — position on segment, orientation unchanged
     buildPlacedPin(canvas, "place-on", p => {

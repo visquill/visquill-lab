@@ -189,8 +189,8 @@ export function run(div: HTMLDivElement) {
         return createInteractiveLens(lensLayer, scheme, "handle")
     })
 
-    // Group all lenses with equal arc distribution (default)
-    // When grouped, each lens gets an equal share of the circle
+    // Group all lenses; `equal` (below) gives each lens in a group an equal
+    // share of the circle
     const proximityGroup = createProximityGroup(lensLayer, lenses, {
         threshold: 100,
         arcGap: 0.1,
@@ -217,12 +217,10 @@ export function run(div: HTMLDivElement) {
         entries: [optionsMagnetic, optionsProximity,optionsAspects]
     })
 
-    lenses.forEach(lens => {
-        createPlotController(lens)
-        optionsAspects.bind(currentAspect)
-        optionsProximity.bind(proximityGroup.active)
-        optionsMagnetic.bind(magneticGroup.active)
-    } )
+    optionsAspects.bind(currentAspect)
+    optionsProximity.bind(proximityGroup.active)
+    optionsMagnetic.bind(magneticGroup.active)
+    lenses.forEach(lens => createPlotController(lens))
 
     lenses.forEach((lens,index) => {
         const scheme = schemes[index]

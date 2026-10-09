@@ -1,12 +1,36 @@
-# Polygon Vertex Orientations
+# Vertex Orientations
 
-Tangent bisector and outward normal at every vertex of a draggable polygon.
+Get the direction and the normal of a polygon at each of its vertices.
 
-## What you see
+## How it works
 
-A regular hexagon with draggable vertices. At each vertex a green arrow shows the orientation (tangent bisector of the two adjacent edges) and a purple arrow shows the outward normal. Drag a vertex to create a sharp corner and watch the bisector split the interior angle evenly while the normal stays perpendicular to it. Dragging a vertex nearly collinear with its neighbours causes the bisector to fall back to the outgoing edge direction.
+A corner has two edges, so it has no single direction. `Polygons.vertexOrientation` returns the average of the two edge directions, a unit vector along the boundary. `Polygons.vertexNormal` is that direction turned by 90° to the left or right of the travel direction:
 
-## Key concepts
+```ts
+handles.forEach((vertex, i) => {
+    const ori = Polygons.vertexOrientation(polygon, i)
+    Points.copy(vertex, oriArrows[i].at(0))
+    Vectors.add(vertex, Vectors.scale(ori, arrowLength), oriArrows[i].at(1))
 
-- **`Polygons.vertexOrientation(polygon, i)`** — returns the normalised tangent bisector at vertex i; at near-straight corners it falls back to the outgoing edge direction
-- **`Polygons.vertexNormal(polygon, i, true)`** — returns the outward normal at vertex i, perpendicular to the bisector; the boolean controls which side is considered outward
+    const nrm = Polygons.vertexNormal(polygon, i, true)
+    // …
+})
+```
+
+The vertices run clockwise on screen, so the left normal points outward. Drag the polygon inside out and the normals point inward.
+
+## API
+
+- `Polygons.vertexOrientation`: the direction along the boundary at a vertex
+- `Polygons.vertexNormal`: that direction turned 90° to the left or right
+- `Vectors.scale`, `Vectors.add`: the arrow tips
+- `Polygons.polygon`: writes vertices into a polygon
+
+## Notes
+
+Where the boundary almost doubles back, the two edge directions nearly cancel; there `Polygons.vertexOrientation` uses the outgoing edge's direction.
+
+## See also
+
+- `geometry/polygons-02-properties`
+- `geometry/polylines-04-smoothing`

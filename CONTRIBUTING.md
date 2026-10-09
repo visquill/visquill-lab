@@ -22,6 +22,37 @@ If you're unsure whether something fits, open an issue first.
 - Keep examples focused — one idea per demo
 - MIT license applies to everything here; your contributions will be under the same license
 
+## Writing a README
+
+Each demo folder has a `README.md`. It is shown next to the demo in the explorer and on visquill.com,
+so it should teach the one idea of the demo, not describe the screen.
+
+Concepts use this structure:
+
+```md
+# Title
+
+One sentence: the GDK idea this demo teaches.
+
+## How it works
+A few sentences of plain prose, then the key lines copied from demo.ts (use `// …` for cuts).
+
+## API
+- `Qualified.name`: what it does, in one line
+
+## Notes        (optional: real gotchas only)
+## See also     (optional: `category/folder` of related demos)
+```
+
+Blueprints use `## Usage` (a short example) and `## Options` instead of How it works and API.
+
+Rules:
+- At most 180 words outside code blocks.
+- Don't describe what is visible; the reader is looking at it.
+- Qualify every GDK name (`Circles.pointAt`, not `pointAt()`), and only list names the demo uses.
+- Every statement must be true of the code next to it. Snippets are copied, not paraphrased.
+- Plain words: no dashes as separators, no "seamlessly", "instantly", "powerful" and the like.
+
 ## Reporting issues
 
 If something is broken, file an issue with enough detail to reproduce it. No special template required.

@@ -1,12 +1,5 @@
 /* demos-polyline-windowing-<class> */
 
-/* ── Base polyline (hidden — source geometry only) ──────────────────────── */
-
-.demos-polyline-windowing-raw {
-    fill: none;
-    stroke: none;
-}
-
 /* ── Prefix and suffix — dimmed portions outside the window ─────────────── */
 
 .demos-polyline-windowing-seg-prefix,

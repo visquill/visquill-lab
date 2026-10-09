@@ -1,13 +1,33 @@
 # Fits
 
-Four panels showing every combination of box/circle source fitted into a box/circle target.
+Scale and move a shape so it fits centered inside a box or a circle.
 
-## What you see
+## How it works
 
-A 2×2 grid.  In each panel a dashed shape is the target; the filled indigo shape is the source fitted inside it.  Drag the handle to resize the target — the source rescales and recentres reactively.  The source is always uniformly scaled (never stretched) so its aspect ratio is preserved.
+Each `Fits` function compares a source shape with a target and returns a `Pin`: the translation and uniform scale that put the source centered inside the target. `Shapes.transform` applies the pin to the source and writes the result into a visual shape. The source itself never changes, so the fit can be recomputed from it on every drag step.
 
-## Key concepts
+```ts
+const sourceBox    = Boxes.centeredBox([0, 0], sourceBoxWidth, sourceBoxHeight)
+const fittedSource = canvas.visuals.box("source-box")
 
-- **`Fits.*`** — each method returns a `Pin` encoding the translation and uniform scale that maps the source centred inside the target
-- **2-arg form** — called without an output parameter the pin is returned directly; pass it to `Boxes.transform()` or `Circles.transform()` to apply it to the source shape
-- **Limiting dimension** — for `boxInBox` the scale is clamped by whichever dimension (width or height) would overflow first; for `boxInCircle` the diagonal equals the diameter
+Reactive.do([corner], () => {
+    const pin = Fits.boxInBox(sourceBox, targetBox)
+    Shapes.transform(sourceBox, pin, fittedSource)
+})
+```
+
+The scale is uniform, so the source keeps its aspect ratio. In `boxInBox` the side that would overflow first decides the scale.
+
+## API
+
+- `Fits.boxInBox`: fits a box inside a box
+- `Fits.boxInCircle`: fits a box inside a circle
+- `Fits.circleInBox`: fits a circle inside a box
+- `Fits.circleInCircle`: fits a circle inside a circle
+- `Shapes.transform`: applies a pin (translation, rotation, scale) to a shape
+- `Boxes.centeredBox`: a box from its center, width and height
+- `Circles.circleAt`: a circle from center and radius
+
+## See also
+
+- `geometry/shapes-04-transform`

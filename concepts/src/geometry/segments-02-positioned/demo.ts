@@ -3,7 +3,7 @@
 // @group Segments
 
 import {
-    VisQuill, Reactive, Segments, Points,
+    VisQuill, Reactive, Values, Segments, Points, Vectors,
     type RvgGroup, type Real
 } from "@visquill/visquill-gdk"
 import './styles.css'
@@ -47,9 +47,9 @@ export function run(div: HTMLDivElement) {
         Points.moveUp(sideToggle, 14, sideLbl)
 
         Reactive.do([p1, p2, distance, paddingStart, paddingEnd, sideToggle], () => {
-            // Use the toggle handle's position relative to the base segment
-            // to determine left vs right.
-            const leftSide = sideToggle.y < (p1.y + p2.y) / 2
+            // Left or right of p1 → p2, from the toggle handle's position
+            // (negative cross product = left on screen).
+            const leftSide = Vectors.crossProduct(Vectors.direction(p1, p2), Vectors.direction(p1, sideToggle)).value < 0
             sideLbl.value  = `side: ${leftSide ? "left" : "right"}`
             Segments.alongSegment(
                 p1, p2,
@@ -82,15 +82,14 @@ export function run(div: HTMLDivElement) {
         Points.moveUp(sideToggle2, 14, sideLbl2)
 
         Reactive.do([point, dirPt, distance, ratio, sideToggle2], () => {
-            const dx       = dirPt.x - point.x
-            const dy       = dirPt.y - point.y
+            // UI only: toggle handle left of the point = left side
             const leftSide = sideToggle2.x < point.x
             sideLbl2.value = `side: ${leftSide ? "left" : "right"}`
 
             Segments.segmentAtPoint(
                 point,
                 distance.value,
-                { x: dx, y: dy },
+                Vectors.direction(point, dirPt),
                 ratio.value,
                 leftSide,
                 result
@@ -135,7 +134,7 @@ function buildSlider(
     })
 
     Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
+        Values.lerp(min, max, t, value)
         valLbl.value = value.value.toFixed(1)
     })
 

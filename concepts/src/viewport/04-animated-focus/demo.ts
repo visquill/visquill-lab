@@ -32,14 +32,14 @@ const directionLineScale = 20
  *
  * Builds on the Animated Panning demo but replaces plain shapes with
  * Pins — geometric primitives that carry position, direction, and
- * length.  Clicking a pin animates the viewport to centre on it *and*
- * zoom to a level derived from the pin's length, so small-scale pins
- * zoom in close while large-scale pins zoom out.
+ * length.  Clicking a pin animates the viewport so that the pin sits at
+ * the centre, points to the right, and is zoomed by its length: a pin
+ * of length 2 is shown at zoom 2, a pin of length 0.5 at zoom 0.5.
  *
  * The key change compared to the Animated Panning demo:
  *  - Shapes → Pins with `Pins.withLength()` and `Pins.rotateBy()`.
  *  - `Viewports.panPointTo()` → `Viewports.focusOnScaled()` which
- *    adjusts both pan and zoom.
+ *    sets pan, zoom, and rotation.
  *
  * - Drag inside the rectangle to pan.
  * - Scroll (or pinch) to zoom.
@@ -76,8 +76,8 @@ export function run(div: HTMLDivElement) {
 
     // ─── Pins ─────────────────────────────────────────────────────────
     // Each pin has a position, a rotation, and a length.  The length
-    // controls how far the viewport zooms in when the pin is clicked:
-    // short pins → close zoom, long pins → wide zoom.
+    // is the zoom level the viewport uses when the pin is clicked:
+    // long pins → close zoom, short pins → wide zoom.
     //
     // A small circle marks the pin's position, and a segment extending
     // forward from the pin shows its direction and relative length.
@@ -118,10 +118,10 @@ export function run(div: HTMLDivElement) {
     Fits.boxInBox(content.getVisualBoundingBox(), viewport.boundary, viewport.origin)
 
     // ─── Click-to-focus handlers ──────────────────────────────────────
-    // Clicking a pin computes a target origin that centres the pin
-    // *and* sets the zoom level based on the pin's length — this is
-    // the difference from panPointTo() used in the Animated Panning
-    // demo, which only changes the pan offset.
+    // Clicking a pin computes a target origin that centres the pin,
+    // zooms to the pin's length, and rotates the view so the pin points
+    // to the right.  panPointTo() in the Animated Panning demo only
+    // changes the pan offset.
     for (const { pin, marker } of pins) {
         const svg = Svg.get(marker)
 

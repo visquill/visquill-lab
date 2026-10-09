@@ -1,13 +1,32 @@
 # Basics
 
-The minimal reactive setup — two draggable handles and a derived midpoint that updates automatically.
+`Reactive.do` runs a function now and again whenever one of its senders changes.
 
-## What you see
+## How it works
 
-Two colored dots on a horizontal track and another green point between them. Drag either dot left or right: its coordinate label updates, and the green points slides to the average position of the two.
+Handles are reactive points, so they can be senders. The first two reactions keep each handle on the track: `Points.closestPointOnSegment` writes the snapped position back into the handle. Two more reactions with one sender each update the handle's reading.
 
-## Key concepts
+The midpoint reaction lists both handles as senders, so it runs when either one moves. It writes the result into the point `mid`, and the label attached to `mid` follows.
 
-- **`Reactive.do([sender], fn)`** — registers a block that re-runs whenever the sender changes; the block watching a single handle updates that handle's label
-- **Multiple senders** — passing both handles as the dependency array means the midpoint block fires when *either* one moves; this is the core "fan-in" pattern
-- **Handles as reactive values** — a handle's position is itself a reactive value, so it can be both a drag target and a dependency in a `Reactive.do()` block
+```ts
+Reactive.do([handleA], () => {
+    readingA.value = "x = " + Math.round(handleA.x)
+})
+// …
+Reactive.do([handleA, handleB], () => {
+    Points.midPoint(handleA, handleB, mid)
+    midLabel.value = "mid = " + Math.round(mid.x)
+})
+```
+
+## API
+
+- `Reactive.do`: runs a function now and whenever its senders change
+- `Points.closestPointOnSegment`: the point on a segment closest to a given point
+- `Points.midPoint`: the point halfway between two points
+- `Attach.pointToPoint`: makes a label follow a point, with an offset
+
+## See also
+
+- `reactions/reactions-04-chain`
+- `reactions/attach-01-basics`

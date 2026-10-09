@@ -1,14 +1,38 @@
-# Two Data Types Lens
+# Two Data Types
 
-A single lens showing two independent hedgehog paths simultaneously — one counting by color, one counting by shape.
+One lens, two bar charts: the same points counted by colour on one side and by shape on the other.
 
-## What you see
+## How it works
 
-Points scattered across the canvas, each with both a color (red, green, blue, orange) and a shape (diamond, triangle, square, circle). The lens has two bar charts on opposite sides of its rim: the upper half counts by color, the lower half counts by shape. Drag the lens and both charts update together.
+Each point has a colour and a shape. Both charts sit on the same ring, each on its own polyline. The shape chart is turned half a turn from the colour chart, so the two face each other.
 
-## Key concepts
+```ts
+const shapeRotation = lens.values.real(rotation.value + Math.PI)
+Reactive.do([rotation], () => {
+    shapeRotation.value = rotation.value + Math.PI
+})
+// …
+const shapePolyline = lens.visuals.polyline("barline", 5)
+Attach.polylineToCircle(shapePolyline, ring, span, {distance: 10, angle: shapeRotation})
+```
 
-- **Two polylines, one lens** — each hedgehog path gets its own polyline attached to a different arc segment of the same ring; they share the drag handle so a single interaction updates both
-- **Counting along two dimensions** — the same set of data points is queried twice inside one `Reactive.do()` block, once grouping by color and once by shape; the lens position is the only dependency
-- **`transpose` flag** — a boolean that swaps which dimension the outer loop iterates over, allowing the same counting logic to serve both hedgehog paths without duplicating code
-- **Composition without clutter** — placing the two paths on opposite sides of the rim keeps them visually distinct while still making clear they describe the same underlying data
+One reaction counts both: once grouped by colour, once by shape. The `transpose` flag swaps the two loops, so the same function serves both charts.
+
+```ts
+Reactive.do([lens.anchor, radius], () => {
+    updateBarline(colorHeights, colorLabels, (c, s) => points[c][s])
+    updateBarline(shapeHeights, shapeLabels, (c, s) => points[c][s], true)
+})
+```
+
+## API
+
+- `Attach.polylineToCircle`: lays each bar baseline along the ring
+- `Attach.circleRadiusToValue`: ties the ring's radius to the option
+- `Attach.pointToPoint`: moves the lens layer with the handle
+- `Animate.real.follow`: eases each bar height towards its count
+- `Points.distanceToPoint`: the membership test
+
+## See also
+
+- `lenses/02-single-data-type`

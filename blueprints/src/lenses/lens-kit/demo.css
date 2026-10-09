@@ -68,3 +68,10 @@
     pointer-events: none;
     user-select: none;
 }
+/* ── Bars: one colour per category (N, S, E, W, C) ─────────────────────── */
+
+.blueprint-lens-category-1 { fill: #4c72b0; }
+.blueprint-lens-category-2 { fill: #dd8452; }
+.blueprint-lens-category-3 { fill: #55a868; }
+.blueprint-lens-category-4 { fill: #8172b3; }
+.blueprint-lens-category-5 { fill: #937860; }

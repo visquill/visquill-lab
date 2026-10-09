@@ -39,8 +39,8 @@
 /* ─── Direction indicators ───────────────────────────────────────────── */
 
 /* A thin line extending from each pin along its forward direction.
-   The length is proportional to the pin's scale, giving a visual
-   hint of how far the viewport will zoom when the pin is clicked. */
+   The length is proportional to the pin's length, which is the zoom
+   level the viewport uses when the pin is clicked. */
 .demos-viewport-focus-direction-line {
     fill: none;
     stroke: #374151;

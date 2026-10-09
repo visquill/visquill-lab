@@ -1,12 +1,5 @@
 /* demos-hull-baseline-<class> */
 
-/* ── Source polyline (invisible — source geometry only) ─────────────────── */
-
-.demos-hull-baseline-raw {
-    fill: none;
-    stroke: none;
-}
-
 /* ── Prefix and suffix — dimmed portions outside the window ─────────────── */
 
 .demos-hull-baseline-seg-prefix,

@@ -39,12 +39,6 @@
     opacity: 0.6;
 }
 
-/* Hidden duplicate used only as input to Polylines.smooth(). */
-.demos-viewport-path-path-control-hidden {
-    fill: none;
-    stroke: none;
-}
-
 /* The smooth interpolated trajectory the camera follows. */
 .demos-viewport-path-path-smooth {
     fill: none;

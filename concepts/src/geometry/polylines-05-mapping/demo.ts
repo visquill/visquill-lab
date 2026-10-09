@@ -41,8 +41,8 @@ const smoothingIterations = 3
  * Two sets of draggable handles define the shape and the path.
  * The shape's segment-length proportions are projected onto the path:
  * a short segment in the shape maps to a short portion of the path,
- * a long one to a longer portion.  The perpendicular offsets of the
- * shape's vertices are preserved relative to the path's local frame.
+ * a long one to a longer portion.  The mapped vertices lie on the path;
+ * the shape's up-and-down offsets are not carried over.
  *
  * Drag the orange shape handles to change the pattern being mapped.
  * Drag the blue path handles to change where and how it is laid out.
@@ -81,7 +81,7 @@ export function run(div: HTMLDivElement) {
     const pathSmooth = canvas.visuals.polyline("path-smooth")
 
     // ─── Mapped result ─────────────────────────────────────────────────
-    // The shape bent to follow the smooth path, segment-proportions preserved.
+    // One vertex per shape vertex, placed on the smooth path.
     const mapped = canvas.visuals.polyline("mapped")
 
     // ─── Top-left info labels ──────────────────────────────────────────
@@ -97,17 +97,13 @@ export function run(div: HTMLDivElement) {
     // Rebuild whenever either set of handles moves.
     Reactive.do([...shapeHandles, ...pathHandles], () => {
         // Rebuild the shape polyline from its handles.
-        const rawShape = Polylines.polyline(shapeHandles)
-        Polylines.copy(rawShape, shapePolyline)
+        Polylines.polyline(shapeHandles, shapePolyline)
 
         // Rebuild and smooth the path polyline.
-        const rawPath = Polylines.polyline(pathHandles)
-        Polylines.smooth(rawPath, smoothingIterations, pathSmooth)
+        Polylines.smooth(pathHandles, smoothingIterations, pathSmooth)
 
-        // Map: the shape's segment-length proportions are projected onto
-        // the path.  Each vertex of the shape lands at the corresponding
-        // normalised position along the path, offset perpendicularly by
-        // the same amount it sits above/below the shape's own baseline.
+        // Map: each vertex of the shape lands on the path at the same
+        // fraction of the length at which it sits along the shape.
         Polylines.mapOnPolyline(shapePolyline, pathSmooth, mapped)
     })
 }

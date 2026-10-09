@@ -57,8 +57,7 @@ export function run(div: HTMLDivElement) {
 
     // ── Polyline ──────────────────────────────────────────────────────────────
 
-    const raw      = canvas.visuals.polyline("raw", POLYLINE_POINTS);
-    const polyline = Polylines.smooth(raw, SMOOTHING);
+    const polyline = Polylines.smooth(POLYLINE_POINTS, SMOOTHING);
 
     // Three visual segments: prefix (dimmed), slice (highlighted), suffix (dimmed)
     const segPrefix = canvas.visuals.polyline("seg-prefix");
@@ -73,12 +72,10 @@ export function run(div: HTMLDivElement) {
     const hTL = canvas.handles.disk("window-handle", WINDOW_TL);
     const hBR = canvas.handles.disk("window-handle", WINDOW_BR);
 
-    const windowBox  = canvas.shapes.box();
-    const windowRect = canvas.visuals.box("window-rect");
+    const windowBox = canvas.visuals.box("window-rect");
 
     Reactive.do([hTL, hBR], () => {
         Boxes.spannedBox(hTL, hBR, windowBox);
-        Boxes.copy(windowBox, windowRect);
     });
 
     // ── Entry / exit markers ──────────────────────────────────────────────────

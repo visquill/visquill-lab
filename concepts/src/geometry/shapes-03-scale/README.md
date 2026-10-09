@@ -1,13 +1,31 @@
-# Shapes — Scale By
+# Scale By
 
-Scale a shape independently on X and Y by dragging two axis-constrained handles.
+Stretch or shrink a shape around an anchor, separately along x and y.
 
-## What you see
+## How it works
 
-An asymmetric arrow shape anchored at its centroid.  An amber handle sits on the horizontal axis and controls scaleX — drag right to stretch, left to compress.  A rose handle sits on the vertical axis and controls scaleY — drag down to stretch, up to compress.  Each handle is constrained to its own axis so the two factors are always independent.  A faint ghost shows the original size for comparison.  Live scaleX and scaleY readouts appear in the top-left corner.
+`Shapes.scaleBy` multiplies each vertex's distance from the anchor: along x by `scaleX`, along y by `scaleY`. The anchor itself stays where it is.
 
-## Key concepts
+Each handle is kept on its track. Its distance from the anchor, relative to where it started, is the factor:
 
-- **`Shapes.scaleBy()`** — scales a shape non-uniformly around an anchor point; scaleX and scaleY are independent, so values below 1 compress and values above 1 stretch; negative values flip the shape across that axis
-- **`Shapes.copy()`** — writes the scaled result into an existing polygon visual on every update; no new canvas objects are created inside the reactive block
-- **Axis constraint** — each handle's off-axis coordinate is snapped back to the anchor position inside the reactive block, giving the feel of a one-dimensional slider while remaining a standard disk handle
+```ts
+Points.closestPointOnSegment(hX, trackX, hX)
+// …
+const scaleX = Points.distanceToPoint(anchor, hX).value / refX
+const scaleY = Points.distanceToPoint(anchor, hY).value / refY
+
+Shapes.scaleBy(arrowVertices, anchor, scaleX, scaleY, scaled)
+```
+
+The tracks run from 0.15 to 4 times the start distance. The dashed outline is the unscaled shape.
+
+## API
+
+- `Shapes.scaleBy`: scales a shape around an anchor, with one factor per axis
+- `Points.closestPointOnSegment`: keeps a handle on its track
+- `Points.distanceToPoint`: the handle's distance from the anchor
+
+## See also
+
+- `geometry/shapes-04-transform`
+- `geometry/circles-02-sizing`

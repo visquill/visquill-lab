@@ -1,26 +1,37 @@
 # Animated Focus
 
-Click any pin to smoothly pan *and* zoom — the pin's length controls the zoom level.
+Use a pin's position, direction, and length as a camera: centre, rotate, and zoom the viewport to it.
 
-## What you see
+## How it works
 
-A rectangular viewport containing scattered pins.  Each pin is shown as a green circle with a thin line extending in its forward direction — longer lines mean larger scale.  Click a pin and the viewport animates to centre on it while zooming to a level derived from the pin's length: short pins zoom in close, long pins zoom out.  A blue centre marker on the frame layer shows the focus target.
+Each pin gets a direction with `Pins.rotateBy` and a length with `Pins.withLength`. The line from each marker shows the direction; its length grows with the pin's length.
 
-## How it builds on Animated Panning
+```ts
+const pin = content.values.pin([x, y])
+Pins.withLength(Pins.rotateBy(pin, angle), length, pin)
+```
 
-The viewport setup is identical.  Two things change:
+On click, `Viewports.focusOnScaled` returns the origin that puts the pin on the centre of the viewport, rotates the view so the pin points to the right, and sets the zoom to the pin's length. A pin of length 2 is shown at zoom 2, a pin of length 0.5 at zoom 0.5.
 
-| Animated Panning | Animated Focus |
-|---|---|
-| Plain shapes (diamonds) | Pins with direction and length |
-| `Viewports.panPointTo()` — pan only | `Viewports.focusOnScaled()` — pan and zoom |
+```ts
+svg.addEventListener("click", () => {
+    const vCenter = Boxes.center(viewport.boundary)
+    const target  = Viewports.focusOnScaled(pin, vCenter)
+    Animate.pin.easedAt(viewport.origin, target, vCenter, focusDuration)
+})
+```
 
-Because `focusOnScaled` reads the pin's length to determine zoom, each pin produces a different zoom level — something `panPointTo` cannot do.
+`Animate.pin.easedAt` eases pan, zoom, and rotation together.
 
-## Key concepts
+## API
 
-- **`Pins`** — geometric primitives that carry position, direction, and length; richer than plain points
-- **`Pins.withLength()` / `Pins.rotateBy()`** — set a pin's scale and orientation
-- **`Pins.moveForward()`** — returns a point offset along the pin's forward direction, used here to draw the direction indicator
-- **`Viewports.focusOnScaled(pin, viewportCenter)`** — computes a target origin that centres the pin *and* sets the zoom level from the pin's length
-- **`Animate.pin.easedAt()`** — same eased animation as the Animated Panning demo, but now the target encodes both a new pan offset and a new zoom level
+- `Viewports.focusOnScaled`: the origin that centres, rotates, and zooms to a pin
+- `Pins.rotateBy`: turns a pin's direction
+- `Pins.withLength`: sets a pin's length
+- `Pins.moveForward`: the end of the direction line
+- `Animate.pin.easedAt`: eases the origin to the target
+
+## See also
+
+- `viewport/03-animated-panning`
+- `viewport/05-animated-path`

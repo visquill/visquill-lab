@@ -1,13 +1,38 @@
-# Shapes — Transform
+# Transform
 
-Apply a full similarity transform — translation, rotation, and uniform scale — to a shape using a single pin controlled by two handles.
+Move, rotate and scale a shape in one step with a pin.
 
-## What you see
+## How it works
 
-An asymmetric arrow shape with a faint ghost at its original position.  A white anchor handle sets the pin's location, controlling translation.  A purple tip handle sets the endpoint of the pin's orientation vector, controlling both rotation (the angle from anchor to tip) and uniform scale (the distance from anchor to tip relative to the reference length).  Dragging the anchor moves the shape without changing its rotation or scale, because the tip moves with it as a rigid pair.  Dragging the tip alone rotates and scales the shape around the anchor.  The top-left panel shows all four components — angle, scale, and x/y translation — updated live.
+`Shapes.transform` reads a pin as a transform: its position is the translation, its orientation's angle the rotation, and the orientation's length the scale factor. The arrow's vertices are given around (0, 0), so the pin places that origin.
 
-## Key concepts
+The anchor handle is itself a pin. Dragging the tip changes its orientation:
 
-- **`Shapes.transform()`** — applies a similarity transform encoded in a `Pin`; the pin's location is the translation offset and its orientation vector is the combined rotation and uniform scale multiplier, where the vector's angle is the rotation and its length relative to a reference is the scale factor
-- **Rigid anchor–tip pair** — when the anchor handle moves, its delta is applied to the tip handle in a dedicated reactive block that fires first; this preserves the orientation vector so rotation and scale are unchanged by a pure translation drag
-- **`Pins.alignToSegment()`** — used to build the pin from the two handle positions by aligning its orientation to the anchor→tip direction at the tip's distance
+```ts
+Reactive.do([hTip],()=>{
+    Pins.withOrientation(hAnchor,Vectors.direction(hAnchor,hTip),hAnchor)
+})
+```
+
+The main reaction divides the orientation's length by its start length, so the start position means scale 1, then transforms the vertices into the visual:
+
+```ts
+const pin = Pins.withLength(hAnchor,Pins.len(hAnchor).value/refLen)
+// …
+Shapes.transform(arrowVertices, pin, arrow)
+```
+
+A third reaction moves the tip along with the anchor, so dragging the anchor only translates.
+
+## API
+
+- `Shapes.transform`: applies a pin's translation, rotation and scale to a shape
+- `Pins.withOrientation`: sets a pin's orientation vector
+- `Pins.withLength`, `Pins.len`: set and read the orientation's length
+- `Pins.moveForward`: places the tip at the end of the orientation
+- `Pins.angle`: the rotation shown in the info panel
+
+## See also
+
+- `geometry/05-fitting`
+- `geometry/shapes-01-orientate`

@@ -1,14 +1,45 @@
 # Reactive Chains
 
-A slider drives a radius, which derives an area, which derives a colour — three independent blocks chained together.
+A reaction that writes a value triggers the reactions that listen to that value.
 
-## What you see
+## How it works
 
-A circle that grows and shifts from blue to orange as you drag the slider. Three readout labels show the current radius, area, and colour value updating in real time.
+Three reactions form a chain. Each one reads one value and writes the next: the slider ratio `t` becomes `radius`, `radius` becomes the circle and its `area`, `area` becomes the fill colour. Moving the slider runs all three in order. The colour reaction only knows `area`; it would work the same with any other source.
 
-## Key concepts
+```ts
+Reactive.do([t], () => {
+    Values.lerp(minRadius, maxRadius, t, radius)
+})
 
-- **Dependency chains** — block A writes `radius`, block B reads `radius` and writes `area`, block C reads `area` and updates the colour; changing the slider cascades automatically through all three
-- **Single responsibility** — each `Reactive.do` block has one job and knows only its immediate input; block C has no idea the slider exists
-- **Intermediate reactive values** — `canvas.values.real()` is used not only as UI state but as the connective tissue between blocks; writing to `area.value` inside block B is what triggers block C
-- **Separation of concerns** — geometry (block B) and presentation (block C) are kept in separate blocks; this makes each easier to understand and replace independently
+Reactive.do([radius], () => {
+    Circles.circleAt([cx, cy], radius, circle)
+    // …
+    Circles.area(circle, area)
+    // …
+})
+
+Reactive.do([area], () => {
+    const ratio = Math.min(1, area.value / maxArea)
+    // …
+})
+```
+
+The slider handle stays on its track with `Points.closestPointOnSegment`, and `Points.relativePositionOnSegment` turns its position into `t`.
+
+## API
+
+- `Reactive.do`: runs a function now and whenever its senders change
+- `canvas.values.real`: creates a reactive number
+- `Values.lerp`: the value at a ratio between two values
+- `Circles.circleAt`: a circle from center and radius
+- `Circles.area`: the area of a circle
+- `Points.closestPointOnSegment`: the point on a segment closest to a given point
+- `Points.relativePositionOnSegment`: where a point lies along a segment, from 0 to 1
+
+## Notes
+
+Create values with `canvas.values.real` outside the reactions and only write them inside.
+
+## See also
+
+- `reactions/reactions-03-values`

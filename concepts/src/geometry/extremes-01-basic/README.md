@@ -1,13 +1,43 @@
-# Extremes
+# Basic
 
-Find the most extreme point in a cloud — by direction or by distance from a reference.
+Pick the point that lies furthest in a direction, or closest to and farthest from a reference.
 
-## What you see
+## How it works
 
-A shared cloud of draggable points split into two panels. **Left** — four coloured rings highlight the topmost, bottommost, leftmost, and rightmost points simultaneously. **Right** — a dark reference handle; the green ring marks the closest point to it, the red ring marks the farthest, with dashed connectors and pixel distances. Drag any cloud point or the reference handle to see the results update.
+Every `Extremes` function scans a list of points and returns one of them. The reaction lists all handles, so the markers follow whenever any point moves:
 
-## Key concepts
+```ts
+Reactive.do(handles, () => {
+    const top    = Extremes.topMost(handles)
+    const bottom = Extremes.bottomMost(handles)
+    const left   = Extremes.leftMost(handles)
+    const right  = Extremes.rightMost(handles)
+    // …
+})
+```
 
-- **`Extremes.topMost()` / `bottomMost()` / `leftMost()` / `rightMost()`** — scan a point sequence for the extremal coordinate; uses screen-space convention (Y increases downward, so `bottomMost` returns the largest Y)
-- **`Extremes.closestTo(points, reference)`** — returns the point in the sequence nearest to `reference`
-- **`Extremes.farthestFrom(points, reference)`** — the opposite; useful for bounding-circle estimates or visibility culling
+The right panel compares against a reference handle, which joins the senders:
+
+```ts
+Reactive.do([reference, ...handles], () => {
+    const closest  = Extremes.closestTo(handles,  reference)
+    const farthest = Extremes.farthestFrom(handles, reference)
+    // …
+})
+```
+
+## API
+
+- `Extremes.topMost`, `Extremes.bottomMost`: the points with the smallest and largest y
+- `Extremes.leftMost`, `Extremes.rightMost`: the points with the smallest and largest x
+- `Extremes.closestTo`: the point nearest to a reference point
+- `Extremes.farthestFrom`: the point farthest from a reference point
+- `Points.distanceToPoint`: the distances shown on the lines
+
+## Notes
+
+Y grows downward on screen, so `Extremes.bottomMost` returns the point with the largest y. An empty list gives the origin.
+
+## See also
+
+- `geometry/extremes-02-custom`

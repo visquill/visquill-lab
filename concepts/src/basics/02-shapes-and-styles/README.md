@@ -1,15 +1,38 @@
 # Shapes & Styles
 
-Every shape primitive in one place, with examples of both CSS class styling and inline style overrides.
+The basic shapes on `canvas.visuals`, styled by CSS class or inline.
 
-## What you see
+## How it works
 
-Two rows of static shapes: polygon, box, rounded rectangle, circle in the top row; circle-from-3-points, points, segments, and a polyline with text along its path in the bottom row. Nothing is interactive — this is a reference layout.
+Each factory takes a style string first, then the geometry. A plain name is a CSS class: the graphic's prefix is put in front, so `"polygon"` becomes `demos-basics-shapes-polygon`. Several names give several classes, and `@style` sets styles on the element without a CSS rule.
 
-## Key concepts
+```ts
+canvas.visuals.box("box",[200, 60], [310, 160])
+// …
+canvas.visuals.circle(
+    "circle circle-3p",
+    [100, 320],
+    [200, 420],
+    [100, 420]
+)
+// …
+canvas.visuals.point("@class point @style fill:red;",[350, 350] )
+```
 
-- **Shape primitives** — `polygon`, `box`, `circle`, `point`, `segment`, `polyline` are the building blocks; each takes a class name that gets prefixed automatically
-- **CSS prefix chain** — the class name you pass (e.g. `"polygon"`) is combined with the graphic and layer prefixes to produce the full class (`demos-basics-shapes-polygon`); your stylesheet only needs the full name
-- **Inline `@style` overrides** — passing `"@style fill:darkred;"` instead of a class name applies styles directly on the element without a CSS rule; useful for one-offs
-- **Multiple classes** — passing `"circle circle-3p"` applies both classes to the element, letting you share a base style and override only what differs
-- **Text along a path** — `canvas.text.labelAlongPolyline()` makes text follow the geometry of any polyline
+A box is axis aligned. A rectangle stands on a baseline with a height, so it can be rotated:
+
+```ts
+Rectangles.alongSegment([340, 60], [450, 160], 20, true, canvas.visuals.rectangle(
+    "@style fill:darkred; stroke-width: 1px; stroke: black;"));
+```
+
+## API
+
+- `canvas.visuals.polygon`, `.box`, `.circle`, `.circleAt`, `.point`, `.segment`, `.polyline`, `.rectangle`: shape factories
+- `Rectangles.alongSegment`: sets a rectangle from a baseline, a height and a side
+- `canvas.text.labelAt`: a text label at a position
+- `canvas.text.labelAlongPolyline`: text that follows a polyline, at a distance from it
+
+## See also
+
+- `basics/04-layers`

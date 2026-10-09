@@ -1,7 +1,7 @@
 //@name Waveform
 //@category Animations
 
-// Demonstrates one-shot shape morph animations using Animate.morph.
+// Demonstrates one-shot shape morph animations using Animate.shape.morph.
 // A polyline cycles through signal waveforms — flat, sine, square, sawtooth —
 // each transition using easing that matches the character of the target shape.
 
@@ -60,7 +60,6 @@ export function run(div: HTMLDivElement) {
     Reactive.do([state], () => {
         const idx = state.value % steps.length
         const { duration, easing } = steps[idx]
-        console.log("state"+idx)
 
         Animate.shape.morph(waveform, poses[idx + 1], duration, {
             easing,

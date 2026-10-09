@@ -3,7 +3,7 @@
 // @group Circles
 
 import {
-    VisQuill, Circles, Reactive, Points, Boxes, Segments,
+    VisQuill, Circles, Reactive, Values, Points, Boxes, Segments,
     type RvgGroup, type RvgGraphic, type Real
 } from "@visquill/visquill-gdk"
 import './styles.css'
@@ -32,10 +32,7 @@ export function run(div: HTMLDivElement) {
     })
 
     // ─── Base circle (fixed) ──────────────────────────────────────────
-    const baseCircle = canvas.shapes.circle()
-    Circles.circleAt([cx, cy], baseRadius, baseCircle)
-    canvas.visuals.circle("base-circle")
-    Circles.copy(baseCircle, canvas.visuals.circle("base-circle"))
+    const baseCircle = Circles.circleAt([cx, cy], baseRadius, canvas.visuals.circle("base-circle"))
     canvas.text.labelAt(`base r = ${baseRadius}`, { x: cx, y: cy }, "base-label")
 
     // ─── Inflate ──────────────────────────────────────────────────────
@@ -123,7 +120,7 @@ function buildSlider(
     })
 
     Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
+        Values.lerp(min, max, t, value)
         valLbl.value = `${value.value.toFixed(2)}`
     })
 

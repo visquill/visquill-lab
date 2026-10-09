@@ -14,15 +14,8 @@ const cy            = 240
 const polygonRadius = 160
 const vertexCount   = 6
 
-const initialVertices: [number, number][] = Array.from(
-    { length: vertexCount },
-    (_, i) => {
-        const angle = (i / vertexCount) * Math.PI * 2 - Math.PI / 2
-        return [
-            Math.round(cx + polygonRadius * Math.cos(angle)),
-            Math.round(cy + polygonRadius * Math.sin(angle)),
-        ]
-    }
+const initialVertices = Array.from({ length: vertexCount }, (_, i) =>
+    Points.placeOnCircle([cx, cy], polygonRadius, (i / vertexCount) * Math.PI * 2 - Math.PI / 2)
 )
 
 const arrowLength = 50
@@ -64,35 +57,22 @@ export function run(div: HTMLDivElement) {
     // ─── Polygon visual ────────────────────────────────────────────────
     const polygon = canvas.visuals.polygon("polygon")
 
-    // ─── Per-vertex orientation arrows (green) ─────────────────────────
-    const oriStarts = Array.from({ length: vertexCount }, () => canvas.values.point())
-    const oriEnds   = Array.from({ length: vertexCount }, () => canvas.values.point())
-    Array.from({ length: vertexCount }, (_, i) =>
-        canvas.visuals.segment("arrow-orientation", oriStarts[i], oriEnds[i])
-    )
-
-    // ─── Per-vertex normal arrows (purple) ────────────────────────────
-    const nrmStarts = Array.from({ length: vertexCount }, () => canvas.values.point())
-    const nrmEnds   = Array.from({ length: vertexCount }, () => canvas.values.point())
-    Array.from({ length: vertexCount }, (_, i) =>
-        canvas.visuals.segment("arrow-normal", nrmStarts[i], nrmEnds[i])
-    )
+    // ─── Per-vertex arrows: orientation (green) and normal (purple) ────
+    const oriArrows = handles.map(() => canvas.visuals.segment("arrow-orientation"))
+    const nrmArrows = handles.map(() => canvas.visuals.segment("arrow-normal"))
 
     // ─── Reactive block ────────────────────────────────────────────────
-    Reactive.do([...handles], () => {
+    Reactive.do(handles, () => {
         Polygons.polygon(handles, polygon)
 
-        for (let i = 0; i < vertexCount; i++) {
-            const vertex = handles[i]!
-            const pt = { x: vertex.x, y: vertex.y }
-
+        handles.forEach((vertex, i) => {
             const ori = Polygons.vertexOrientation(polygon, i)
-            Points.copy(pt, oriStarts[i])
-            Vectors.add(pt, Vectors.scale(ori, arrowLength), oriEnds[i])
+            Points.copy(vertex, oriArrows[i].at(0))
+            Vectors.add(vertex, Vectors.scale(ori, arrowLength), oriArrows[i].at(1))
 
             const nrm = Polygons.vertexNormal(polygon, i, true)
-            Points.copy(pt, nrmStarts[i])
-            Vectors.add(pt, Vectors.scale(nrm, arrowLength), nrmEnds[i])
-        }
+            Points.copy(vertex, nrmArrows[i].at(0))
+            Vectors.add(vertex, Vectors.scale(nrm, arrowLength), nrmArrows[i].at(1))
+        })
     }, true)
 }

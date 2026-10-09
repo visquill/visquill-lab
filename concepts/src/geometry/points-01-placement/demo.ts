@@ -3,7 +3,7 @@
 // @group Points
 
 import {
-    VisQuill, Reactive, Points, Circles, Boxes, Segments, Vectors,
+    VisQuill, Reactive, Values, Points, Circles, Boxes, Segments, Vectors,
     type RvgGroup, type RvgGraphic, type Real
 } from "@visquill/visquill-gdk"
 import './styles.css'
@@ -32,7 +32,6 @@ export function run(div: HTMLDivElement) {
     // Places a point on a circle's circumference at a given angle (radians).
     {
         const cx = cols[0]
-        canvas.visuals.circle("shape")
         Circles.circleAt([cx, cy], r, canvas.visuals.circle("shape"))
 
         const dot  = canvas.visuals.circle("dot")
@@ -158,7 +157,7 @@ function buildSlider(
     })
 
     Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
+        Values.lerp(min, max, t, value)
     })
 
     return value

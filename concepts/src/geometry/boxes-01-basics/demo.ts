@@ -40,22 +40,18 @@ export function run(div: HTMLDivElement) {
     const hBR = canvas.handles.disk("handle", startBottomRight)
     canvas.handles.defaultZIndex = 1
 
-    const box = canvas.shapes.box()
+    const box = canvas.visuals.box("box-fill")
     Reactive.do([hTL, hBR], () => {
         Boxes.spannedBox(hTL, hBR, box)
     })
 
-    // ─── Box fill ─────────────────────────────────────────────────────
-    const fill = canvas.visuals.box("box-fill")
-    Reactive.do([box], () => { Boxes.copy(box, fill) })
-
     // ─── Sides — each a distinct colour ──────────────────────────────
     // topSide / bottomSide / leftSide / rightSide return Segment values.
     const sides = [
-        { cls: "side-top",    mid: canvas.text.label("topSide",    "side-label"), seg: canvas.visuals.segment("side-top")    },
-        { cls: "side-bottom", mid: canvas.text.label("bottomSide", "side-label"), seg: canvas.visuals.segment("side-bottom") },
-        { cls: "side-left",   mid: canvas.text.label("leftSide",   "side-label"), seg: canvas.visuals.segment("side-left")   },
-        { cls: "side-right",  mid: canvas.text.label("rightSide",  "side-label"), seg: canvas.visuals.segment("side-right")  },
+        { mid: canvas.text.label("topSide", "side-label"), seg: canvas.visuals.segment("side-top")    },
+        { mid: canvas.text.label("bottomSide", "side-label"), seg: canvas.visuals.segment("side-bottom") },
+        { mid: canvas.text.label("leftSide", "side-label"), seg: canvas.visuals.segment("side-left")   },
+        { mid: canvas.text.label("rightSide", "side-label"), seg: canvas.visuals.segment("side-right")  },
     ]
 
     Reactive.do([box], () => {
@@ -64,10 +60,10 @@ export function run(div: HTMLDivElement) {
         const l = Boxes.leftSide(box)
         const r = Boxes.rightSide(box)
 
-        Points.copy(t.at(0), sides[0].seg.at(0)); Points.copy(t.at(1), sides[0].seg.at(1))
-        Points.copy(b.at(0), sides[1].seg.at(0)); Points.copy(b.at(1), sides[1].seg.at(1))
-        Points.copy(l.at(0), sides[2].seg.at(0)); Points.copy(l.at(1), sides[2].seg.at(1))
-        Points.copy(r.at(0), sides[3].seg.at(0)); Points.copy(r.at(1), sides[3].seg.at(1))
+        Segments.copy(t, sides[0].seg)
+        Segments.copy(b, sides[1].seg)
+        Segments.copy(l, sides[2].seg)
+        Segments.copy(r, sides[3].seg)
 
         Points.moveUp(   Segments.midPoint(t), sideLabelOffset, sides[0].mid)
         Points.moveDown( Segments.midPoint(b), sideLabelOffset, sides[1].mid)

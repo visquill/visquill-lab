@@ -3,7 +3,7 @@
 // @group Curves
 
 import {
-    VisQuill, Reactive, Boxes, Segments, Points, Circles, Polygons, Curves,
+    VisQuill, Reactive, Boxes, Segments, Points, Circles, Polygons, Curves, Values, type Point,
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -14,15 +14,10 @@ const cy           = 250
 const radius       = 170
 const vertexCount  = 8
 
-const polygonPoints: {x:number,y:number}[] = Array.from(
+// First vertex at 12 o'clock (angle −π/2), then clockwise.
+const polygonPoints: Point[] = Array.from(
     { length: vertexCount },
-    (_, i) => {
-        const angle = (i / vertexCount) * Math.PI * 2 - Math.PI / 2
-        return {
-          x:  Math.round(cx + radius * Math.cos(angle)),
-          y:  Math.round(cy + radius * Math.sin(angle)),
-        }
-    }
+    (_, i) => Points.placeOnCircle([cx, cy], radius, (i / vertexCount) * Math.PI * 2 - Math.PI / 2)
 )
 
 const valueCount = 20
@@ -103,10 +98,8 @@ export function run(div: HTMLDivElement) {
             value: p.value + shift.value,
         })), true)
 
-        for (let i = 0; i < valueCount; i++) {
-            const pin = basePins[i]!
-            Circles.circleAt({ x: pin.x, y: pin.y }, 4, sampleDots[i])
-        }
+        for (let i = 0; i < valueCount; i++)
+            Circles.circleAt(basePins[i], 4, sampleDots[i])
 
         Curves.alongPolygon(baseline, positions, values, shift, true, curve)
 
@@ -118,30 +111,26 @@ export function run(div: HTMLDivElement) {
     createSlider(shift)
 
     function createSlider(value: typeof shift) {
-        const track = canvas.visuals.segment("slider-track")
+        const track      = canvas.visuals.segment("slider-track")
+        const trackLabel = canvas.text.label("Shift (wraps around)", "slider-label")
+        const handle     = canvas.handles.disk("slider-handle")
+        const ratio      = canvas.values.real(0)
 
+        // Track, label and handle follow the frame; the handle keeps its ratio.
         Reactive.do([rvg.frame], () => {
             const bottom = Boxes.bottomSide(rvg.frame)
             const mid    = Points.moveUp(Segments.midPoint(bottom), sliderBottomOffset)
             Points.moveLeft(mid,  sliderHalfWidth, track.at(0))
             Points.moveRight(mid, sliderHalfWidth, track.at(1))
+            Points.moveUp(mid, 18, trackLabel)
+            Segments.pointAt(track, ratio, handle)
         })
-
-        const trackLabel = canvas.text.label("Shift (wraps around)", "slider-label")
-        Reactive.do([rvg.frame], () => {
-            Points.moveUp(Segments.midPoint(track), 18, trackLabel)
-        })
-
-        const handle = canvas.handles.disk("slider-handle")
-        Points.placeOnSegment(track.at(0), track.at(1), 0.0, handle)
 
         Reactive.do([handle], () => {
             Points.closestPointOnSegment(handle, track, handle)
-            const ratio = canvas.values.real()
             Points.relativePositionOnSegment(handle, track, ratio)
             // Map [0, 1] to [0, perimeter] so one full drag = one full lap.
-            const perimeter = Polygons.perimeter(baseline).value
-            value.value = ratio.value * perimeter
+            Values.lerp(0, Polygons.perimeter(baseline), ratio, value)
         })
     }
 }

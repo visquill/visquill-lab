@@ -10,8 +10,7 @@
  *
  * Two point datasets are added as MapLibre circle layers with different
  * minZoom thresholds — capitals appear first, cities appear as you zoom in.
- * The points are loaded once and added with addGroup; setGroupPoints is then
- * used to swap between a filtered and unfiltered view via a toggle handle.
+ * Each layer is created empty with addGroup and filled with setGroupPoints.
  *
  * A VisQuill SVG label overlays the current zoom level, updating on every
  * map move — showing how SVG and WebGL layers coexist and complement each other.
@@ -38,7 +37,7 @@ const CAPITALS: { lon: number; lat: number; name: string }[] = [
     { lon:  4.90, lat: 52.37, name: "Amsterdam" },
     { lon: 14.42, lat: 50.08, name: "Prague"    },
     { lon: 16.37, lat: 48.21, name: "Vienna"    },
-    { lon: 18.95, lat: 69.65, name: "Brussels"  },
+    { lon:  4.35, lat: 50.85, name: "Brussels"  },
     { lon: 24.94, lat: 60.17, name: "Helsinki"  },
     { lon: 18.07, lat: 59.33, name: "Stockholm" },
     { lon: 10.74, lat: 59.91, name: "Oslo"      },
@@ -71,7 +70,6 @@ const CITIES: { lon: number; lat: number }[] = [
     { lon: -0.89, lat: 41.65 },  // Zaragoza
     { lon: -1.13, lat: 37.99 },  // Murcia
     { lon: -8.61, lat: 41.15 },  // Porto
-    { lon:  4.35, lat: 50.85 },  // Brussels
     { lon:  3.72, lat: 51.05 },  // Ghent
     { lon: 17.04, lat: 51.11 },  // Wrocław
     { lon: 18.67, lat: 50.30 },  // Katowice

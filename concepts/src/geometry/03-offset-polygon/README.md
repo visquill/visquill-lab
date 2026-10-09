@@ -1,13 +1,40 @@
-# Polygon Offset
+# Offset
 
-`Offsets.polygon()` expands a convex polygon outward by a fixed distance, keeping all edges parallel to the original.
+Grow a convex polygon outward by a distance that a slider controls.
 
-## What you see
+## How it works
 
-Twenty draggable points whose convex hull is outlined in blue. A dashed polygon surrounds it at a constant clearance. A slider at the top controls the offset distance. Drag any point or the slider and both polygons update instantly.
+The distance is a `Real` from `canvas.values.real()`. A `Real` is a sender like a handle, so it goes into the same `Reactive.do` as the points. The reaction rebuilds the hull and then its offset:
 
-## Key concepts
+```ts
+Reactive.do([...handles, distance], () => {
+    ConvexHulls.topStart(handles, polygon);
+    Offsets.polygon(polygon, distance, true, 1, offset);
+}, true);
+```
 
-- **`Offsets.polygon(source, distance, outward, precision, result)`** — computes the offset in-place into `result`; the third argument switches between outward (`true`) and inward (`false`) expansion
-- **Reactive `Real` as a geometry parameter** — the offset distance is stored in a `canvas.values.real()`, which can be listed as a dependency in `Reactive.do()` alongside the handles; dragging the slider writes to it and triggers the same recompute
-- **Slider as a constrained handle** — the slider is a regular drag handle whose x position is clamped inside the reactive block and mapped to the distance value; no special slider API needed
+The slider is a plain handle. Its own reaction pulls it back onto the track and writes its distance from the track's start into `distance`:
+
+```ts
+Reactive.do([slider], () => {
+    Points.closestPointOnSegment(slider, track, slider);
+    Points.distanceToPoint(track.at(0), slider, distance);
+    // …
+}, true);
+```
+
+## API
+
+- `Reactive.do`: runs a function now and whenever its senders change
+- `ConvexHulls.topStart`: the convex hull of a set of points
+- `Offsets.polygon`: a polygon offset from a baseline polygon to its left or right side
+- `Points.closestPointOnSegment`: the point on a segment closest to a given point
+- `Points.distanceToPoint`: distance between two points
+
+## Notes
+
+`Offsets.polygon` is meant for convex baselines; a concave one can give a self-intersecting result. The fourth argument sets how many extra points round each corner.
+
+## See also
+
+- `geometry/02-convex-hull`

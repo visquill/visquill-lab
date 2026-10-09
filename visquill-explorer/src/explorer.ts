@@ -1,6 +1,11 @@
+// Self-hosted fonts as on visquill.com (no Google Fonts CDN)
+import '@fontsource-variable/fraunces'
+import '@fontsource-variable/inter'
+import '@fontsource-variable/jetbrains-mono'
+import './vq-tokens.css'
 import './explorer.css'
+import './prism-vq.css'
 import Prism from 'prismjs'
-import 'prismjs/themes/prism-okaidia.css'
 import 'prismjs/components/prism-typescript'
 import 'prismjs/components/prism-css'
 import {PackageConfig, PACKAGES} from "./packages.ts";
@@ -47,6 +52,9 @@ const list = document.getElementById('demo-list')!
 const title = document.getElementById('title')!
 const category = document.getElementById('category')!
 const homeButton = document.getElementById('home-button')!
+const viewer = document.querySelector<HTMLElement>('.demo-viewer')!
+const sidebarToggle = document.getElementById('sidebar-toggle')!
+const sidebarBackdrop = document.getElementById('sidebar-backdrop')!
 
 // Panels
 const previewPanel = document.getElementById('preview-panel')!
@@ -142,9 +150,12 @@ function buildPackageContent(pkg: PackageConfig, manifest: DemoManifest) {
       const item = document.createElement('div')
       item.className = 'demo-item'
       item.textContent = demo.name
+      item.dataset.link = `${pkg.folder}/${demo.slug}`
       item.onclick = async () => {
         document.querySelectorAll('.demo-item').forEach(i => i.classList.remove('active'))
         item.classList.add('active')
+        setSidebarOpen(false)
+        setDeepLink(item.dataset.link!)
         await loadDemo(demo, pkg.folder)
       }
       itemsDiv.appendChild(item)
@@ -155,12 +166,38 @@ function buildPackageContent(pkg: PackageConfig, manifest: DemoManifest) {
     packageContent.appendChild(wrapper)
   })
 
-  if (!currentDemo) {
-    const firstItem = packageContent.querySelector('.demo-item')
-    if (firstItem) {
-      firstItem.classList.add('active')
-    }
-  }
+}
+
+/**
+ * Deep links: `#<package folder>/<demo folder>`, e.g. `#concepts/geometry/polylines-02-closest-point`.
+ * Replaces the hash without a history entry; null goes back to the home screen URL.
+ */
+function setDeepLink(link: string | null) {
+  history.replaceState(null, '', link ? `#${link}` : location.pathname + location.search)
+}
+
+/**
+ * Open the demo the URL hash points to. Returns false if there is none or it is unknown.
+ */
+async function openDeepLink(): Promise<boolean> {
+  const link = decodeURIComponent(location.hash.slice(1))
+  const pkg = PACKAGES.find(p => !p.isHome && link.startsWith(`${p.folder}/`))
+  if (!pkg) return false
+
+  await loadPackage(pkg)
+  const demo = loadedPackages.get(pkg.name)?.demos.find(d => `${pkg.folder}/${d.slug}` === link)
+  if (!demo) return false
+
+  const content = packageElements.get(pkg.name)
+  content?.parentElement?.classList.add('expanded')
+  document.querySelectorAll('.demo-item').forEach(i => i.classList.remove('active'))
+  const item = content?.querySelector<HTMLElement>(`.demo-item[data-link="${CSS.escape(link)}"]`)
+  item?.classList.add('active')
+  item?.closest('.demo-category')?.classList.add('expanded')
+  item?.scrollIntoView({ block: 'nearest' })
+
+  await loadDemo(demo, pkg.folder)
+  return true
 }
 
 /**
@@ -215,10 +252,22 @@ async function loadDemo(demo: DemoFile, folder: string) {
 }
 
 /**
+ * Dispose the canvases of the previous demo. In a build, the demos use the GDK from the shared
+ * chunk (shared/visquill-gdk.js), not the explorer's own copy, so dispose through that one too.
+ */
+async function disposeDemos() {
+  VisQuill.disposeAll()
+  if (!import.meta.env.DEV) {
+    const gdk = await import(/* @vite-ignore */ `${import.meta.env.BASE_URL}shared/visquill-gdk.js`)
+    gdk.VisQuill.disposeAll()
+  }
+}
+
+/**
  * Dynamically import and execute the demo
  */
 async function runDemo(demo: DemoFile, folder: string) {
-  VisQuill.disposeAll()
+  await disposeDemos()
   try {
     previewStage.innerHTML = ''
     bothStage.innerHTML = ''
@@ -390,21 +439,38 @@ function syncFileTabSelection() {
 }
 
 /**
+ * Mark the tab and show the panel of a view mode ('both', 'preview' or 'source')
+ */
+function showPanel(mode: string) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.getAttribute('data-tab') === mode))
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'))
+  activeTab = mode
+
+  if (mode === 'preview') previewPanel.classList.add('active')
+  if (mode === 'source') sourcePanel.classList.add('active')
+  if (mode === 'both') bothPanel.classList.add('active')
+}
+
+/**
+ * Open or close the sidebar overlay (narrow screens only, see explorer.css)
+ */
+function setSidebarOpen(open: boolean) {
+  viewer.classList.toggle('sidebar-open', open)
+  sidebarToggle.setAttribute('aria-expanded', String(open))
+}
+
+sidebarToggle.addEventListener('click', () => setSidebarOpen(!viewer.classList.contains('sidebar-open')))
+sidebarBackdrop.addEventListener('click', () => setSidebarOpen(false))
+document.addEventListener('keydown', e => { if (e.key === 'Escape') setSidebarOpen(false) })
+
+/**
  * Handle tab switching
  */
 document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', async () => {
-    VisQuill.disposeAll()
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'))
-
-    tab.classList.add('active')
+    await disposeDemos()
     const mode = tab.getAttribute('data-tab')!
-    activeTab = mode
-
-    if (mode === 'preview') previewPanel.classList.add('active')
-    if (mode === 'source') sourcePanel.classList.add('active')
-    if (mode === 'both') bothPanel.classList.add('active')
+    showPanel(mode)
 
     if (currentDemo && currentDemoModules.size > 0 && (mode === 'preview' || mode === 'both')) {
       let runMethod = null
@@ -570,14 +636,25 @@ async function init() {
     buildPackageSidebar()
     setupResizer()
 
+    // Below 900px there is too little room for canvas and code side by side
+    if (window.matchMedia('(max-width: 900px)').matches) {
+      showPanel('preview')
+    }
+
     homeButton.addEventListener('click', () => {
+      setSidebarOpen(false)
+      setDeepLink(null)
       showHomeScreen()
     })
+    window.addEventListener('hashchange', () => { openDeepLink() })
 
-    await showHomeScreen()
+    if (!await openDeepLink()) {
+      await showHomeScreen()
+    }
 
     const defaultPackage = PACKAGES.find(pkg => pkg.expandByDefault)
     if (defaultPackage) {
+      packageElements.get(defaultPackage.name)?.parentElement?.classList.add('expanded')
       await loadPackage(defaultPackage)
     }
   } catch (error) {

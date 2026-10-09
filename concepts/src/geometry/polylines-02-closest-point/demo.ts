@@ -66,10 +66,7 @@ export function run(div: HTMLDivElement) {
 
     const polyline = canvas.visuals.polyline(
         "polyline-smooth",
-        Polylines.smooth(
-            canvas.visuals.polyline("polyline-raw", polylinePoints),
-            smoothingIterations
-        )
+        Polylines.smooth(polylinePoints, smoothingIterations)
     )
 
     // ─── Draggable handle ──────────────────────────────────────────────

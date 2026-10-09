@@ -1,17 +1,41 @@
 # Convex Hull Baseline
 
-Deriving a curved baseline from a polyline slice — the foundation for route-following charts.
+Build a smooth baseline beside a stretch of route, as a base for charts that follow the route.
 
-## What you see
+## How it works
 
-The same winding curve and draggable window from the Polyline Windowing demo. The windowed slice is wrapped in a convex hull (shown as a faint dashed polygon), which is then offset outward. The far side of the offset hull — the edge running roughly parallel to the slice but displaced from it — is extracted as the orange baseline. An offset slider controls how far the baseline sits from the route. Drag the window corners or the slider to see everything update live.
+The stretch inside the window comes from the same windowing as `polylines-08-windowing`. From there, the reaction runs four steps. The slice is wrapped in its convex hull, and the hull is offset:
 
-## Key concepts
+```ts
+ConvexHulls.topStart(segSlice, hullPolygon);
+// …
+const offsetHull = Offsets.polygon(hullPolygon, offset.value, true, 1);
+```
 
-- **`ConvexHulls.topStart(slice, hull)`** — wraps the slice vertices in a convex polygon, starting from the topmost point. The starting point matters for `Polygons.slice` later: `topStart` ensures the hull vertices are wound consistently so the boundary positions are predictable.
+To find the part of the offset hull that faces away from the route, it takes the route's pins at both ends of the slice. Each pin is turned left and moved out by the offset. Where they land on the offset hull marks the ends of the baseline:
 
-- **`Offsets.polygon(hull, distance, outward, smoothing)`** — expands the hull outward by `distance` pixels. The third argument (`true`) means outward; the fourth (`1`) applies one round of smoothing to the offset edges. This creates the gap between the route and the baseline where chart bars or curves would be drawn.
+```ts
+const dirs = Polylines.pinsAt(polyline, [{ value: start }, { value: end }]);
+const a1   = Pins.moveForward(Pins.rotateLeft(dirs[0]), offset.value);
+const a2   = Pins.moveForward(Pins.rotateLeft(dirs[1]), offset.value);
+const pos1 = Polygons.closestPosition(offsetHull, a1);
+const pos2 = Polygons.closestPosition(offsetHull, a2);
 
-- **`Polygons.closestPosition` + `Polygons.slice`** — to locate the far side of the offset hull, pins at the slice start and end are rotated 90° left (perpendicular to the route direction) and stepped forward by the offset distance. `closestPosition` finds where those anchor pins land on the hull boundary; `Polygons.slice` extracts the arc between them directly into the baseline visual.
+Polygons.slice(offsetHull, pos1, pos2, baseline);
+```
 
-- **Why a hull rather than a direct offset of the polyline?** — offsetting a polyline directly can produce self-intersections and artefacts at sharp bends. Wrapping in a convex hull first guarantees a clean, non-self-intersecting boundary to offset from.
+Offsetting the route directly could self-intersect at sharp bends; the convex hull cannot.
+
+## API
+
+- `ConvexHulls.topStart`: the convex hull of the slice
+- `Offsets.polygon`: grows the hull by the offset
+- `Polylines.pinsAt`: the route's pins at the slice ends
+- `Pins.rotateLeft`, `Pins.moveForward`: the anchor points beside the route
+- `Polygons.closestPosition`, `Polygons.slice`: the baseline as part of the offset hull
+- `Values.lerp`, `Values.inverseLerp`: map the slider to the offset and back
+
+## See also
+
+- `geometry/polylines-08-windowing`
+- `plots/curves-05-along-baseline`

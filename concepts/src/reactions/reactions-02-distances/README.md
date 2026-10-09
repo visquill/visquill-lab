@@ -1,14 +1,39 @@
 # Distances
 
-Three live distance measurements — point-to-point, point-to-segment, and point-to-circle — updating as you drag.
+Compute a measurement inside a reaction and write it into a value and a label.
 
-## What you see
+## How it works
 
-Three setups arranged vertically. Drag the blue handles to move the measured points, the green handles to reposition the segment, or the orange handle to move the circle center. Distance values and connector lines update in real time.
+Each setup has one `Reactive.do` that lists every handle the measurement depends on. The GDK functions write into existing objects: the distance into a `Real` from `canvas.values.real()`, the closest point into a visual point that a dashed segment already connects to. `Points.midPoint` writes into the label, so the label sits halfway along the measured line.
 
-## Key concepts
+The circle reaction first rebuilds the circle from its center handle, then measures against it:
 
-- **`Points.distanceToPoint()`**, **`Points.distanceToSegment()`** — compute distances inside a `Reactive.do()` block and write the result directly into a label value
-- **`Points.closestPointOnSegment()`** — finds the nearest point on the segment, which is what the dashed connector line connects to
-- **Explicit visual updates** — visual elements like circles don't auto-update when reactive values change; they must be recalculated inside the reactive block that owns them
-- **`Points.midPoint()`** — used to position distance labels at the midpoint of each measurement so they stay readable as handles move
+```ts
+Reactive.do([pointD, circleCenter, circleRadius], () => {
+    Circles.circleAt(circleCenter, circleRadius, circle)
+    Circles.closestPoint(circle, pointD, closestOnCircle)
+    Circles.distanceTo(circle, pointD, distanceCircleEdge)
+
+    Points.midPoint(pointD, closestOnCircle, labelCircle)
+    labelCircle.value = `${distanceCircleEdge.value.toFixed(1)} px`
+}, true)
+```
+
+## API
+
+- `Reactive.do`: runs a function now and whenever its senders change
+- `Points.distanceToPoint`: distance between two points
+- `Points.distanceToSegment`: shortest distance from a point to a segment
+- `Points.closestPointOnSegment`: the point on a segment closest to a given point
+- `Points.midPoint`: the point halfway between two points
+- `Circles.circleAt`: a circle from center and radius
+- `Circles.closestPoint`: the point on a circle closest to a given point
+- `Circles.distanceTo`: shortest distance from a point to a circle
+
+## Notes
+
+`Circles.distanceTo` is never negative: a point inside the circle gets its distance to the edge.
+
+## See also
+
+- `geometry/points-04-distances`

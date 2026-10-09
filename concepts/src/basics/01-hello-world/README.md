@@ -1,13 +1,25 @@
 # Hello World
 
-The minimal VisQuill setup — a single text element attached to the center of the canvas.
+The smallest VisQuill graphic: create it in a div, draw one label, keep it at the center.
 
-## What you see
+## How it works
 
-"Hello World!" rendered in large type, centered in the graphic. There is nothing to interact with; the point is the setup, not the output.
+`VisQuill.create` builds the graphic inside the div and sets the CSS prefix for its class names. The label's class `"label"` becomes `demos-basics-hello-world-label`, which `styles.css` styles. `Attach.pointToPoint` keeps the label on `rvg.center`, so it stays centered when the container is resized.
 
-## Key concepts
+```ts
+const rvg = VisQuill.create(div, "demos-basics-hello-world-")
+const canvas = rvg.canvas
+const text = canvas.text.label("Hello World!",  "label")
+Attach.pointToPoint(text, rvg.center)
+```
 
-- **`VisQuill.create(div, prefix)`** — creates the root graphic and sets the CSS prefix that all class names in this graphic will be built from
-- **`canvas.text.label(text, class)`** — creates a text element; the full CSS class is assembled from the graphic prefix + the class name you pass
-- **`Attach.pointToPoint(text, rvg.center)`** — keeps the text origin pinned to the graphic's center point; if the container resizes, the text stays centered
+## API
+
+- `VisQuill.create`: creates a graphic in a div, with the prefix for all its CSS classes
+- `canvas.text.label`: creates a text label with a CSS class
+- `Attach.pointToPoint`: keeps a point, here the label, on another point
+
+## See also
+
+- `basics/03-rvg-frame`
+- `basics/05-attach`

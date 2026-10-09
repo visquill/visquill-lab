@@ -10,30 +10,24 @@ export default defineConfig({
       exclude: ['node_modules'],
       outFile: "concepts.json"
     }),
-    demoBundlerPlugin({
-      demosDir: path.resolve(__dirname, '../concepts/src'),
-      exclude: ['node_modules'],
-      outDir: 'dist/concepts'
-    }),
     demoScannerPlugin({
       demosDir: path.resolve(__dirname, '../blueprints/src'),
       exclude: ['node_modules'],
       outFile: "blueprints.json"
-    }),
-    demoBundlerPlugin({
-      demosDir: path.resolve(__dirname, '../blueprints/src'),
-      exclude: ['node_modules'],
-      outDir: 'dist/blueprints'
     }),
     demoScannerPlugin({
       demosDir: path.resolve(__dirname, '../home-screen/src'),
       exclude: ['node_modules'],
       outFile: "home.json"
     }),
+    // All demos in one build, so the GDK, MapLibre and blueprints are shared chunks
     demoBundlerPlugin({
-      demosDir: path.resolve(__dirname, '../home-screen/src'),
-      exclude: ['node_modules'],
-      outDir: 'dist/home'
+      targets: [
+        { demosDir: path.resolve(__dirname, '../concepts/src'), outDir: 'dist/concepts' },
+        { demosDir: path.resolve(__dirname, '../blueprints/src'), outDir: 'dist/blueprints' },
+        { demosDir: path.resolve(__dirname, '../home-screen/src'), outDir: 'dist/home' },
+      ],
+      exclude: ['node_modules']
     })
   ],
 

@@ -1,27 +1,44 @@
 # Nested Viewports
 
-A parent viewport containing four child viewports in a checkerboard of boxes and circles, each with independent pan and zoom.
+A viewport can live inside the content of another viewport and keeps its own pan and zoom.
 
-## What you see
+## How it works
 
-A dashed rectangle (the parent viewport) contains a 2×2 grid of child viewports: box viewports at the top-left and bottom-right, circle viewports at the top-right and bottom-left.  Each child is filled with diamond shapes and has its own solid-coloured rim.  You can pan and zoom each child independently, or pan and zoom the parent to move all four children together.  A blue "Fit All" button below the parent animates every viewport back to a fitted state.
+The children are created on the parent's `content` layer instead of the canvas. Their boundaries are set in the parent's world coordinates, so they move and scale with the parent, while each one still has its own `origin`.
 
-## How it builds on earlier demos
+```ts
+const child = parent.viewports.box({ panning: true, zooming: true })
 
-This demo combines concepts from across the series:
+Boxes.centeredBox(
+    [col * gridSpacing, row * gridSpacing],
+    childBoxSize, childBoxSize,
+    child.boundary
+)
+```
 
-| From demo | Concept reused here |
-|---|---|
-| Circle Viewport | `viewports.circle()`, `Fits.boxInCircle()`, `Circles.circleAt()` |
-| Box Viewport | `viewports.box()`, `Fits.boxInBox()`, `Boxes.centeredBox()` |
-| Animated Focus | `Animate.pin.eased()` for smooth viewport transitions |
+Without an output argument, `Fits.boxInBox` and `Fits.boxInCircle` return the fitting origin instead of writing it. `Animate.pin.eased` then animates the origin to it. The Fit All button runs this for every child and for the parent.
 
-The new concept is **nesting**: child viewports are created on the parent's `content` layer (`content.viewports.box()` / `content.viewports.circle()`), so they live inside the parent's coordinate system and move with it.
+```ts
+fitFunctions.push(() => {
+    const target = Fits.boxInBox(
+        child.content.getVisualBoundingBox(),
+        Boxes.inflate(child.boundary, -childFitPadding, -childFitPadding)
+    )
+    Animate.pin.eased(child.origin, target, fitDuration)
+})
+```
 
-## Key concepts
+Mouse events go to the innermost viewport under the pointer, so dragging inside a child pans only that child.
 
-- **Nested viewports** — `parent.content.viewports.box()` creates a child viewport inside the parent's content; the child pans and zooms independently while still being subject to the parent's transform
-- **`Boxes.centeredBox(center, w, h, output)`** — positions a child viewport's boundary at a specific point in the parent's world space
-- **`Boxes.pad(box, top, right, bottom, left, output)`** — asymmetric inset, used here to leave extra room at the bottom for the button
-- **`Fits.boxInBox()` / `Fits.boxInCircle()` (2-arg form)** — when called without an output parameter, these return a target `Pin` instead of writing directly to the origin; the target can then be passed to `Animate.pin.eased()` for an animated transition
-- **`Svg.get(visual)`** — used here to attach a click listener to the button's SVG element
+## API
+
+- `canvas.viewports.box`, `canvas.viewports.circle`: also available on a viewport's `content`
+- `Fits.boxInBox`, `Fits.boxInCircle`: return the fitting origin
+- `Animate.pin.eased`: eases an origin to a target
+- `Boxes.pad`: leaves room for the button below the parent
+- `Svg.get`: the click target of the button
+
+## See also
+
+- `viewport/01-box-viewport`
+- `viewport/02-circle-viewport`

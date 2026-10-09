@@ -1,15 +1,39 @@
 # Viewport Along Path
 
-Slide the viewport's focus point along a smooth trajectory through the content world, with independent zoom control.
+Drive the viewport from values: one slider moves the view along a path, the other sets the zoom.
 
-## What you see
+## How it works
 
-A rectangular viewport showing scattered diamond shapes and an orange camera path.  The dashed line shows the original waypoints; the solid line is the smoothed trajectory.  Two sliders sit below the viewport: **Position** moves the camera along the path (0–1), **Zoom** scales the view in and out.  Drag-to-pan and scroll-to-zoom still work alongside the sliders.
+`Polylines.smooth` rounds the corners of the waypoint path. `Polylines.pinAt` samples the path at the slider ratio, and `Viewports.focusOn` moves that point to the centre of the viewport. It keeps the current zoom and rotation.
 
-## Key concepts
+```ts
+Reactive.do([position, viewport.boundary], () => {
+    const vCenter = Boxes.center(viewport.boundary)
+    const pin     = Polylines.pinAt(trajectory, position)
+    Viewports.focusOn(viewport.origin, pin, vCenter, viewport.origin)
+})
+```
 
-- **`Polylines.smooth(polyline, steps)`** — interpolates a smooth curve through the vertices of a coarse polyline, producing a gentle trajectory for the camera
-- **`Polylines.pinAt(polyline, ratio)`** — samples a pin (position + direction) at a normalised ratio along a polyline; the direction follows the curve's tangent
-- **`Viewports.focusOn(origin, pin, viewportCenter, output)`** — sets the viewport origin so that the pin's position sits at the viewport centre, without changing the zoom level
-- **`Viewports.zoomTo(origin, level, viewportCenter, output)`** — adjusts the zoom level around a screen-space pivot point
-- **Slider pattern** — a draggable handle constrained to a track segment via `Points.closestPointOnSegment()`, with its normalised position written back into a reactive `Real` via `Points.relativePositionOnSegment()`
+`Viewports.zoomTo` sets an absolute zoom and keeps the given screen point fixed. Because that point is the centre, the view stays on the path while zooming.
+
+```ts
+Reactive.do([zoom], () => {
+    const vCenter   = Boxes.center(viewport.boundary)
+    const zoomLevel = Values.lerp(minZoom, maxZoom, zoom)
+    Viewports.zoomTo(viewport.origin, zoomLevel, vCenter, viewport.origin)
+})
+```
+
+Each slider handle is kept on its track with `Points.closestPointOnSegment`, and `Points.relativePositionOnSegment` writes its ratio into a `Real`.
+
+## API
+
+- `Polylines.smooth`: rounds the corners of a polyline (Chaikin)
+- `Polylines.pinAt`: the point and direction at a ratio along a polyline
+- `Viewports.focusOn`: moves a world pin to a screen point, keeping zoom and rotation
+- `Viewports.zoomTo`: sets the zoom around a screen point
+- `Values.lerp`: maps the slider to the zoom range
+
+## See also
+
+- `viewport/04-animated-focus`

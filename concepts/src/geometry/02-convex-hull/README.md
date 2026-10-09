@@ -1,14 +1,27 @@
 # Convex Hull
 
-How to use `Reactive.do()` with an array of points as the dependency.
+Recompute a convex hull whenever any of many points moves.
 
-## What you see
+## How it works
 
-Twenty draggable points scattered randomly. A filled polygon outlines the convex hull of all points. Drag any point — if it moves outside the current hull, the hull expands; if an inner point moves, only the hull changes if that affects the boundary.
+`Reactive.do` takes any iterable of senders, so the whole array of handles can be passed at once. The reaction runs when any handle moves. `ConvexHulls.topStart` writes the hull into the polygon that is already on the canvas, so no new shape is created per drag step.
 
-## Key concepts
+```ts
+const polygon = canvas.visuals.polygon("contour");
 
-- **Array dependency** — passing an array of handles to `Reactive.do()` tracks all of them; the block fires when *any* point changes
-- **`ConvexHulls.topStart(handles, polygon)`** — recomputes the hull from scratch on every call and writes the result directly into the existing polygon, avoiding allocation on each drag event
-- **Layer separation** — handles live on a `controls` layer above the `canvas` layer so the hull polygon's fill never blocks dragging
-- **`Reactive.do(..., true)`** — the third argument runs the block immediately on setup, so the hull is drawn before any interaction
+Reactive.do(handles, () => {
+    ConvexHulls.topStart(handles, polygon);
+}, true);
+```
+
+The handles live on a second layer above the polygon, so the filled hull never covers them.
+
+## API
+
+- `Reactive.do`: runs a function now and whenever its senders change
+- `ConvexHulls.topStart`: the convex hull of a set of points, starting at the topmost point
+
+## See also
+
+- `geometry/03-offset-polygon`
+- `geometry/polylines-09-convex-hull`

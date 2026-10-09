@@ -1,19 +1,37 @@
 # Focused Route Chart
 
-A route-following chart that automatically tracks the visible portion of a reprojected path.
+A chart along the part of a route that is visible on the map, rebuilt on every map frame.
 
-## What you see
+## How it works
 
-The Rhine river is reprojected from lat/lng onto the map on every render frame. The visible portion — wherever the route crosses the viewport — is highlighted in blue. A density chart floats above that segment: a convex hull baseline offset from the route, with a filled curve plotted perpendicular to it. Pan and zoom the map; the chart redraws immediately to follow the visible window.
+On every render frame, the route is projected to the screen, the visible part is found, and the chart is rebuilt. `Reactive.block` holds back the reactions until all of this is written, so nothing reacts to a half-updated state.
 
-## Key concepts
+```ts
+map.onRender(() => {
+    Reactive.block(() => {
+        const screen = ROUTE.map(p => map.latLngToScreen(p));
+        const smoothed = Polylines.toReversedPolyline(Polylines.smooth(screen, SMOOTHING));
+        Polylines.copy(smoothed, route);
 
-- **`Reactive.block`** — wraps the entire per-frame update (reproject → window → chart) in a single batch. Without it, each reactive write would trigger its dependents immediately — `route` changing would fire the chart update before `startPos` and `endPos` had been updated. `Reactive.block` defers all downstream reactions until the block completes, making the update atomic.
+        const window = focusedWindow(route, rvg.frame, FRAME_INSET);
+        // …
+        updateChart();
+    });
+});
+```
 
-- **The viewport frame as the window** — unlike the Polyline Windowing demo where the window was a draggable box, here the window is `Boxes.inflate(rvg.frame, -inset, -inset)`. `focusedWindow` reads it on every render frame alongside the reprojected route.
+The window is the map frame, inset by `FRAME_INSET`. The chart is built as in `plots/curves-05-along-baseline`: a convex hull around the visible slice, pushed out with `Offsets.polygon`, gives the baseline, and each value is plotted sideways with `Pins.rotateLeft` and `Pins.moveForward`.
 
-- **Handling route endpoints inside the box** — `focusedWindow` allows the route to start or end inside the box, using the first or last vertex directly as the entry/exit point. This makes the chart work even when the route begins or ends in the visible viewport.
+The data positions are ratios along the route (0 to 1), not pixels, because the route's length in pixels changes with every zoom.
 
-- **`Polylines.pinsAt` for baseline anchors** — pins at the slice start and end carry the local route direction. `Pins.rotateLeft` turns each 90° to point toward the offset side; `Pins.moveForward` steps out by the offset distance to place anchor points on the far side of the hull. `Polygons.closestPosition` then locates those anchors on the hull boundary and `Polygons.slice` extracts the arc between them as the baseline.
+## API
 
-- **Data in normalised route space** — unlike the Plots demo where data is in pixel distances, here data positions are normalised [0, 1]. The route reprojects every frame so its pixel length changes with zoom — normalised positions remain stable and map correctly to the window range on every frame.
+- `Reactive.block`: one batch of updates per frame
+- `Polylines.smooth`, `Polylines.slice`, `Polylines.pinsAtDistances`: route and baseline
+- `ConvexHulls.topStart`, `Offsets.polygon`, `Polygons.slice`: the baseline
+- `Pins.rotateLeft`, `Pins.moveForward`: step sideways by the value
+
+## See also
+
+- `plots/curves-05-along-baseline`
+- `maps/02-attached-polyline`

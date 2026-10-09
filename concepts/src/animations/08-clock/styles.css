@@ -54,20 +54,3 @@
     stroke-width: 1.5px;
     stroke-linecap: round;
 }
-
-/* ─── Pendulum arm ───────────────────────────────────────────────────── */
-
-.demos-clock-arm {
-    stroke: #555;
-    stroke-width: 2px;
-    stroke-linecap: round;
-}
-
-/* ─── Pendulum bob ───────────────────────────────────────────────────── */
-
-.demos-clock-bob {
-    fill: #b8860b;
-    stroke: #8b6914;
-    stroke-width: 2px;
-    r: 12px;
-}

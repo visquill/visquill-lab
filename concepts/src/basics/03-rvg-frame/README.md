@@ -1,14 +1,36 @@
 # Frame and Center
 
-How to use `rvg.frame` and `rvg.center` — the two built-in coordinate references every VisQuill graphic exposes.
+`rvg.frame` and `rvg.center` describe the graphic's own bounds and follow the container when it is resized.
 
-## What you see
+## How it works
 
-A dashed rectangle marking the exact boundary of the SVG element, with labeled corner points and an orange crosshair at the center. Resize the browser window and everything stays anchored — the frame corners track the edges, the crosshair stays at the midpoint.
+`rvg.frame` is a reactive box. A `Reactive.do` on it copies the box and its corners into visuals each time the size changes. The labels are attached to the corner points, so they move with them.
 
-## Key concepts
+```ts
+Reactive.do([rvg.frame], () => {
+    Boxes.copy(rvg.frame, frame);
+    Boxes.topLeft(rvg.frame, topLeft);
+    Boxes.topRight(rvg.frame, topRight);
+    Boxes.bottomLeft(rvg.frame, bottomLeft);
+    Boxes.bottomRight(rvg.frame, bottomRight);
+}, true);
+```
 
-- **`rvg.frame`** — a reactive `Box` spanning the full SVG element; it fires any `Reactive.do()` block that depends on it when the container is resized
-- **`rvg.center`** — the midpoint of `rvg.frame`; use it as a stable origin for centered layouts without hardcoding coordinates
-- **`Boxes.*` helpers** — `Boxes.topLeft()`, `Boxes.topRight()` etc. extract corner points from the frame into separate point visuals that can then be used as attach targets
-- **Layer as a positioned group** — the crosshair is drawn in local coordinates around `[0, 0]` inside its own layer; attaching the layer's anchor to `rvg.center` moves the whole thing as a unit
+`rvg.center` is a point that is already kept at the middle of the frame. The crosshair is drawn around `[0, 0]` on its own layer, and the layer's anchor is attached to the center:
+
+```ts
+const centerGroup = canvas.layer();
+// …
+Attach.pointToPoint(centerGroup.anchor, center);
+```
+
+## API
+
+- `Reactive.do`: runs a function now and whenever one of its senders changes
+- `Boxes.copy`: copies one box into another
+- `Boxes.topLeft`, `Boxes.topRight`, `Boxes.bottomLeft`, `Boxes.bottomRight`: corners of a box
+- `Attach.pointToPoint`: keeps a point, a label or a layer anchor on another point
+
+## See also
+
+- `basics/04-layers`

@@ -1,14 +1,39 @@
-# Circle Sampling
+# Sampling
 
-Sampling a point, direction, and normal at any position along a circle.
+Read a position and its direction at any point around a circle.
 
-## What you see
+## How it works
 
-A circle with a centre handle and a perimeter handle. The perimeter handle also marks ratio=0 — the point where traversal begins — so dragging it around the circle visibly shifts the start of the parametric range. A ratio slider (0–1) moves a sample point around the circle. At the sampled position, a blue arrow shows the tangent direction and a green arrow shows the normal. A CW / CCW label near the centre reflects the winding order of the construction.
+`Circles.pinAt` returns a pin at a ratio around the circle: a position plus the direction of travel there. The tangent and normal arrows both come from that pin. `Pins.moveForward` steps along its direction; `Pins.rotateLeft` turns it by 90° first.
 
-## Key concepts
+```ts
+Reactive.do([circle, ratio], () => {
+    const pin = Circles.pinAt(circle, ratio)
 
-- **`Circles.pinAt(circle, ratio)`** — returns a pin (position + orientation) at the given ratio; 0 and 1 both land at the first defining point, wrapping continuously around the circle
-- **`Pins.moveForward(pin, length)`** — steps forward along the pin's orientation to find the direction arrow tip
-- **`Pins.rotateLeft(pin)`** — rotates the pin 90° left to point along the normal; `moveForward` on the result gives the normal arrow tip
-- **`Circles.isClockwise(circle)`** — reflects the winding order defined by the construction; determines which way "forward" travels around the circle
+    Circles.circleAt(pin, 5, dot)
+
+    Points.copy(pin, dirArrow.at(0))
+    Pins.getPosition(Pins.moveForward(pin, arrowLen), dirArrow.at(1))
+
+    Points.copy(pin, normalArrow.at(0))
+    Pins.getPosition(Pins.moveForward(Pins.rotateLeft(pin), arrowLen), normalArrow.at(1))
+})
+```
+
+## API
+
+- `Circles.pinAt`: position and travel direction at a ratio around a circle
+- `Circles.circleAt`: a circle from center and radius
+- `Pins.moveForward`: moves a pin along its direction
+- `Pins.rotateLeft`: turns a pin by 90° to the left
+- `Pins.getPosition`: the position of a pin as a point
+- `Values.lerp`: maps the slider position to a value
+
+## Notes
+
+For a circle from `Circles.circleAt`, ratio 0 is the leftmost point and the ratio runs clockwise on screen. Where the radius handle sits does not change that. 0 and 1 are the same point.
+
+## See also
+
+- `geometry/arcs-02-sampling`
+- `animations/10-swarm`

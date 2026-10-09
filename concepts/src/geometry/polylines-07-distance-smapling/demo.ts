@@ -3,7 +3,7 @@
 // @group Polylines
 
 import {
-    VisQuill, Reactive, Boxes, Segments, Points, Vectors,
+    VisQuill, Reactive, Boxes, Segments, Points, Pins,
     Circles, Polylines,
 } from "@visquill/visquill-gdk"
 import './styles.css'
@@ -65,10 +65,9 @@ export function run(div: HTMLDivElement) {
     // ─── Polyline ──────────────────────────────────────────────────────
     canvas.visuals.polyline("polyline-guide", polylinePoints)
 
-    const polylineRaw = canvas.visuals.polyline("polyline-raw", polylinePoints)
     const polyline    = canvas.visuals.polyline(
         "polyline-smooth",
-        Polylines.smooth(polylineRaw, smoothingIterations)
+        Polylines.smooth(polylinePoints, smoothingIterations)
     )
 
     // ─── Highlighted sub-section ───────────────────────────────────────
@@ -118,12 +117,9 @@ export function run(div: HTMLDivElement) {
 
         for (let i = 0; i < sampleCount; i++) {
             const pin = pins[i]!
-            const pt  = { x: pin.x, y: pin.y }
-            const dir = { x: pin.dx, y: pin.dy }
-
-            Circles.circleAt(pt, 5, dots[i])
-            Points.copy(pt, arrowStarts[i])
-            Vectors.add(pt, Vectors.scale(dir, arrowLength), arrowEnds[i])
+            Circles.circleAt(pin, 5, dots[i])
+            Points.copy(pin, arrowStarts[i])
+            Pins.getPosition(Pins.moveForward(pin, arrowLength), arrowEnds[i])
         }
 
         // Update the highlighted sub-section of the polyline

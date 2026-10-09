@@ -39,6 +39,18 @@
     user-select: none;
 }
 
+/* Index labels of the other vertices */
+.demos-shapes-cycleby-vertex-index-label {
+    fill: #64748b;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+    user-select: none;
+}
+
 /* Slider track */
 .demos-shapes-cycleby-slider-track {
     fill: #e2e8f0;

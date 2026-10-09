@@ -19,10 +19,3 @@
     stroke-width: 1.5px;
     rx: 4px;
 }
-
-/* ─── Position tracker points (invisible) ────────────────────────────── */
-
-.demos-card-deal-card-pos {
-    r: 0;
-    pointer-events: none;
-}

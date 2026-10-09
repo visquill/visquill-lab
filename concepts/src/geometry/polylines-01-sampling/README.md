@@ -1,16 +1,36 @@
-# Polyline Sampling
+# Sampling
 
-Drag a slider to move a probe along a smooth curve and read off its position, tangent direction, and left-hand normal — all updating live.
+Read the point, direction and normal at any position along a polyline.
 
-## What you see
+## How it works
 
-A smooth curve drawn through eleven waypoints (a faint dashed line shows the original control points). An orange dot marks the current sample position. A green arrow shows the tangent direction; a purple arrow shows the left-hand normal. Three fixed labels below the curve display the current ratio t, the direction angle in degrees, and the normal angle in degrees — they stay anchored to the bottom of the canvas and do not move with the probe.
+The curve is `Polylines.smooth` applied to a few control points. All sampling uses a ratio from 0 (first vertex) to 1 (last vertex), measured along the length:
 
-## Key concepts
+```ts
+Reactive.do([position], () => {
+    const pt = Polylines.pointAt(polyline, position)
+    Circles.circleAt(pt, 6, sampleDot)
 
-- **`Polylines.smooth(polyline, iterations)`** — applies Chaikin corner-cutting to produce a smooth curve from coarse waypoints; more iterations give a rounder result
-- **`Polylines.pointAt(polyline, ratio)`** — returns the point on the curve at a normalised position t ∈ [0, 1]
-- **`Polylines.directionAt(polyline, ratio)`** — returns a unit vector aligned with the curve's tangent at t; the angle changes continuously as t moves
-- **`Polylines.normalAt(polyline, ratio, left)`** — returns a unit vector perpendicular to the tangent; `left = true` gives the counter-clockwise (left-hand) normal
-- **`Vectors.angle(vector)`** — converts a unit direction vector to an angle in radians, used here to show human-readable degree values in the fixed labels
-- **Fixed vs moving labels** — labels whose *position* depends on `rvg.frame` stay put on resize; labels whose *text* depends on `position` update with the slider; these two concerns live in separate `Reactive.do` blocks
+    const dir = Polylines.directionAt(polyline, position)
+    Points.copy(pt, dirStart)
+    Vectors.add(pt, Vectors.scale(dir, arrowLength), dirEnd)
+
+    const nrm = Polylines.normalAt(polyline, position, true)
+    // …
+})
+```
+
+The direction is a unit vector along the curve. The normal is turned 90° to the left of it (`true`) or to the right. `Vectors.angle` turns both into the angles shown at the top left.
+
+## API
+
+- `Polylines.smooth`: rounds a polyline by cutting its corners
+- `Polylines.pointAt`: the point at a ratio along a polyline
+- `Polylines.directionAt`: the unit direction at a ratio
+- `Polylines.normalAt`: the unit normal at a ratio, to the left or right
+- `Vectors.angle`: the angle of a direction
+
+## See also
+
+- `geometry/polylines-06-batch-sampling`
+- `geometry/arcs-02-sampling`

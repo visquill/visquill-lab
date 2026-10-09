@@ -3,7 +3,7 @@
 // @group Extremes
 
 import {
-    VisQuill, Reactive, Extremes, Points, Boxes, Segments,
+    VisQuill, Reactive, Values, Vectors, Extremes, Points, Boxes, Segments,
     type RvgGroup, type RvgGraphic, type Real, Circles
 } from "@visquill/visquill-gdk"
 import './styles.css'
@@ -64,16 +64,13 @@ export function run(div: HTMLDivElement) {
 
     // ─── Reactive update ──────────────────────────────────────────────
     Reactive.do([angle, ...handles], () => {
-        const a  = angle.value
-        const dx = Math.cos(a)
-        const dy = Math.sin(a)
+        const dir = Vectors.fromAngle(angle)
 
         // extreme() selects the point that maximises dot(p, direction).
-        const result = Extremes.extreme(handles, (p, q) => {
-            const dotP = p.x * dx + p.y * dy
-            const dotQ = q.x * dx + q.y * dy
-            return dotQ - dotP   // negative when p is more extreme
-        })
+        const result = Extremes.extreme(handles, (p, q) =>
+            // negative when p is more extreme
+            Vectors.dotProduct(q, dir).value - Vectors.dotProduct(p, dir).value
+        )
 
         // Highlight the winning point.
         Circles.circleAt(result, 12, marker)
@@ -81,11 +78,11 @@ export function run(div: HTMLDivElement) {
 
         // Project a line from the winning point along the direction.
         Points.copy(result, projLine.at(0))
-        Points.move(result, dx * 200, dy * 200, projLine.at(1))
+        Vectors.add(result, Vectors.scale(dir, 200), projLine.at(1))
 
         // Update the direction arrow.
         Points.copy({ x: arrowCx, y: arrowCy }, arrowShaft.at(0))
-        Points.move({ x: arrowCx, y: arrowCy }, dx * arrowLength, dy * arrowLength, arrowShaft.at(1))
+        Vectors.add({ x: arrowCx, y: arrowCy }, Vectors.scale(dir, arrowLength), arrowShaft.at(1))
         Circles.circleAt({ x: arrowCx, y: arrowCy}, 4, arrowTip)
     })
 
@@ -128,7 +125,7 @@ function buildSlider(
     })
 
     Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
+        Values.lerp(min, max, t, value)
         valLbl.value = `${value.value.toFixed(2)} rad`
     })
 

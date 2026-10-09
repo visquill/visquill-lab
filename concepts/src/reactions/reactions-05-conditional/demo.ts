@@ -46,20 +46,20 @@ export function run(div: HTMLDivElement) {
     // ─── Segment ──────────────────────────────────────────────────────
     const handleA = canvas.handles.disk("handle-endpoint", startA)
     const handleB = canvas.handles.disk("handle-endpoint", startB)
-    canvas.visuals.segment("segment", handleA, handleB)
+    const segment = canvas.visuals.segment("segment", handleA, handleB)
 
-    // ─── Threshold ring (dashed circle around probe showing threshold) ─
+    // ─── Threshold ring around the probe ──────────────────────────────
     const thresholdRing = canvas.visuals.circle("threshold-ring")
 
     // ─── Probe handle ─────────────────────────────────────────────────
     const probe    = canvas.handles.disk("probe", probePos)
     const probeSvg = Svg.get(probe)
 
-    // ─── Closest point dot + connector ───────────────────────────────
-    // closestDot marks where the perpendicular from the probe meets the segment.
-    const closestDot   = canvas.visuals.circle("closest-dot")
-    const connector    = canvas.visuals.segment("connector")
+    // ─── Closest point on the segment + connector to the probe ────────
+    const closest      = canvas.visuals.point("closest-dot")
+    const connector    = canvas.visuals.segment("connector", probe, closest)
     const connectorSvg = Svg.get(connector)
+    const distance     = canvas.values.real()
 
     // ─── Status and distance labels ───────────────────────────────────
     const statusLabel   = canvas.text.label("", "status-label")
@@ -72,35 +72,17 @@ export function run(div: HTMLDivElement) {
     })
 
     // ─── Reactive block — the conditional ────────────────────────────
-    // All geometry, distance measurement, and visual switching live here.
-    // The branch reads exactly like English: "if near, do X, else do Y".
     Reactive.do([handleA, handleB, probe], () => {
-        // Construct a plain segment data object from the handle positions.
-        // canvas.shapes.segment is a data constructor, not a reactive node —
-        // safe to call inside a Reactive.do.
-        const segShape = canvas.shapes.segment(handleA, handleB)
-        const center = Circles.center(closestDot)
-
-        // Snap the closest-point dot to the nearest point on the segment.
-        Points.closestPointOnSegment(probe, segShape, center)
-
-        // Measure the distance from probe to that closest point.
-        const dist = Points.distanceToPoint(probe, center).value
-
-        // Update the dashed connector and threshold ring.
-        Points.copy(probe,     connector.at(0))
-        Points.copy(center, connector.at(1))
+        Points.closestPointOnSegment(probe, segment, closest)
+        Points.distanceToSegment(probe, segment, distance)
         Circles.circleAt(probe, threshold, thresholdRing)
-        Circles.circleAt(center, 6, closestDot)
 
-        // Distance label at the midpoint of the connector.
-        Points.moveRight(Points.midPoint(probe, center), 14, distLabel)
-        distLabel.value = `${Math.round(dist)} px`
+        Points.moveRight(Points.midPoint(probe, closest), 14, distLabel)
+        distLabel.value = `${Math.round(distance.value)} px`
 
-        // ── Branch ────────────────────────────────────────────────────
-        // The condition itself is one line.  Everything else is the
-        // consequence: writing different values to the same visuals.
-        const isNear = dist < threshold
+        // The condition is one line; the rest writes different values
+        // into the same visuals.
+        const isNear = distance.value < threshold
 
         probeSvg.style.fill        = isNear ? "#e04040" : "#f7a020"
         connectorSvg.style.opacity = isNear ? "1"       : "0.25"

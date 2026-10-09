@@ -64,11 +64,8 @@ export function run(div: HTMLDivElement) {
         )
     })
 
-    // ─── Base polyline (invisible — source for all three segments) ─────
-    const polyline = Polylines.smooth(
-        canvas.visuals.polyline("polyline-raw", polylinePoints),
-        smoothingIterations
-    )
+    // ─── Base polyline (not drawn — source for all three segments) ─────
+    const polyline = Polylines.smooth(polylinePoints, smoothingIterations)
 
     // ─── Three coloured output segments ───────────────────────────────
     // All three are recomputed together whenever A or B changes.

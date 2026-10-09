@@ -1,21 +1,43 @@
-# Pins - Placement & Orientation
+# Placement & Orientation
 
-Place pins along and beside a segment, with and without orientation alignment. Plus `lookAt` for pointing a pin at an arbitrary target.
+Place a pin on or beside a segment, with or without turning it along the segment.
 
-## What you see
+## How it works
 
-A draggable segment with two endpoint handles. A slider controls a ratio (0–1) along the segment. Four pins are shown simultaneously at that ratio:
+The placement functions come in pairs. The plain one only sets the position and keeps the pin's orientation. The `AndAlign` one also turns the pin along the segment from `p1` to `p2`:
 
-- **Grey (×2)** — `placeOnSegment` and `placeBesideSegment`: position is set, orientation is left unchanged (pointing right by default)
-- **Green** — `placeAndAlignOnSegment`: position on the segment, orientation aligned to the segment direction
-- **Orange** — `placeAndAlignBesideSegment`: offset perpendicularly from the segment, orientation aligned
+```ts
+// position on segment, orientation unchanged
+Pins.placeOnSegment(hA, hB, ratio, p)
+// position on segment, oriented along it
+Pins.placeAndAlignOnSegment(hA, hB, ratio, p)
+```
 
-In the lower half, a purple pin always faces a draggable target handle via `lookAt`. A dashed connector shows the relationship between pin and target.
+The `Beside` variants add a distance to the left or right of the segment:
 
-## Key concepts
+```ts
+Pins.placeAndAlignBesideSegment(hA, hB, ratio, besideDistance, true, p)
+```
 
-- **`Pins.placeOnSegment(p1, p2, ratio)`** — sets position at `ratio` along the segment; orientation is untouched
-- **`Pins.placeAndAlignOnSegment(p1, p2, ratio)`** — same position, but also rotates orientation to match the segment direction; the `AndAlign` suffix is the only difference from `placeOnSegment`
-- **`Pins.placeBesideSegment(p1, p2, ratio, distance, left)`** — offsets the pin perpendicularly from the segment; orientation unchanged
-- **`Pins.placeAndAlignBesideSegment(p1, p2, ratio, distance, left)`** — same offset position, orientation aligned; compare the grey and orange arrows to see the effect
-- **`Pins.lookAt(pin, target)`** — rotates orientation to point from the pin's current position toward `target`; position is unaffected
+`Pins.lookAt` does the opposite of placing: it keeps the position and turns the pin toward a target.
+
+```ts
+Reactive.do([hTarget], () => {
+    Pins.lookAt(lookPin, hTarget, lookPin)
+    // …
+})
+```
+
+## API
+
+- `Pins.placeOnSegment`: sets the position at a ratio along a segment
+- `Pins.placeAndAlignOnSegment`: the same, and orients the pin along the segment
+- `Pins.placeBesideSegment`: sets the position at a distance beside a segment
+- `Pins.placeAndAlignBesideSegment`: the same, and orients the pin along the segment
+- `Pins.lookAt`: turns a pin toward a point
+- `Pins.withOrientation`: gives the placed pins their initial orientation
+
+## See also
+
+- `geometry/pins-02-movement`
+- `geometry/points-01-placement`

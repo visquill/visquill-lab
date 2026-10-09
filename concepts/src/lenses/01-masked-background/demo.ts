@@ -18,8 +18,8 @@ const numberOfDataPoints = 100
 const pointBox = Boxes.box([150, 50], 800, 600)
 
 /**
- * Creates an interactive lens that counts scattered data points by category.
- * The lens is draggable. Bars update reactively as points enter or leave the lens area.
+ * Creates a draggable lens that shows the scattered points through a hole in a
+ * dark cover layer. The hole is a mask circle that follows the lens.
  *
  * @param div - HTML element where the graphic renders
  */

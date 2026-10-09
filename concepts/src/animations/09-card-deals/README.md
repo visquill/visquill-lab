@@ -1,15 +1,39 @@
 # Card Deal
 
-Staggered animation of multiple independent objects using `Animate.point.eased` and `Animate.real.eased`.
+Animate a layer's anchor pin to move and turn everything in the layer.
 
-## What you see
+## How it works
 
-Seven cards stacked in a deck. Click Deal and they fly out one by one into a fanned arc, each leaving 130 ms after the previous. Click again and they fold back in from the outside toward the centre.
+Each card is a layer with the card drawn around the layer's origin. The layer's anchor is a pin: a position and an orientation. `Animate.pin.eased` animates both, so one call moves and turns the card:
 
-## Key concepts
+```ts
+Animate.pin.eased(cards[i], fanPin(i), 520, {
+    easing: EasingFunctions.easeOutCubic,
+})
+```
 
-- **Per-object position + angle** — each card owns a reactive `Point` for position and a reactive `Real` for rotation; a single `Reactive.do([pos, angle], …)` block syncs both to the card layer's anchor pin using the two-step `Vectors.copy(pos, anchor)` → `Pins.withOrientation` pattern from the state machine demo
-- **`Animate.point.eased` for 2D movement** — a single call moves the card in both axes simultaneously with one easing curve, rather than two separate `real.eased` calls; the card's `Reactive.do` block fires on every interpolated frame, keeping the visual in sync
-- **`setTimeout` for stagger** — each card's deal animation is delayed by `i × 130 ms`; simple and explicit, no state machine or `onComplete` chaining needed for this kind of fire-and-forget stagger
-- **Asymmetric stagger on collect** — dealing staggers from the top card outward (linear); collecting staggers by distance from the centre so the outermost cards move first and the middle card lands last, giving a closing-fan feel
-- **SVG z-order as a feature** — cards are created 0 → 6 so card 6 sits on top; dealing starts from card 6 so the visible top card always leaves first, matching the physical intuition of picking from a deck
+The fan positions come from `Pins.placeAndAlignOnCircle`: a pin on a large circle below the cards, turned along the circle's tangent.
+
+```ts
+function fanPin(i: number) {
+    // …
+    return Pins.placeAndAlignOnCircle([ARC_X, ARC_Y], ARC_R, angle)
+}
+```
+
+`setTimeout` staggers the cards. Dealing starts with the last card created, which is drawn on top of the deck; collecting starts with the outer cards.
+
+## API
+
+- `Animate.pin.eased`: animates a pin's position and orientation together
+- `Pins.placeAndAlignOnCircle`: a pin on a circle at an angle, turned along the tangent
+- `Pins.withOrientation`: a pin at a point, facing a direction
+- `Pins.copy`: copies a pin into another one
+
+## Notes
+
+- Angles start at 3 o'clock, so `-Math.PI / 2` is the top of the circle.
+
+## See also
+
+- `animations/02-state-machine`

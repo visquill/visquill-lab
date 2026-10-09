@@ -6,7 +6,7 @@ import {
     Vectors,
     type RvgGroup,
     type Bool,
-    type Real, type Box, Boxes, type StringValue, Circles, EasingFunctions
+    type Real, type Box, Boxes, type StringValue, Circles, EasingFunctions, Points
 } from "@visquill/visquill-gdk";
 import type { BarPlotScheme, DataLensScheme } from "./schemes";
 import {
@@ -75,12 +75,8 @@ export interface ProximityGroupOptions {
      * Function that assigns arcs to lenses in a component.
      * Receives all lenses in the component, returns arc assignments.
      *
-     * Built-in presets available as `arcLayouts` export:
-     * - `arcLayouts.equal`: divide 2π equally among all lenses
-     * - `arcLayouts.weighted`: proportional to lens radius
-     * - `arcLayouts.preserve`: keep original radialSpan, just rotate to fit
-     *
-     * Default: arcLayouts.equal
+     * Required; there is no built-in preset. The demo defines `equal`, which
+     * divides the circle equally and gives a solo lens a half circle at the top.
      */
     arcLayout: ArcLayoutFunction,
 
@@ -151,7 +147,7 @@ export interface SnapGroup {
  * Proximity-based snapping and arc-sharing are managed internally.
  */
 export interface LensGroup {
-    /** All lenses in the group, in the order their schemes were passed to `createLensGroup`. */
+    /** All lenses in the group. */
     lenses: InteractiveLens[],
     /** The proximity group managing arc-sharing for these lenses. */
     proximityGroup: ProximityGroup,
@@ -165,9 +161,10 @@ export interface LensGroup {
 // ─── DataLens ─────────────────────────────────────────────────────────────────
 
 /**
- * Creates a lens from a `DataLensScheme`, automatically laying out its plots along the arc.
- * Arc width per plot is proportional to its number of categories — a plot with twice as many
- * categories gets twice the arc. After creation, set bar heights via `plots[i].bars[j].height.value`.
+ * Creates a lens from a `DataLensScheme`. Every plot covers the whole active arc; only the
+ * plot whose `aspect` matches the lens' `aspect` value is visible, so the plots are
+ * alternative views of the same lens. After creation, set bar heights via
+ * `plots[i].bars[j].height.value`.
  *
  * Use `createInteractiveLens` instead if you need a drag handle.
  *
@@ -247,8 +244,8 @@ export function createDataLens(group: RvgGroup, scheme: DataLensScheme): DataLen
  * Creates a `DataLens` with a draggable disk handle wired to its center.
  * The lens location follows the handle reactively.
  *
- * Prefer `createLensGroup` when working with multiple lenses — it composes
- * this function internally and adds snapping and arc-sharing on top.
+ * For several lenses, combine it with `createProximityGroup` (arc sharing) and
+ * `createSnapGroup` (handles that stick together).
  *
  * @param canvas - The parent layer to create the lens and handle in.
  * @param scheme - Declarative configuration for geometry, style, and plots.
@@ -272,8 +269,6 @@ const lensToProximityGroup = new WeakMap<Lens, ProximityGroup>()
  *
  * **Visual arc-sharing.** Lenses are grouped by proximity into connected components.
  * When a component forms, arcs are assigned using the provided `arcLayout` function.
- * The default `arcLayouts.equal` divides the circle equally, giving solo lenses a
- * half-circle arc (`π` rad) pointing upward.
  *
  * **Single membership.** A lens can only belong to one proximity group at a time.
  * Attempting to add a lens that's already in another proximity group throws an error.
@@ -285,25 +280,13 @@ const lensToProximityGroup = new WeakMap<Lens, ProximityGroup>()
  * @throws Error if any lens is already in another proximity group.
  *
  * @example
- * // Use default equal division
- * const group = createProximityGroup(canvas, [lens1, lens2])
- *
- * // Use weighted arc distribution
  * const group = createProximityGroup(canvas, [lens1, lens2], {
- *     arcLayout: arcLayouts.weighted,
- *     arcGap: 0.02,
- * })
- *
- * // Custom layout function
- * const group = createProximityGroup(canvas, [lens1, lens2], {
- *     arcLayout: (component) => {
- *         // Your custom logic
- *         return component.map((lens, i) => ({
- *             lens,
- *             radialSpan: Math.PI / component.length,
- *             startAngle: -i * Math.PI / component.length,
- *         }))
- *     }
+ *     threshold: 150,
+ *     arcLayout: (component, arcGap) => component.map((lens, i) => ({
+ *         lens,
+ *         radialSpan: 2 * Math.PI / component.length - arcGap * 2 * Math.PI,
+ *         anchorAngle: -Math.PI / 2 + i * 2 * Math.PI / component.length,
+ *     })),
  * })
  */
 export function createProximityGroup(
@@ -408,16 +391,17 @@ const lensToSnapGroup = new WeakMap<InteractiveLens, SnapGroup>()
  *
  * @param canvas - The parent canvas layer.
  * @param lenses - Interactive lenses to enable snapping for. Must have drag handles.
- * @param options - Configuration options (distance).
+ * @param options - Configuration options (snapDistance, unsnapDistance).
  * @returns A `SnapGroup`.
  * @throws Error if any lens is already in another snap group.
  *
  * @example
  * const snapGroup = createSnapGroup(canvas, [lens1, lens2, lens3])
  *
- * // Custom snap distance
+ * // Snap closer, let go a bit later
  * const snapGroup = createSnapGroup(canvas, [lens1, lens2], {
- *     distance: 30,
+ *     snapDistance: 30,
+ *     unsnapDistance: 60,
  * })
  */
 export function createSnapGroup(
@@ -425,7 +409,15 @@ export function createSnapGroup(
     lenses: InteractiveLens[],
     options?: SnapGroupOptions
 ): SnapGroup {
-    // ... existing validation ...
+    // Enforce single membership
+    for (const lens of lenses) {
+        if (lensToSnapGroup.get(lens)) {
+            throw new Error(
+                "Lens is already in a snap group. " +
+                "Each lens can only belong to one snap group at a time."
+            )
+        }
+    }
 
     const snapDistance = options?.snapDistance ?? DEFAULT_SNAP_DISTANCE
     const unsnapDistance = options?.unsnapDistance ?? snapDistance
@@ -436,7 +428,7 @@ export function createSnapGroup(
         )
     }
 
-    const active = canvas.values.bool(true)  // 1 = true, 0 = false
+    const active = canvas.values.bool(true)
 
     const group: SnapGroup = { lenses, active }
     for (const lens of lenses) {
@@ -514,7 +506,7 @@ const DEFAULT_ANIMATION_DURATION = 1000
  * @returns Distance in canvas units.
  */
 function dist(a: Point, b: Point): number {
-    return Math.hypot(a.x - b.x, a.y - b.y)
+    return Points.distanceToPoint(a, b).value
 }
 
 /**

@@ -78,13 +78,10 @@ export function run(container: HTMLDivElement): void {
 
     const canvas = rvg.canvas;
 
-    // ── 2. Layer order ────────────────────────────────────────────────────────
+    // ── 2. Loading layer ──────────────────────────────────────────────────────
     //
-    // contentLayer holds the actual visual elements,
-    // hidden under the loading overlay until everything is ready.
-    // loadingLayer is created second so it renders on top.
-    // @ts-ignore
-    const contentLayer = canvas.layer("content-");
+    // The overlay gets its own layer, so it can be removed in one step.
+    // The data itself is drawn by MapLibre below the SVG overlay.
     const loadingLayer = canvas.layer("loading-");
 
     // ── 3. Loading overlay ────────────────────────────────────────────────────
@@ -109,7 +106,7 @@ export function run(container: HTMLDivElement): void {
     //
     // Promise.all waits for both. Neither races ahead of the other.
 
-    const mapReady  = new Promise<void>(resolve => map.map!.once("load", resolve));
+    const mapReady  = new Promise<void>(resolve => map.map!.once("load", () => resolve()));
     const dataReady = loadCapitals();
 
     Promise.all([mapReady, dataReady]).then(([, capitals]) => {

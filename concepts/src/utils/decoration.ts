@@ -15,9 +15,8 @@ import {type RvgGroup, type Point, type Box, Boxes, Symbols} from "@visquill/vis
 export function createPoints(group: RvgGroup, box: Box, countPerType: number, types:string[]){
     const points: Point[][] = []
     const topLeft = Boxes.topLeft(box)
-    const bottomRight = Boxes.bottomRight(box)
-    const width = bottomRight.x - topLeft.x
-    const height = bottomRight.y - topLeft.y
+    const width = Boxes.width(box).value
+    const height = Boxes.height(box).value
     for(const type of types) {
         const pointsOfType: Point[] =  []
         for (let i = 0; i < countPerType; i++) {
@@ -49,9 +48,8 @@ export function createPoints(group: RvgGroup, box: Box, countPerType: number, ty
 export function createPoints2D(group: RvgGroup, box: Box, countPerType: number, primaryTypes: string[], secondaryTypes: string []) {
     const points: Point[][][] = []
     const topLeft = Boxes.topLeft(box)
-    const bottomRight = Boxes.bottomRight(box)
-    const width = bottomRight.x - topLeft.x
-    const height = bottomRight.y - topLeft.y
+    const width = Boxes.width(box).value
+    const height = Boxes.height(box).value
 
     for (const primary of primaryTypes) {
         const pointsOfPrimary: Point[][] = []

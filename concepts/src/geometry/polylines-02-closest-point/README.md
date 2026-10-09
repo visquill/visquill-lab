@@ -1,13 +1,30 @@
 # Closest Point
 
-Drag a handle anywhere on the canvas and watch a red dot snap to the nearest point on the curve, with live distance and position readouts.
+Project a point onto a polyline: the nearest point, its distance, and its position along the line.
 
-## What you see
+## How it works
 
-   The same smooth curve as the Polyline Sampling demo.  A blue draggable handle projects onto the curve: a red dot marks the closest point, a dashed connector joins the two, and a small label on the connector shows the distance in pixels.  Two info labels in the top-left corner show the distance and the normalised curve position t of the closest point.
+`Polylines.closestPoint` writes the nearest point on the curve into a point value. The connector was created once between the handle and that value, so it follows both. `Polylines.distanceTo` gives the length of the connector, and `Polylines.closestPosition` gives the ratio (0 to 1) of the closest point along the curve:
 
-## Key concepts
+```ts
+Reactive.do([handle], () => {
+    Polylines.closestPoint(polyline, handle, closestDot)
+    Circles.circleAt(closestDot, 6, closestDotMarker)
 
-- **`Polylines.closestPoint(polyline, point, result)`** — finds the nearest point on the polyline to a given point; used here to snap the red dot as the handle moves
-- **`Polylines.distanceTo(polyline, point, result)`** — the length of the shortest path from the point to any point on the polyline; drives both the connector label and the info panel
-- **`Polylines.closestPosition(polyline, point, result)`** — the normalised ratio t ∈ [0, 1] of the closest point; shows where along the curve the projection lands
+    const dist = Polylines.distanceTo(polyline, handle)
+    const pos = Polylines.closestPosition(polyline, handle)
+    // …
+})
+```
+
+## API
+
+- `Polylines.closestPoint`: the point on a polyline nearest to a point
+- `Polylines.distanceTo`: distance from a point to a polyline
+- `Polylines.closestPosition`: the ratio of that nearest point along the polyline
+- `Polylines.smooth`: rounds the control polyline
+
+## See also
+
+- `geometry/arcs-03-closest-point`
+- `geometry/polygons-03-containment`

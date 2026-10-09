@@ -1,14 +1,33 @@
-# Polyline Slicing
+# Slicing
 
-Two slider handles A and B carve the curve into three live segments: prefix, slice, and suffix.
+Cut a polyline into the part before a ratio, the part between two ratios, and the part after.
 
-## What you see
+## How it works
 
-The same smooth curve as the other Polylines demos.  Two handles sit on a track below — drag them to reposition A and B.  The curve is immediately redrawn in three colours: grey from start → A (prefix), orange from A → B (slice), grey from B → end (suffix).  Three info labels in the top-left corner show the current A and B values and the slice length as a percentage of the full curve.
+The three slice functions take ratios from 0 (start) to 1 (end) along the length. Together they cover the whole line without overlap:
 
-## Key concepts
+```ts
+Reactive.do([posA, posB], () => {
+    const a = Math.min(posA.value, posB.value)
+    const b = Math.max(posA.value, posB.value)
 
-- **`Polylines.slicePrefix(polyline, position, result)`** — returns the portion of the polyline from the start up to `position`
-- **`Polylines.sliceSuffix(polyline, position, result)`** — returns the portion from `position` to the end
-- **`Polylines.slice(polyline, startRatio, endRatio, result)`** — extracts the sub-polyline between two normalised positions; combining all three gives a complete, non-overlapping partition of the curve
-- **Two handles, one track** — both handles share the same track segment and use the same `closestPointOnSegment` / `relativePositionOnSegment` pattern; the reactive block clamps A ≤ B so the slice is always valid even when the handles cross
+    Polylines.slicePrefix(polyline, a, segPrefix)
+    Polylines.slice(polyline,  a, b, segSlice)
+    Polylines.sliceSuffix(polyline, b, segSuffix)
+    // …
+})
+```
+
+The two handles may cross on the track; the reaction sorts their values, so `a` is never greater than `b`. The base polyline is a plain shape from `Polylines.smooth` and is not drawn.
+
+## API
+
+- `Polylines.slicePrefix`: the part from the start to a ratio
+- `Polylines.slice`: the part between two ratios
+- `Polylines.sliceSuffix`: the part from a ratio to the end
+- `Polylines.smooth`: rounds the control polyline
+
+## See also
+
+- `geometry/polygons-04-slice`
+- `geometry/polylines-08-windowing`

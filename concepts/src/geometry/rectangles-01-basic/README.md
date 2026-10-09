@@ -1,13 +1,42 @@
-# Rectangle Construction
+# Construction
 
-Three ways to construct a rectangle, side by side.
+Build a rotated rectangle from a pin and a size, from an anchor point, or along a baseline.
 
-## What you see
+## How it works
 
-Three panels separated by dividers. **centeredRectangle** — a pin handle sets position and orientation; width and height sliders control the dimensions; the rectangle is always centred on the pin. **anchoredRectangle** — the same pin and size sliders, plus xRatio and yRatio sliders that shift the anchor point from one edge to the other; a dot marks where the pin sits on the rectangle. **alongSegment** — two endpoint handles define the baseline; a height slider sets the depth; a side toggle handle dragged above or below the baseline midpoint flips which side the rectangle grows toward.
+A rectangle in the GDK can be rotated, unlike a box. The pin's orientation sets the rotation. The handles here are pins, so `Pins.rotateBy` can tilt them at the start:
 
-## Key concepts
+```ts
+const pin    = canvas.handles.disk("pin-handle", [leftX, panelY])
+Pins.rotateBy(pin,Math.PI / 8,pin)
+// …
+Reactive.do([pin, width, height], () => {
+    Rectangles.centeredRectangle(pin, width, height,  result)
+})
+```
 
-- **`Rectangles.centeredRectangle(pin, width, height)`** — simplest construction; pin orientation rotates the entire rectangle
-- **`Rectangles.anchoredRectangle(pin, xRatio, yRatio, width, height)`** — xRatio=0 pins the left edge, xRatio=1 the right; yRatio=0 the top, yRatio=1 the bottom; 0.5/0.5 is equivalent to `centeredRectangle`
-- **`Rectangles.alongSegment(p1, p2, height, left)`** — derives orientation from the segment direction; `left` controls which side of the baseline the rectangle occupies
+`Rectangles.anchoredRectangle` puts the pin at a relative position inside the rectangle instead of the center: `xRatio` along the width, `yRatio` along the height. 0.5 and 0.5 give the same rectangle as `centeredRectangle`.
+
+`Rectangles.alongSegment` takes its rotation from a segment and stands on it, to its left or right. The demo decides the side from the toggle handle with a cross product:
+
+```ts
+const left  = Vectors.crossProduct(Vectors.direction(p1, p2), Vectors.direction(p1, toggle)).value < 0
+Rectangles.alongSegment(p1, p2, height, left, result)
+```
+
+## API
+
+- `Rectangles.centeredRectangle`: a rectangle centered on a pin
+- `Rectangles.anchoredRectangle`: a rectangle with the pin at relative position (x, y) inside it
+- `Rectangles.alongSegment`: a rectangle standing on a segment
+- `Pins.rotateBy`: turns a pin
+- `Vectors.crossProduct`, `Vectors.direction`: which side of the segment the toggle is on
+
+## Notes
+
+For an unrotated pin, `yRatio` 0 puts the pin on the bottom edge and 1 on the top edge.
+
+## See also
+
+- `geometry/rectangles-02-accessors`
+- `geometry/boxes-01-basics`

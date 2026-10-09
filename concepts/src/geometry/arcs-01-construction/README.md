@@ -1,14 +1,40 @@
-# Arc Construction
+# Construction
 
-Four ways to construct an arc, side by side.
+Four ways to build an arc: from a sweep, between two angles, from a circle, or from a chord.
 
-## What you see
+## How it works
 
-Four panels. **arcAt** — drag the centre, or either angle handle along the perimeter; the radius and sweep labels update. **arcBetween** — same two angle handles, but a toggle button flips the winding direction, showing how the same start and end angles produce two different arcs. **arcFromCircle** — a ghost circle stays visible underneath; drag the angle handles to clip a portion of it into an arc. **arcFromSagitta** — drag the two endpoint handles left and right to set the chord length, and drag the sagitta handle up and down to control the bulge; the sagitta value updates live.
+The first three panels take angles in radians, which the demo reads from the handles. Angles and a positive sweep both turn clockwise on screen.
 
-## Key concepts
+```ts
+const startDir = Vectors.direction(center, startH)
+const sa = Vectors.angle(startDir, true)
+const sw = Vectors.angleTo(startDir, Vectors.direction(center, endH), true)
 
-- **`arcAt(center, r, startAngle, sweepAngle)`** — explicit centre, radius, start angle, and signed sweep; the most direct construction
-- **`arcBetween(center, r, startAngle, endAngle, clockwise)`** — same as `arcAt` but you specify the end angle and winding direction separately; swapping `clockwise` gives the complementary arc
-- **`arcFromCircle(circle, startAngle, sweepAngle)`** — clips an existing circle to an arc; makes the relationship between circle and arc explicit
-- **`arcFromSagitta(start, end, sagitta)`** — defines the arc by its chord and the perpendicular distance from chord midpoint to arc midpoint; positive sagitta curves left of the start-to-end direction, negative curves right
+Arcs.arcAt(center, r, sa, sw, arc)
+```
+
+`Arcs.arcBetween` takes the end angle and a winding flag instead of a sweep. The button flips the flag: the same angles give the other part of the circle. `Arcs.arcFromCircle` cuts an arc from a circle.
+
+`Arcs.arcFromSagitta` needs no center, only a chord and the signed distance from its midpoint to the arc:
+
+```ts
+Arcs.arcFromSagitta(p1, p2, sag, arc)
+```
+
+## API
+
+- `Arcs.arcAt`: an arc from center, radius, start angle and sweep
+- `Arcs.arcBetween`: an arc from center, radius, start and end angle, and a winding direction
+- `Arcs.arcFromCircle`: an arc on a circle from start angle and sweep
+- `Arcs.arcFromSagitta`: an arc from two endpoints and a sagitta
+- `Vectors.angle`: the angle of a direction
+- `Vectors.angleTo`: the angle from one direction to another
+
+## Notes
+
+A positive sagitta bends the arc to the left of the start-to-end direction. With the chord drawn left to right, that is downward on screen.
+
+## See also
+
+- `geometry/arcs-02-sampling`

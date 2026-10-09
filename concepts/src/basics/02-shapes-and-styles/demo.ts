@@ -2,30 +2,23 @@
 // @category Basics
 
 import "./styles.css"
-import {VisQuill, Rectangles, Circles} from "@visquill/visquill-gdk";
+import {VisQuill, Rectangles} from "@visquill/visquill-gdk";
 
 /**
  * Showcases every basic shape primitive and styling option.
  *
  * Layout is arranged in two rows so shapes don't overlap:
- *   Top row    (y ≈ 50–200):  polygon, box, rounded rectangle, circle
+ *   Top row    (y ≈ 50–200):  polygon, box, rectangle, circle
  *   Bottom row (y ≈ 300–500): circle-3p, points, segment, polyline + text along path
  *
  * @param div - The div element that will contain the graphic
  */
 export function run(div: HTMLDivElement) {
-    // ─── Prefix chain ─────────────────────────────────────────────────────
-    // Every CSS class is built by concatenating three parts:
-    //
-    //   graphic prefix   +   layer prefix   +   class name you pass in
-    //   "demos-basics-"      "shapes-"          e.g. "title"
-    //                                           ─────────────────────────►
-    //                                           → "demos-basics-shapes-title"
-    //
-    // So when you write  canvas.textAt("...", [...], "title")
-    // the resulting <text> element gets the class "demos-basics-shapes-title".
-    // This means your CSS file only needs that one fully-qualified class —
-    // VisQuill assembles it for you automatically.
+    // ─── Class prefix ─────────────────────────────────────────────────────
+    // Every CSS class is the graphic's prefix plus the name you pass:
+    //   VisQuill.create(div, "demos-basics-shapes-")  +  "title"
+    //   → "demos-basics-shapes-title"
+    // Layers add their own prefix in between (see basics/04-layers).
     // ──────────────────────────────────────────────────────────────────────
 
     const rvg = VisQuill.create(div, "demos-basics-shapes-")
@@ -46,13 +39,14 @@ export function run(div: HTMLDivElement) {
     // Box — axis-aligned rectangle defined by two corner points (no rounding)
     canvas.visuals.box("box",[200, 60], [310, 160])
 
-    // Rounded rectangle — same as box but with a corner radius (last numeric arg)
-    // Inline @style lets you override fill/stroke without a separate CSS class
-    Rectangles.alongSegment([340, 60], [450, 160], 20,true,canvas.visuals.rectangle(
+    // Rectangle — a baseline and a height, so unlike a box it can be rotated.
+    // This one stands 20 px high on the diagonal baseline (340,60)→(450,160).
+    // Inline @style sets fill/stroke without a CSS class.
+    Rectangles.alongSegment([340, 60], [450, 160], 20, true, canvas.visuals.rectangle(
         "@style fill:darkred; stroke-width: 1px; stroke: black;"));
 
     // Circle — center point + radius
-    Circles.circleAt([540, 110], 55, canvas.visuals.circle("circle"))
+    canvas.visuals.circleAt("circle", [540, 110], 55)
 
     // ─── Bottom row ───────────────────────────────────────────────────────
 
@@ -89,6 +83,6 @@ export function run(div: HTMLDivElement) {
     ])
 
     // Text along a path — the text follows the shape of the polyline
-    // Args: text content, path to follow, start offset along path, whether to auto-flip
+    // Args: text, path to follow, distance from the path (px), flip, class
     canvas.text.labelAlongPolyline("Shapes & Styles", polyline, 5, false, "text-on-path")
 }

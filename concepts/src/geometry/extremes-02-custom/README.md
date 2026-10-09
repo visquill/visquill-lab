@@ -1,12 +1,33 @@
 # Custom Extreme
 
-Find the most extreme point in any direction using a custom comparison function.
+Find the extreme point by your own rule, here: furthest in any direction.
 
-## What you see
+## How it works
 
-A cloud of draggable points on the left and a direction arrow on the right. The angle slider rotates the direction vector through a full 360°. The purple ring highlights whichever point is most extreme in the current direction — equivalent to finding the support point of a convex hull in that direction. A dashed line extends from the winning point along the direction to make the geometry clear.
+`Extremes.extreme` takes a comparison of two points. It returns a negative number when the first point counts as more extreme. Here the rule is the projection onto a direction, so the winner is the point furthest along it. The direction comes from the slider's angle:
 
-## Key concepts
+```ts
+Reactive.do([angle, ...handles], () => {
+    const dir = Vectors.fromAngle(angle)
 
-- **`Extremes.extreme(points, comparison)`** — applies a custom comparator to find the most extreme point; the comparison receives two points and returns a negative number when the first is considered more extreme than the second
-- **Direction-based comparison** — `extreme` is used here with `(p, q) => dot(q, dir) - dot(p, dir)`, which selects the point with the largest projection onto `dir`; this is the general form that `topMost`, `bottomMost`, `leftMost`, and `rightMost` are all special cases of
+    const result = Extremes.extreme(handles, (p, q) =>
+        // negative when p is more extreme
+        Vectors.dotProduct(q, dir).value - Vectors.dotProduct(p, dir).value
+    )
+    // …
+})
+```
+
+At angle 0 the direction points right, so the result is the same as `Extremes.rightMost`. The four fixed directions are special cases of this rule.
+
+## API
+
+- `Extremes.extreme`: the most extreme point under a comparison
+- `Vectors.fromAngle`: a unit direction from an angle in radians
+- `Vectors.dotProduct`: the dot product of two vectors
+- `Vectors.scale`, `Vectors.add`: draw the projection line and the direction arrow
+- `Values.lerp`: maps the slider position to an angle
+
+## See also
+
+- `geometry/extremes-01-basic`

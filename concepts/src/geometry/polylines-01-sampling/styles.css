@@ -14,11 +14,6 @@
 }
 
 /* Hidden raw polyline used only as input to Polylines.smooth(). */
-.demos-polyline-sampling-polyline-raw {
-    fill: none;
-    stroke: none;
-}
-
 /* The smooth Chaikin curve — the main subject of the demo. */
 .demos-polyline-sampling-polyline-smooth {
     fill: none;

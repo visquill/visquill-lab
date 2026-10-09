@@ -1,24 +1,30 @@
-# Pins - Basics
+# Basics
 
-A single pin visualised as an arrow. Click the buttons to transform it; watch the info panel update in real time.
+A pin is a position plus an orientation vector; the `Pins` functions turn, scale and move it.
 
-## What you see
+## How it works
 
-A red arrow whose tail sits on a draggable circle handle. An info panel in the top-left corner shows the pin's current position (x, y), raw orientation vector (dir-x, dir-y), angle in degrees, and orientation length. Three rows of buttons apply different `Pins` transforms:
+The pin is a value from `canvas.values.pin()`. Each button calls one `Pins` function and writes the result back into the same pin. The pin is a sender, so the arrow and the info panel update after every click:
 
-- **Row 1 — rotation & flip:** `rotateLeft`, `rotateRight`, `rotateBy 45°`, `reverse`, `flipX`, `flipY`
-- **Row 2 — scale & length:** `scaleBy 1.5`, `resetLength`
-- **Row 3 — movement:** `moveForward`, `moveBackward`, `moveLeft`, `moveRight`
+```ts
+const pin = canvas.values.pin(startPosition)
+Pins.withLength(pin, initialLength, pin)
+// …
+{ label: "rotateBy 45°", apply: () => Pins.rotateBy(pin, Math.PI / 4, pin)     },
+{ label: "flipX",        apply: () => Pins.flipX(pin, pin)                      },
+{ label: "moveLeft",     apply: () => Pins.moveLeft(pin, moveStep, pin)         },
+```
 
-## Key concepts
+The move functions work in the pin's own frame: after a rotation, `Pins.moveLeft` goes to the left of the arrow, not to the left of the screen. They move by a distance in pixels; the orientation's length does not matter.
 
-- **Pin** — a position combined with an orientation vector (direction + length)
-- **`Pins.rotateLeft()` / `rotateRight()`** — rotate 90° in one call
-- **`Pins.rotateBy(angle)`** — rotate by an arbitrary radian angle
-- **`Pins.reverse()`** — flip orientation 180°
-- **`Pins.flipX()` / `flipY()`** — mirror the orientation across one axis; notice how dir-x or dir-y negates while the other component is unchanged
-- **`Pins.scaleBy()`** — multiply orientation length by a factor without changing direction
-- **`Pins.withLength()`** — set an absolute length while preserving direction
-- **`Pins.moveForward()` / `moveBackward()` / `moveLeft()` / `moveRight()`** — translate position relative to the pin's own orientation frame, not world axes; rotate the pin first and observe how the movement directions follow
-- **`Pins.getPosition()` / `Pins.getOrientation()`** — decompose a pin back into its position point and orientation vector
-- **`Pins.angle()` / `Pins.len()`** — read the current orientation angle and length
+## API
+
+- `Pins.rotateLeft`, `Pins.rotateRight`, `Pins.rotateBy`, `Pins.reverse`: turn the orientation
+- `Pins.flipX`, `Pins.flipY`: negate the orientation's x or y
+- `Pins.scaleBy`, `Pins.withLength`: change the orientation's length
+- `Pins.moveForward`, `Pins.moveBackward`, `Pins.moveLeft`, `Pins.moveRight`: move relative to the orientation
+- `Pins.getPosition`, `Pins.getOrientation`, `Pins.angle`, `Pins.len`: read the pin
+
+## See also
+
+- `geometry/pins-02-movement`

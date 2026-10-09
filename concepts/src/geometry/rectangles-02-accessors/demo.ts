@@ -3,8 +3,8 @@
 // @group Rectangles
 
 import {
-    VisQuill, Reactive, Rectangles, Points,
-    type RvgGroup, type Real, Circles, Pins
+    VisQuill, Reactive, Values, Rectangles, Points,
+    type RvgGroup, type Real, Circles, Pins, Segments
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -31,15 +31,13 @@ export function run(div: HTMLDivElement) {
     // ─── Rectangle ────────────────────────────────────────────────────
     const pin    = canvas.handles.disk("pin-handle", [cx, cy] )
     Pins.rotateBy(pin,Math.PI / 5,pin)
-    const rect   = canvas.shapes.rectangle()
-    const rectVis = canvas.visuals.rectangle("rect")
+    const rect   = canvas.visuals.rectangle("rect")
 
     const width  = buildSlider(canvas,  "width",  60, 220, 150, cx, sliderBaseY)
     const height = buildSlider(canvas,  "height", 30, 130,  80, cx, sliderBaseY + rowH)
 
     Reactive.do([pin, width, height], () => {
         Rectangles.centeredRectangle(pin, width.value, height.value,  rect)
-        Rectangles.copy(rect, rectVis)
     })
 
     // ─── Corner markers ───────────────────────────────────────────────
@@ -53,7 +51,7 @@ export function run(div: HTMLDivElement) {
     const blLbl = canvas.text.label("bottomLeft",  "corner-label-bl")
     const brLbl = canvas.text.label("bottomRight", "corner-label-br")
 
-    Reactive.do([pin, width, height], () => {
+    Reactive.do([rect], () => {
         const tl = Rectangles.topLeft(rect)
         const tr = Rectangles.topRight(rect)
         const bl = Rectangles.bottomLeft(rect)
@@ -81,16 +79,16 @@ export function run(div: HTMLDivElement) {
     const leftLbl   = canvas.text.label("leftSide",   "side-label")
     const rightLbl  = canvas.text.label("rightSide",  "side-label")
 
-    Reactive.do([pin, width, height], () => {
+    Reactive.do([rect], () => {
         const ts = Rectangles.topSide(rect)
         const bs = Rectangles.bottomSide(rect)
         const ls = Rectangles.leftSide(rect)
         const rs = Rectangles.rightSide(rect)
 
-        Points.copy(ts.at(0), topSeg.at(0));    Points.copy(ts.at(1), topSeg.at(1))
-        Points.copy(bs.at(0), bottomSeg.at(0)); Points.copy(bs.at(1), bottomSeg.at(1))
-        Points.copy(ls.at(0), leftSeg.at(0));   Points.copy(ls.at(1), leftSeg.at(1))
-        Points.copy(rs.at(0), rightSeg.at(0));  Points.copy(rs.at(1), rightSeg.at(1))
+        Segments.copy(ts, topSeg)
+        Segments.copy(bs, bottomSeg)
+        Segments.copy(ls, leftSeg)
+        Segments.copy(rs, rightSeg)
 
         Points.midPoint(ts.at(0), ts.at(1), topLbl);    Points.moveUp(topLbl,    12, topLbl)
         Points.midPoint(bs.at(0), bs.at(1), bottomLbl); Points.moveDown(bottomLbl, 12, bottomLbl)
@@ -110,7 +108,7 @@ export function run(div: HTMLDivElement) {
     canvas.text.labelAt("area()",        { x: 590, y: 265 }, "measure-key")
     canvas.text.labelAt("diagonal()",    { x: 590, y: 315 }, "measure-key")
 
-    Reactive.do([pin, width, height], () => {
+    Reactive.do([rect], () => {
         const w = Rectangles.width(rect)
         const h = Rectangles.height(rect)
         const a = Rectangles.area(rect)
@@ -152,7 +150,7 @@ function buildSlider(
     })
 
     Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
+        Values.lerp(min, max, t, value)
         valLbl.value = value.value.toFixed(0)
     })
 

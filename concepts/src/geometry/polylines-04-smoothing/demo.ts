@@ -30,13 +30,12 @@ const sliderBottomOffset = 55
 /**
  * Demonstrates `Polylines.smooth()` — Chaikin corner-cutting.
  *
- * Seven draggable handles define a coarse polyline.  Five overlaid curves
- * show the same polyline smoothed at 0, 1, 2, 4, and 8 iterations,
- * fading from dark (few passes) to light (many passes).  Drag any handle
- * and all five curves update instantly.
+ * Seven draggable handles define a coarse polyline.  Five curves
+ * hold the same polyline smoothed at 0, 1, 2, 4, and 8 iterations; drag
+ * any handle and all five update.
  *
- * A slider at the bottom controls a single "highlight" iteration level
- * so the user can isolate and inspect one curve at a time.
+ * A slider at the bottom picks which smoothed curve is shown next to the
+ * unsmoothed polyline (0 iterations).
  *
  * @param div - The div element that will contain the graphic.
  */
@@ -84,10 +83,8 @@ export function run(div: HTMLDivElement) {
     // ─── Reactive smoothing ────────────────────────────────────────────
     // Rebuild all curves whenever any handle moves.
     Reactive.do(handles, () => {
-        const raw = Polylines.polyline(handles)
-
         iterationLevels.forEach((n, i) => {
-            Polylines.smooth(raw, n, curves[i])
+            Polylines.smooth(handles, n, curves[i])
         })
     })
 
@@ -95,12 +92,11 @@ export function run(div: HTMLDivElement) {
     Reactive.do([highlight], () => {
         const idx  = Math.round(highlight.value * (iterationLevels.length - 2))+1
         const n    = iterationLevels[idx]
-        const verts = Math.pow(2, n) * (initialPoints.length - 1) + 1
 
         labelIter.value     = `highlight: ${n} iteration${n === 1 ? "" : "s"}`
-        labelVertices.value = `vertices: ~${verts}`
+        labelVertices.value = `vertices: ${curves[idx].elements.length}`
 
-        // Raise z-index of the highlighted curve, dim the rest.
+        // Show the highlighted curve and the unsmoothed polyline (level 0).
         iterationLevels.forEach((_, i) => {
             curves[i].visible.value = i === idx || i == 0
         })

@@ -31,7 +31,7 @@ export function run(div: HTMLDivElement) {
 
     // ─── Instruction label ────────────────────────────────────────────
     const instructions = canvas.text.label(
-        "Drag any point — connectors update to show nearest-neighbour matches",
+        "Drag any point · each set2 point gets its own set1 partner, with the smallest total distance",
         "instructions"
     )
     Reactive.do([rvg.frame], () => {
@@ -48,18 +48,16 @@ export function run(div: HTMLDivElement) {
     const handles2 = set2Positions.map(pos => canvas.handles.disk("point-2", pos))
 
     // ─── Match connectors ─────────────────────────────────────────────
-    // One segment per set1 point, updated reactively whenever any
+    // One segment per set2 point (the smaller set), updated whenever any
     // handle moves.
-    const connectors = handles1.map(() => canvas.visuals.segment("connector"))
+    const connectors = handles2.map(() => canvas.visuals.segment("connector"))
 
     Reactive.do([...handles1, ...handles2], () => {
-        const indices = Match.pointsWithPoints( handles2,handles1)
+        // indices[i] is the index in handles1 of the partner of handles2[i]
+        const indices = Match.pointsWithPoints(handles2, handles1)
 
         indices.forEach((matchIdx, i) => {
-            const from = handles1[matchIdx]
-            const to   = handles2[i]
-            Points.copy(from, connectors[i].at(0))
-            Points.copy(to,   connectors[i].at(1))
+            Segments.segment(handles1[matchIdx], handles2[i], connectors[i])
         })
     })
 }

@@ -99,10 +99,6 @@ export function run(div: HTMLDivElement) {
         Boxes.copy(collective, collectiveBox)
 
         // Label at top-left corner of collective box.
-        Points.moveUp(
-            Points.moveLeft(Boxes.topLeft(collective), 0),
-            10,
-            collectiveLabel
-        )
+        Points.moveUp(Boxes.topLeft(collective), 10, collectiveLabel)
     }, true)
 }

@@ -1,23 +1,24 @@
 //@name Clock
 //@category Animations
 
-// Demonstrates time-driven animation using Animate.real.eased.
-// Three clock hands rotate at different speeds, each with distinct easing:
-// the second hand ticks with overshoot, the minute hand glides, and the
-// hour hand creeps almost imperceptibly.
+// A clock whose hands are positions on circles. Each hand is driven by one
+// reactive Real, the fraction of a full turn, which Animate.real.eased moves
+// forward every second.
 
-import {VisQuill, Animate, Reactive, Vectors, Pins, EasingFunctions} from "@visquill/visquill-gdk"
+import {VisQuill, Animate, Reactive, Circles, Segments, EasingFunctions, type Real} from "@visquill/visquill-gdk"
 import './styles.css'
 
 // ─── Layout ───────────────────────────────────────────────────────────────
 const CX = 240, CY = 200
 const FACE_R = 120
 const HR_LEN = 58, MIN_LEN = 85, SEC_LEN = 100
+const TAIL_LEN = 15
 
-// Converts a fraction of a full revolution (0 = 12 o'clock) to a
-// standard angle where −π/2 points up in SVG coordinates.
-function clockAngle(fraction: number): number {
-    return -Math.PI / 2 + fraction * Math.PI * 2
+// A circle through 12, 3 and 6 o'clock. Circles.pointAt(dial, 0) is then
+// 12 o'clock and ratios run clockwise, so a fraction of a turn is directly a
+// position on the dial. Ratios outside [0, 1] wrap around.
+function dial(radius: number) {
+    return Circles.circle3P([CX, CY - radius], [CX + radius, CY], [CX, CY + radius])
 }
 
 export function run(div: HTMLDivElement) {
@@ -25,82 +26,59 @@ export function run(div: HTMLDivElement) {
     const canvas = rvg.layer("clock-")
 
     // ─── Face ─────────────────────────────────────────────────────────────
-    const rimPts = Array.from({length: 72}, (_, i) => {
-        const a = (i / 72) * Math.PI * 2
-        return {x: CX + Math.cos(a) * FACE_R, y: CY + Math.sin(a) * FACE_R}
-    })
-    canvas.visuals.polygon("face", rimPts)
+    Circles.circleAt([CX, CY], FACE_R, canvas.visuals.circle("face"))
 
-    // Tick marks — major at 12/3/6/9, minor elsewhere
+    // Tick marks: major at 12/3/6/9, minor elsewhere
+    const rim = dial(FACE_R)
+    const majorStart = dial(FACE_R - 16)
+    const minorStart = dial(FACE_R - 8)
     for (let i = 0; i < 12; i++) {
-        const a = (i / 12) * Math.PI * 2 - Math.PI / 2
         const major = i % 3 === 0
-        const r0 = major ? FACE_R - 16 : FACE_R - 8
         canvas.visuals.segment(
             major ? "tick-major" : "tick-minor",
-            [CX + Math.cos(a) * r0, CY + Math.sin(a) * r0],
-            [CX + Math.cos(a) * FACE_R, CY + Math.sin(a) * FACE_R]
+            Circles.pointAt(major ? majorStart : minorStart, i / 12),
+            Circles.pointAt(rim, i / 12)
         )
     }
 
     // ─── Hands ────────────────────────────────────────────────────────────
-    // Each hand is a layer with its anchor at the clock centre.
-    // A segment along the local +x axis is rotated by updating the
-    // layer anchor's orientation via Pins.withOrientation.
-
-    const hourLayer = canvas.layer()
-    Vectors.copy([CX, CY], hourLayer.anchor)
-    hourLayer.visuals.segment("hour", [0, 0], [HR_LEN, 0])
-
-    const minLayer = canvas.layer()
-    Vectors.copy([CX, CY], minLayer.anchor)
-    minLayer.visuals.segment("minute", [0, 0], [MIN_LEN, 0])
-
-    const secLayer = canvas.layer()
-    Vectors.copy([CX, CY], secLayer.anchor)
-    secLayer.visuals.segment("second", [-15, 0], [SEC_LEN, 0])
-
-    // Centre cap on top of the hands
-    canvas.visuals.point("cap", {x: CX, y: CY})
-
-    // ─── Reactive angles ──────────────────────────────────────────────────
-    // Three reactive Reals hold the current angle of each hand.
-    // Angles accumulate (never wrap) so the second hand doesn't snap
-    // backward when crossing 12.
+    // A hand runs from a short tail opposite its tip (ratio + 0.5) to the tip.
+    function hand(style: string, length: number, turn: Real) {
+        const segment = canvas.visuals.segment(style)
+        const tip = dial(length)
+        const tail = dial(TAIL_LEN)
+        Reactive.do([turn], () => {
+            Segments.segment(Circles.pointAt(tail, turn.value + 0.5), Circles.pointAt(tip, turn), segment)
+        })
+    }
 
     const now = new Date()
     const s = now.getSeconds()
     const m = now.getMinutes() + s / 60
     const h = (now.getHours() % 12) + m / 60
 
-    const secAngle = canvas.values.real(clockAngle(s / 60))
-    const minAngle = canvas.values.real(clockAngle(m / 60))
-    const hrAngle  = canvas.values.real(clockAngle(h / 12))
+    const secTurn = canvas.values.real(s / 60)
+    const minTurn = canvas.values.real(m / 60)
+    const hrTurn  = canvas.values.real(h / 12)
 
-    // Sync each hand's visual orientation to its angle value
-    Reactive.do([secAngle], () => {
-        Pins.withOrientation(secLayer.anchor, Vectors.fromAngle(secAngle), secLayer.anchor)
-    })
-    Reactive.do([minAngle], () => {
-        Pins.withOrientation(minLayer.anchor, Vectors.fromAngle(minAngle), minLayer.anchor)
-    })
-    Reactive.do([hrAngle], () => {
-        Pins.withOrientation(hourLayer.anchor, Vectors.fromAngle(hrAngle), hourLayer.anchor)
-    })
+    hand("hour", HR_LEN, hrTurn)
+    hand("minute", MIN_LEN, minTurn)
+    hand("second", SEC_LEN, secTurn)
+
+    // Centre cap on top of the hands
+    canvas.visuals.point("cap", {x: CX, y: CY})
 
     // ─── Tick ─────────────────────────────────────────────────────────────
-    // Every second, advance each angle and animate it to the new value.
-    // The second hand uses easeOutBack for a mechanical tick with overshoot;
-    // minute and hour hands glide with easeInOutSine.
-
+    // Every second each hand moves on by its share of a turn. The values only
+    // grow, so the second hand never runs backwards when it passes 12.
     setInterval(() => {
-        Animate.real.eased(secAngle, secAngle.value + Math.PI / 30, 300, {
+        Animate.real.eased(secTurn, secTurn.value + 1 / 60, 300, {
             easing: EasingFunctions.easeOutBack
         })
-        Animate.real.eased(minAngle, minAngle.value + Math.PI / 1800, 900, {
+        Animate.real.eased(minTurn, minTurn.value + 1 / 3600, 900, {
             easing: EasingFunctions.easeInOutSine
         })
-        Animate.real.eased(hrAngle, hrAngle.value + Math.PI / 21600, 900, {
+        Animate.real.eased(hrTurn, hrTurn.value + 1 / 43200, 900, {
             easing: EasingFunctions.easeInOutSine
         })
     }, 1000)

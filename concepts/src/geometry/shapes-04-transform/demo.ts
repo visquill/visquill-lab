@@ -72,7 +72,7 @@ export function run(div: HTMLDivElement) {
     const hTip    = content.handles.disk("handle-tip",    tipStart)
 
     // ─── Ghost shape ──────────────────────────────────────────────────
-    const ghost = content.visuals.polygon("ghost")
+    content.visuals.polygon("ghost", arrowVertices)
 
     // ─── Transformed shape ────────────────────────────────────────────
     const arrow = content.visuals.polygon("arrow")
@@ -106,10 +106,7 @@ export function run(div: HTMLDivElement) {
 
     // ─── Reference pin length (scale = 1) ────────────────────────────
     // The initial distance from anchor to tip defines "scale = 1".
-    const refLen = Math.hypot(
-        tipStart[0] - anchorStart[0],
-        tipStart[1] - anchorStart[1]
-    )
+    const refLen = Points.distanceToPoint(anchorStart, tipStart).value
     Pins.withLength(hAnchor,refLen,hAnchor)
 
     // ─── Reactive block — anchor moved ────────────────────────────────
@@ -130,13 +127,8 @@ export function run(div: HTMLDivElement) {
         const angleDeg = (Pins.angle(pin).value * 180 / Math.PI).toFixed(1)
         const scale    = (Pins.len(pin).value).toFixed(2)
 
-        // Ghost stays at original position.
-        const base = canvas.shapes.polygon(arrowVertices)
-        Shapes.copy(base, ghost)
-
         // Apply the similarity transform.
-        const result = Shapes.transform(base, pin)
-        Shapes.copy(result, arrow)
+        Shapes.transform(arrowVertices, pin, arrow)
 
         // Axis line.
         Points.copy(hAnchor, axis.at(0))

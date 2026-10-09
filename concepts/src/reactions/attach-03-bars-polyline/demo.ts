@@ -47,9 +47,11 @@ export function run(div: HTMLDivElement) {
         return bar
     })
 
-    Attach.rectanglesAlignedAlongPolyline(bars, polyline, {
+    Attach.rectanglesAlongPolyline(bars, polyline, {
         barWidth,
-        align: "center",
+        positionOnSegment: "center",
+        anchorPositionX:   "center",
+        anchorPositionY:   "bottom",
         distance:          0,
     })
 

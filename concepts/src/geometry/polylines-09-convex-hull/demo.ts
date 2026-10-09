@@ -21,7 +21,7 @@
 
 import {
     VisQuill, Reactive, Boxes, Points, Segments, Polylines, Polygons,
-    ConvexHulls, Offsets, Pins,
+    ConvexHulls, Offsets, Pins, Values,
     type Box, type Polyline,
 } from "@visquill/visquill-gdk";
 import "./styles.css";
@@ -59,8 +59,7 @@ export function run(div: HTMLDivElement) {
 
     // ── Source polyline ───────────────────────────────────────────────────────
 
-    const raw      = canvas.visuals.polyline("raw", POLYLINE_POINTS);
-    const polyline = Polylines.smooth(raw, SMOOTHING);
+    const polyline = Polylines.smooth(POLYLINE_POINTS, SMOOTHING);
 
     // Dimmed prefix / suffix outside the window; highlighted slice inside
     const segPrefix = canvas.visuals.polyline("seg-prefix");
@@ -72,12 +71,10 @@ export function run(div: HTMLDivElement) {
     const hTL = canvas.handles.disk("window-handle", WINDOW_TL);
     const hBR = canvas.handles.disk("window-handle", WINDOW_BR);
 
-    const windowBox  = canvas.shapes.box();
-    const windowRect = canvas.visuals.box("window-rect");
+    const windowBox = canvas.visuals.box("window-rect");
 
     Reactive.do([hTL, hBR], () => {
         Boxes.spannedBox(hTL, hBR, windowBox);
-        Boxes.copy(windowBox, windowRect);
     });
 
     // ── Offset slider ─────────────────────────────────────────────────────────
@@ -95,14 +92,14 @@ export function run(div: HTMLDivElement) {
         Points.move(br, -80, -40, sliderTrack.at(1));
 
         // Clamp the handle to the track on resize
-        const t = (offset.value - OFFSET_MIN) / (OFFSET_MAX - OFFSET_MIN);
+        const t = Values.inverseLerp(OFFSET_MIN, OFFSET_MAX, offset);
         Segments.pointAt(sliderTrack, t, sliderHandle);
     });
 
     Reactive.do([sliderHandle], () => {
         Points.closestPointOnSegment(sliderHandle, sliderTrack, sliderHandle);
-        const t = Points.relativePositionOnSegment(sliderHandle, sliderTrack).value;
-        offset.value = OFFSET_MIN + t * (OFFSET_MAX - OFFSET_MIN);
+        const t = Points.relativePositionOnSegment(sliderHandle, sliderTrack);
+        Values.lerp(OFFSET_MIN, OFFSET_MAX, t, offset);
         Points.moveUp(sliderHandle, 16, sliderLabel);
         sliderLabel.value = `offset  ${Math.round(offset.value)} px`;
     }, true);
@@ -130,10 +127,8 @@ export function run(div: HTMLDivElement) {
 
         // ── 1. Slice ──────────────────────────────────────────────────────────
 
-        const slice = Polylines.slice(polyline, start, end);
-
         Polylines.slicePrefix(polyline, start, segPrefix);
-        Polylines.copy(slice, segSlice);
+        Polylines.slice(polyline, start, end,  segSlice);
         Polylines.sliceSuffix(polyline, end,   segSuffix);
 
         // ── 2. Convex hull ────────────────────────────────────────────────────
@@ -143,14 +138,15 @@ export function run(div: HTMLDivElement) {
         // boundary positions predictable for Polygons.slice later.
         // The result is written into hullPolygon so it is visible.
 
-        ConvexHulls.topStart(slice, hullPolygon);
+        ConvexHulls.topStart(segSlice, hullPolygon);
 
         // ── 3. Offset ─────────────────────────────────────────────────────────
         //
         // Expands the hull outward by the current offset distance.
         // Returns a plain polygon value — not a reactive object.
-        // The third argument (true) means outward; the fourth (1) is one
-        // round of smoothing on the offset edges.
+        // The third argument (true) offsets to the left of the hull's
+        // winding, which is outward here; the fourth (1) adds one extra
+        // point at each corner.
 
         const offsetHull = Offsets.polygon(hullPolygon, offset.value, true, 1);
 

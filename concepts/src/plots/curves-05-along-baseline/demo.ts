@@ -91,12 +91,10 @@ export function run(div: HTMLDivElement) {
     const hTL = canvas.handles.disk("window-handle", WINDOW_TL);
     const hBR = canvas.handles.disk("window-handle", WINDOW_BR);
 
-    const windowBox  = canvas.shapes.box();
-    const windowRect = canvas.visuals.box("window-rect");
+    const windowBox = canvas.visuals.box("window-rect");
 
     Reactive.do([hTL, hBR], () => {
         Boxes.spannedBox(hTL, hBR, windowBox);
-        Boxes.copy(windowBox, windowRect);
     });
 
     // ── Plot visuals ──────────────────────────────────────────────────────────
@@ -109,7 +107,7 @@ export function run(div: HTMLDivElement) {
 
     const routeLen = Polylines.len(polyline).value;
 
-    Reactive.do([windowBox, polyline], () => {
+    Reactive.do([windowBox], () => {
         const result = windowPolyline(polyline, windowBox);
 
         if (!result) {

@@ -3,7 +3,7 @@
 // @group Circles
 
 import {
-    VisQuill, Circles, Pins, Reactive, Points, Boxes, Segments,
+    VisQuill, Circles, Pins, Reactive, Values, Points, Boxes, Segments,
     type RvgGroup, type RvgGraphic, type Real
 } from "@visquill/visquill-gdk"
 import './styles.css'
@@ -32,8 +32,8 @@ export function run(div: HTMLDivElement) {
     })
 
     // ─── Circle (center + one perimeter handle) ───────────────────────
-    // The perimeter handle is also the ratio=0 point — the place where
-    // sampling starts — so it does double duty as radius and start marker.
+    // The perimeter handle only sets the radius. Sampling always starts at
+    // the leftmost point (9 o'clock) and runs clockwise.
     const center  = canvas.handles.disk("center-handle",   [cx, cy])
     const perimH  = canvas.handles.disk("perimeter-handle", [cx + baseRadius, cy])
 
@@ -46,31 +46,23 @@ export function run(div: HTMLDivElement) {
 
     // ─── Sampled point, direction arrow, normal arrow ─────────────────
     // Everything is derived from a single Circles.pinAt call.
-    // The normal is Vectors.rotateLeft applied to the pin's orientation.
+    // The normal is the same pin turned by Pins.rotateLeft.
     const dot         = canvas.visuals.circle("sample-dot")
     const dirArrow    = canvas.visuals.segment("direction-arrow")
     const normalArrow = canvas.visuals.segment("normal-arrow")
-    const cwLabel     = canvas.text.label("", "winding-label")
 
     const ratio = buildSlider(canvas, rvg, "ratio", 0, 1, 0.25, sliderBottomY)
 
     Reactive.do([circle, ratio], () => {
-        const pin    = Circles.pinAt(circle, ratio)
-        const target = Pins.moveForward(pin,arrowLen)
-
+        const pin = Circles.pinAt(circle, ratio)
 
         Circles.circleAt(pin, 5, dot)
+
         Points.copy(pin, dirArrow.at(0))
-        Pins.getPosition(target,dirArrow.at(1))
+        Pins.getPosition(Pins.moveForward(pin, arrowLen), dirArrow.at(1))
 
         Points.copy(pin, normalArrow.at(0))
-        Pins.getPosition(Pins.moveForward(Pins.rotateLeft(pin),arrowLen),normalArrow.at(1))
-
-        // Winding direction — changes when you drag the perimeter handle
-        // past the center relative to the construction winding order
-        const isCW = Circles.isClockwise(circle)
-        Points.moveRight(center, 20, cwLabel)
-        cwLabel.value = isCW.value ? "CW" : "CCW"
+        Pins.getPosition(Pins.moveForward(Pins.rotateLeft(pin), arrowLen), normalArrow.at(1))
     })
 }
 
@@ -110,7 +102,7 @@ function buildSlider(
     })
 
     Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
+        Values.lerp(min, max, t, value)
         valLbl.value = value.value.toFixed(2)
     })
 

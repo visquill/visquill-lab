@@ -3,7 +3,7 @@
 // @group Bars
 
 import {
-    VisQuill, Reactive, Boxes, Segments, Points, Bars, type Rectangle,
+    VisQuill, Reactive, Boxes, Segments, Points, Bars, type Rectangle, type Point,
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -15,15 +15,10 @@ const cy          = 255
 const radius      = 160
 const vertexCount = 6
 
-const polygonPoints: [number, number][] = Array.from(
+// First vertex at 12 o'clock (angle −π/2), then clockwise.
+const polygonPoints: Point[] = Array.from(
     { length: vertexCount },
-    (_, i) => {
-        const angle = (i / vertexCount) * Math.PI * 2 - Math.PI / 2
-        return [
-            Math.round(cx + radius * Math.cos(angle)),
-            Math.round(cy + radius * Math.sin(angle)),
-        ]
-    }
+    (_, i) => Points.placeOnCircle([cx, cy], radius, (i / vertexCount) * Math.PI * 2 - Math.PI / 2)
 )
 
 const values = [55, 80, 45, 90, 60, 75].map(v => ({ value: v }))

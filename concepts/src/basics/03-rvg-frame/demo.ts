@@ -34,11 +34,6 @@ export function run(div: HTMLDivElement) {
     const bottomLeft  = canvas.visuals.point("corner");
     const bottomRight = canvas.visuals.point("corner");
 
-    canvas.visuals.segment("edge", topLeft,     topRight);
-    canvas.visuals.segment("edge", topRight,    bottomRight);
-    canvas.visuals.segment("edge", bottomRight, bottomLeft);
-    canvas.visuals.segment("edge", bottomLeft,  topLeft);
-
     Reactive.do([rvg.frame], () => {
         Boxes.copy(rvg.frame, frame);
         Boxes.topLeft(rvg.frame, topLeft);
@@ -58,7 +53,6 @@ export function run(div: HTMLDivElement) {
 
     for (const { point, text, ox, oy, side } of corners) {
         const label = canvas.text.label(text, "corner-label-" + side);
-        console.log(label)
         Attach.pointToPoint(label, point, { offset: { x: ox, y: oy } });
     }
 

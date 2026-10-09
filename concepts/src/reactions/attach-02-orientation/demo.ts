@@ -41,18 +41,19 @@ export function run(div: HTMLDivElement) {
     // Both panels use the same path so the only variable is orientation.
     const rawPath  = canvas.shapes.polyline(pathWaypoints)
     const smoothed = canvas.visuals.polyline("path", Polylines.smooth(rawPath, smoothSteps))
+
     // ─── Left panel — relative orientation ───────────────────────────
     // The rectangle rotates to align with the path tangent at the
     // current position.
     {
         const pin  = canvas.values.pin()
         const rect = canvas.visuals.rectangle("arrow-relative")
-        Attach.pointToPoint(pin, canvas.values.pin())  // initial placeholder
 
-        const ratio = buildSlider(canvas, rvg, "position", 0, 1, 0.1, leftCx, sliderY,"orientation: \"relative\"")
+        const ratio = buildSlider(canvas, rvg, "position", 0.1, leftCx, sliderY,
+            "orientation: \"relative\"", "shape rotates with the path tangent")
 
         Reactive.do([ratio], () => {
-            Polylines.pinAt(smoothed, ratio.value, pin)
+            Polylines.pinAt(smoothed, ratio, pin)
         })
 
         Attach.rectangleToPoint(rect, pin, {
@@ -70,10 +71,11 @@ export function run(div: HTMLDivElement) {
         const pin  = canvas.values.pin()
         const rect = canvas.visuals.rectangle("arrow-absolute")
 
-        const ratio = buildSlider(canvas, rvg, "position", 0, 1, 0.1, rightCx, sliderY,"orientation: \"absolute\"")
+        const ratio = buildSlider(canvas, rvg, "position", 0.1, rightCx, sliderY,
+            "orientation: \"absolute\"", "shape keeps its orientation")
 
         Reactive.do([ratio], () => {
-            Polylines.pinAt(smoothed, ratio.value, pin)
+            Polylines.pinAt(smoothed, ratio, pin)
         })
 
         Attach.rectangleToPoint(rect, pin, {
@@ -87,23 +89,22 @@ export function run(div: HTMLDivElement) {
 }
 
 // ─── Slider ───────────────────────────────────────────────────────────────
+// Returns the handle position as a ratio from 0 to 1 along the track.
 function buildSlider(
-    canvas:  RvgGroup,
-    rvg:     RvgGraphic,
-    label:   string,
-    min:     number,
-    max:     number,
-    initial: number,
-    cx:      number,
-    yOffset: number,
-    caption: string,
+    canvas:   RvgGroup,
+    rvg:      RvgGraphic,
+    label:    string,
+    initial:  number,
+    cx:       number,
+    yOffset:  number,
+    caption:  string,
+    subtitle: string,
 ): Real {
 
     const l1 = canvas.text.label(caption, "panel-label")
-    const l2 = canvas.text.label("shape rotates with the path tangent",  "panel-sub")
+    const l2 = canvas.text.label(subtitle, "panel-sub")
 
-    const t      = canvas.values.real((initial - min) / (max - min))
-    const value  = canvas.values.real(initial)
+    const t      = canvas.values.real(initial)
     const track  = canvas.visuals.segment("slider-track")
     const handle = canvas.handles.disk("slider-handle")
     const lbl    = canvas.text.label(label, "slider-label")
@@ -124,9 +125,5 @@ function buildSlider(
         Points.relativePositionOnSegment(handle, track, t)
     })
 
-    Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
-    })
-
-    return value
+    return t
 }

@@ -1,55 +1,40 @@
 # Controls
 
-Reusable SVG buttons for VisQuill graphics: plain buttons, styled buttons, interactive buttons with click handlers, toggle buttons that cycle through values, and an options panel for stacking toggles.
+SVG buttons, toggle buttons that cycle through values, and a panel of toggles.
 
-## What it gives you
+## Usage
 
-A `button()` function that creates a rectangle with an optional text label, anchored at its bottom-left corner. A `toggleButton()` that cycles through a set of values on each click and updates its label automatically. An `optionsPanel()` that stacks multiple toggle buttons with shared layout settings.
+```ts
+import { Controls, Options } from "@visquill/visquill-blueprints"
 
-Buttons are standard SVG elements — attach click handlers via `Svg.get(btn.frame).addEventListener("click", ...)`.
-
-## Basic usage
-
-```typescript
-import { Controls } from "@visquill/visquill-blueprints"
-import { Svg } from "@visquill/visquill-gdk"
-
-const btn = Controls.button(group, {
+Controls.button(group, {
     bottomLeft: { x: 50, y: 100 },
     width: 120,
     height: 40,
-    label: { text: "Click me" }
+    label: { text: "Click me" },
+    onClick: () => console.log("clicked"),
 })
 
-Svg.get(btn.frame).addEventListener("click", () => {
-    // handle click
-})
+const radii = new Options.Pixels({ values: [80, 100, 120], title: "Radius", animationTime: 1000 })
+const radius = radii.bind(canvas.values.real())   // follows every click
+
+Controls.optionsPanel(group, { anchor: { x: 10, y: 40 }, entries: [radii] })
 ```
 
 ## Options
 
-**`Controls.button(group, options)`**
+`Controls.button(group, options)`:
 
-| Option | Type | Description |
-|---|---|---|
-| `bottomLeft` | `Point` | Anchor point — button grows right and up from here |
-| `width` | `number` | Button width in canvas units |
-| `height` | `number` | Button height in canvas units |
-| `style` | `string` | CSS class for the rectangle (default: inline dark-blue fill) |
-| `label.text` | `string` | Label text (omit for no label) |
-| `label.style` | `string` | CSS class for the label |
-| `label.anchorX` | `"left" \| "center" \| "right"` | Horizontal text anchor within the button |
-| `label.anchorY` | `"top" \| "center" \| "bottom"` | Vertical text anchor within the button |
+| Option | Meaning |
+|---|---|
+| `bottomLeft` | corner the button grows right and up from |
+| `width`, `height` | size, number or `Real` |
+| `style` | class of the rectangle |
+| `label` | `text`, `style`, `anchorX`, `anchorY` |
+| `onClick` | click handler |
 
-**`Controls.toggleButton(group, options)`**
+`Controls.toggleButton` takes `toggle` (an `Options` object) instead of `label`; each click calls `next()` and updates the label.
 
-Same as `button` plus a `toggle` field — an `Options` instance (`Strings`, `Pixels`, `Radians`, `Booleans`) that manages the cycling value and label text.
+`Controls.optionsPanel` stacks one toggle per entry. `anchor` is the bottom-left corner of the first button; `gap` (default 30) is the step down.
 
-**`Controls.optionsPanel(group, options)`**
-
-| Option | Type | Description |
-|---|---|---|
-| `anchor` | `Point` | Top-left origin of the stack |
-| `entries` | `Options[]` | One toggle button per entry |
-| `gap` | `number` | Vertical spacing between buttons |
-| `width`, `height`, `style` | | Shared across all buttons in the panel |
+`Options.Pixels`, `Radians`, `Integers` animate bound `Real` values when `animationTime` is set. `Strings`, `Booleans` and `Points` set their values directly.

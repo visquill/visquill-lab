@@ -2,12 +2,11 @@
 // @category Basics
 
 // Introduces the Attach namespace: declarative one-line bindings that keep
-// one element positioned relative to another.  No Reactive.do needed.
+// one element positioned relative to another, without writing the reaction.
 // Drag any handle to see everything follow automatically.
 
 import {
-    VisQuill, Attach, Reactive, Circles, Boxes, Points, Segments,
-    Symbols,
+    VisQuill, Attach, Reactive, Boxes, Points, Segments, Symbols, Values,
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -103,11 +102,15 @@ export function run(div: HTMLDivElement) {
         const inner = canvas.visuals.circle("inner-circle")
         const outer = canvas.visuals.circle("outer-circle")
 
-        Attach.circleCenterToPoint(inner, canvas.values.point([COL_X[1], ROW2_Y]))
+        const center = canvas.values.point([COL_X[1], ROW2_Y])
+        Attach.circleCenterToPoint(inner, center)
 
+        // Attach once, outside any reaction: every Attach call adds a binding.
+        // The reaction only writes the radius value.
+        const radius = canvas.values.real()
+        Attach.circleRadiusToValue(inner, radius)
         Reactive.do([radiusHandle], () => {
-            const r = Math.max(12, Points.distanceToPoint({ x: COL_X[1], y: ROW2_Y }, radiusHandle).value)
-            Attach.circleRadiusToValue(inner, r)
+            Values.max(12, Points.distanceToPoint(center, radiusHandle), radius)
         })
 
         // The outer circle is 20 px larger than the inner at all times.
@@ -130,12 +133,10 @@ export function run(div: HTMLDivElement) {
         // These shapes are in local coordinates — they don't know where the
         // layer is on the canvas. The anchor position determines that.
         group.visuals.box("group-box", [-60, -20], [60, 20])
-        group.text.labelAt("whole group", [0, 0], "group-label")
+        group.text.labelAt("whole group", [0, -34], "group-label")
 
-        const leftDot  = group.visuals.circle("group-dot")
-        const rightDot = group.visuals.circle("group-dot")
-        Circles.circleAt([-60, 0], 7, leftDot)
-        Circles.circleAt([ 60, 0], 7, rightDot)
+        group.visuals.circleAt("group-dot", [-60, 0], 7)
+        group.visuals.circleAt("group-dot", [ 60, 0], 7)
 
         canvas.text.labelAt(
             "pointToPoint(group.anchor, handle)  — the whole layer follows",

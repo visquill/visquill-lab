@@ -1,12 +1,38 @@
-# Polyline Batch Sampling
+# Batch Sampling
 
-Sampling N evenly spaced pins along a polyline in a single pass.
+Sample many positions along a polyline in one call instead of one call per position.
 
-## What you see
+## How it works
 
-A smooth polyline with a slider controlling N (3–20). At each value of N, orange dots and green tangent arrows appear at evenly spaced positions along the curve. Increasing N densifies the samples without changing their relative positions — the spacing stays even because the ratios are recomputed from scratch each time. Unused slots disappear rather than lingering at stale positions.
+`Polylines.pinsAt` takes a list of ratios and returns one pin per ratio, in the same order. It walks the polyline once for all of them, which is cheaper than calling `Polylines.pinAt` N times. A ratio is anything with a `value`, so plain objects work:
 
-## Key concepts
+```ts
+Reactive.do([countVal], () => {
+    const n       = Math.round(countVal.value)
+    const ratios  = Array.from({ length: n }, (_, i) => ({value: i / (n - 1)}))
+    // Evenly spaced ratios from 0 to 1, sampled in one walk
+    const pins = Polylines.pinsAt(polyline, ratios)
+    // …
+}, true)
+```
 
-- **`Polylines.pinsAt(polyline, ratios)`** — samples all N pins in one edge walk regardless of how large N is; more efficient than N individual lookups
-- **`visual.visible`** — toggled per slot to hide unused pre-allocated markers without recreating them
+Each pin carries the position and the unit direction, so the dot and the arrow come from it directly:
+
+```ts
+Circles.circleAt(pin, 5, dots[i])
+Points.copy(pin, arrowStarts[i])
+Pins.getPosition(Pins.moveForward(pin, arrowLength), arrowEnds[i])
+```
+
+The markers for the maximum count are created once; the ones not needed are hidden with `visible.value = false`.
+
+## API
+
+- `Polylines.pinsAt`: pins at many ratios along a polyline, in one walk
+- `Pins.moveForward`, `Pins.getPosition`: the arrow tip
+- `Polylines.smooth`: rounds the control polyline
+
+## See also
+
+- `geometry/polylines-07-distance-smapling`
+- `geometry/polylines-01-sampling`

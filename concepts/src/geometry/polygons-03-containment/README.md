@@ -1,14 +1,39 @@
-# Polygon Contains Point
+# Contains Point
 
-Drag a probe point to test whether it falls inside or outside the polygon, with live distance-to-boundary and closest-point readouts.
+Test whether a point is inside a polygon, and find its nearest point on the boundary.
 
-## What you see
+## How it works
 
-A hexagonal polygon with draggable vertices and a larger probe handle.  The probe turns green when inside the polygon and red when outside.  A dashed line connects it to the nearest point on the polygon boundary, with the distance shown at the midpoint.  Reshaping the polygon by dragging its vertices updates all three readouts instantly.
+One reaction depends on the vertices and the probe. It rebuilds the polygon, then runs three queries:
 
-## Key concepts
+```ts
+Reactive.do([...handles, probe], () => {
+    Polygons.polygon(handles, polygon)
 
-- **`Polygons.containsPoint()`** — ray-casting test; returns true when the probe is inside the polygon; points exactly on the boundary may return either result
-- **`Polygons.closestPoint()`** — the nearest point on the polygon *boundary* to the probe, regardless of whether the probe is inside or outside; this is what the dashed line connects to
-- **`Polygons.distanceTo()`** — the distance from the probe to the boundary; always non-negative with no sign flip when crossing from inside to outside — if you need signed distance you must combine it with `containsPoint()`
-- **`Svg.get()`** — used here to update the probe's fill colour directly in response to `containsPoint()`, demonstrating how reactive results can drive DOM style changes alongside VisQuill's own visual system
+    Polygons.closestPoint(polygon, probe, closestPt)
+    Polygons.distanceTo(polygon, probe, distanceVal)
+    Polygons.containsPoint(polygon, probe, isInsideVal)
+    // …
+    probeSvg.style.fill = inside ? colourInside : colourOutside
+}, true)
+```
+
+The connector was created once with the probe and `closestPt` as its ends, so it follows both.
+
+The probe's color is set on its SVG element, which `Svg.get` returns.
+
+## API
+
+- `Polygons.containsPoint`: whether a point lies inside a polygon
+- `Polygons.closestPoint`: the point on the boundary nearest to a point
+- `Polygons.distanceTo`: distance from a point to the boundary
+- `Polygons.polygon`: writes vertices into a polygon
+- `Svg.get`: the SVG element of a visual
+
+## Notes
+
+`Polygons.distanceTo` measures to the boundary and is never negative, also inside. For a signed distance, combine it with `Polygons.containsPoint`.
+
+## See also
+
+- `reactions/reactions-02-distances`

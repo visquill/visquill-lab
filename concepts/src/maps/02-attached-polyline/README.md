@@ -1,17 +1,45 @@
 # Reprojected Geometry
 
-Keeping SVG geometry locked to geography as the map pans and zooms.
+Geometry defined in lat/lng is rebuilt in screen pixels on every map frame, and then works like any other VisQuill shape.
 
-## What you see
+## How it works
 
-A smoothed polyline traces the Rhine river from Basel to Rotterdam, staying pinned to the map through any pan, zoom, or animated transition. A draggable handle floats freely over the map; when released it snaps to the nearest point on the route. A label on the handle shows the position as a percentage along the river.
+The Rhine is a list of lat/lng waypoints. On every render frame they are projected to the screen and smoothed into the route polyline.
 
-## Key concepts
+```ts
+map.onRender(() => {
+    const screen = RHINE.map(p => map.latLngToScreen(p));
+    Polylines.smooth(screen, 2, route);
+});
+```
 
-- **`onRender` + `latLngToScreen`** — the core reprojection pattern. On every MapLibre render frame, each geographic waypoint is projected to screen pixels and the polyline is rebuilt. `onRender` fires more frequently than `onMove` — including during tile-loading redraws and momentum scrolling — so the geometry never lags behind the map.
+The route is an ordinary polyline, so the handle reaction can depend on it. `Polylines.closestPoint` finds the snap dot, and `Polylines.closestPosition` gives the position along the river (0 at Basel, 1 at Rotterdam).
 
-- **`Polylines.smooth`** — Chaikin corner-cutting applied to the projected screen points. The waypoints are sparse enough to produce visible corners without smoothing; two passes turn them into a curve. The smoothed polyline is rebuilt from scratch every frame, so the output always reflects the current projection.
+```ts
+Reactive.do([handle, route], () => {
+    Polylines.closestPoint(route, handle, snapDot);
 
-- **Reprojected geometry is fully interactive** — `Polylines.closestPoint` and `Polylines.closestPosition` work on the reprojected screen-space polyline exactly as they would on any other VisQuill polyline. The map integration is isolated to the `onRender` callback; everything else is standard VisQuill.
+    const t = Polylines.closestPosition(route, handle).value;
+    posLabel.value = `${Math.round(t * 100)}%`;
+    // …
+});
+```
 
-- **Snap on release** — while the handle is dragged, a snap dot and connector show where it would land on the route. On drag end (`handle.active` goes false), `Polylines.closestPoint` writes the snap position back into the handle itself, moving it onto the line.
+When the drag ends (`handle.active` turns false), the handle itself is moved onto the route.
+
+## API
+
+- `Polylines.smooth`: rounds the projected waypoints into a river
+- `Polylines.closestPoint`: the snap point on the route
+- `Polylines.closestPosition`: the position along the route as a ratio
+- `Segments.segment`: the connector from handle to snap point
+- `Attach.pointToPoint`: the label follows the handle
+
+## Notes
+
+The handle stays in screen pixels: after a pan it is no longer on the route until it is dragged again.
+
+## See also
+
+- `maps/01-basics`
+- `maps/05-route-chart`

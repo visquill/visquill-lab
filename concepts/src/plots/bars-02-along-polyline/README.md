@@ -1,11 +1,25 @@
 # Bars Along Polyline
 
-One bar per segment of an open path.
+One bar per segment of an open path, with the segment as the bar's base.
 
-## What you see
+## How it works
 
-Seven draggable vertices connected by six segments. A bar grows from each segment, sized by a fixed set of values. Drag any vertex to reshape its adjacent segments and watch the two bars on either side follow immediately. Because the path is open, there is no bar on a closing edge — only the six segments between consecutive vertices carry one.
+`Bars.fromSegment` takes the two end points of a segment and a height. The segment is the base of the bar, so its width and direction come from the two points. The vertices are handles, so each bar follows them.
 
-## Key concepts
+```ts
+Reactive.do([...handles], () => {
+    for (let i = 0; i < values.length; i++)
+        Bars.fromSegment(handles[i], handles[i + 1], values[i], true, barVisuals[i] as Rectangle)
+}, true)
+```
 
-- **`Bars.fromSegment(p1, p2, value, left, result)`** — constructs a bar whose baseline is the segment from p1 to p2; orientation and width are derived entirely from the segment, so bars follow automatically when vertices move
+Seven vertices give six segments and six bars. With `left` set to `true`, each bar grows to the left of the direction from `handles[i]` to `handles[i + 1]`.
+
+## API
+
+- `Bars.fromSegment`: a bar whose base is a segment, with the given height
+
+## See also
+
+- `plots/bars-03-along-polygon`
+- `plots/bars-01-anchoring`

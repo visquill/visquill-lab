@@ -1,10 +1,10 @@
-/* Prefix chain:  "demos-"  +  "geometry-polygon-offset-"  +  class name
+/* Prefix chain:  "demos-"  +  "geometry-match-separated-"  +  class name
                    ↓              ↓                               ↓
-                   demos-geometry-polygon-offset-<class>                 */
+                   demos-geometry-match-separated-<class>                 */
 
 /* ─── Hull Polygon ───────────────────────────────────────────────────── */
 
-.demos-geometry-polygon-offset-contour {
+.demos-geometry-match-separated-contour {
     fill: rgba(70, 130, 180, 0.3);
     stroke: rgba(70, 130, 180, 0.8);
     stroke-width: 2px;
@@ -12,7 +12,7 @@
 
 /* ─── Offset Polygon ─────────────────────────────────────────────────── */
 
-.demos-geometry-polygon-offset-offset {
+.demos-geometry-match-separated-offset {
     fill: none;
     stroke: rgba(70, 130, 180, 0.4);
     stroke-width: 1.5px;
@@ -21,7 +21,7 @@
 
 /* ─── Leader Lines ───────────────────────────────────────────────────── */
 
-.demos-geometry-polygon-offset-leader {
+.demos-geometry-match-separated-leader {
     fill: none;
     stroke: rgba(70, 130, 180, 0.5);
     stroke-width: 1px;
@@ -29,38 +29,38 @@
 
 /* ─── Site Handles ───────────────────────────────────────────────────── */
 
-.demos-geometry-polygon-offset-site {
+.demos-geometry-match-separated-site {
     fill: #4682b4;
     stroke: #1a1a1a;
     stroke-width: 2px;
     cursor: move;
 }
 
-.demos-geometry-polygon-offset-site:hover {
+.demos-geometry-match-separated-site:hover {
     fill: #ff8c00;
 }
 
 /* ─── Distance Slider ────────────────────────────────────────────────── */
 
-.demos-geometry-polygon-offset-track {
+.demos-geometry-match-separated-track {
     stroke: #aaa;
     stroke-width: 3px;
     stroke-linecap: round;
     fill: none;
 }
 
-.demos-geometry-polygon-offset-handle {
+.demos-geometry-match-separated-handle {
     fill: #4682b4;
     stroke: #1a1a1a;
     stroke-width: 2px;
     cursor: move;
 }
 
-.demos-geometry-polygon-offset-handle:hover {
+.demos-geometry-match-separated-handle:hover {
     fill: #ff8c00;
 }
 
-.demos-geometry-polygon-offset-slider-label {
+.demos-geometry-match-separated-slider-label {
     fill: #444;
     font-family: monospace;
     font-size: 13px;
@@ -71,7 +71,7 @@
 
 /* ─── Instructions ───────────────────────────────────────────────────── */
 
-.demos-geometry-polygon-offset-instructions {
+.demos-geometry-match-separated-instructions {
     fill: #666;
     font-family: sans-serif;
     font-size: 16px;

@@ -1,10 +1,5 @@
 /* Prefix chain:  "demos-"  +  "polyline-slicing-"  +  class name */
 
-.demos-polyline-slicing-polyline-raw {
-   fill: none;
-   stroke: none;
-}
-
 /* ─── Three output segments ──────────────────────────────────────────── */
 
 .demos-polyline-slicing-seg-prefix,

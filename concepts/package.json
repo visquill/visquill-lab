@@ -1,6 +1,6 @@
 {
   "name": "@visquill/visquill-concepts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,8 +14,8 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@visquill/visquill-gdk": "^1.0.1",
-     "maplibre-gl": "^5.23.0"
+    "@visquill/visquill-gdk": "^1.0.2",
+    "maplibre-gl": "^6.13.0"
   },
   "devDependencies": {
     "typescript": "^5.9.3",

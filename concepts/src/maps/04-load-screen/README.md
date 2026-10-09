@@ -1,19 +1,38 @@
 # Async Data & Loading Screen
 
-Showing a loading overlay while the map style and data load in parallel, then dismissing it with `layer.mounted`.
+Cover the map with a loading layer until the map style and the data are both ready, then remove the layer in one step.
 
-## What you see
+## How it works
 
-A light overlay with a "Loading…" label covers the map while two things happen in parallel: the MapLibre style loads and the capital data is prepared (simulated with a 1.2 s delay). Once both are ready the overlay disappears and European capitals appear as MapLibre circle markers.
+The overlay is its own layer: a box over the whole frame and a label in its centre.
 
-## Key concepts
+```ts
+const loadingPane  = loadingLayer.visuals.box("pane");
+const loadingLabel = loadingLayer.text.label("Loading…", "label");
 
-- **`layer.mounted`** — setting `loadingLayer.mounted.value = false` removes the entire layer from the SVG tree in one line. Both the pane and the label disappear together without needing to track them individually. This is the idiomatic way to show and hide groups of elements in VisQuill.
+Reactive.do([rvg.frame], () => {
+    Boxes.copy(rvg.frame, loadingPane);
+    Vectors.copy(rvg.center, loadingLabel);
+});
+```
 
-- **Layer z-order** — `contentLayer` is created before `loadingLayer`, so it renders below. The overlay sits on top purely by virtue of creation order. Content can be fully built and wired up behind the overlay before data arrives.
+Two things load at the same time: the MapLibre style (`"load"` event) and the data (`loadCapitals`, a simulated 1.2 s fetch). `Promise.all` waits for both. Then the points are added and `mounted` is set to false, which takes the whole layer out of the page.
 
-- **`Promise.all` for parallel loading** — the map `"load"` event and the data are independent; `Promise.all([mapReady, dataReady])` waits for both before dismissing the overlay and calling `buildScene`. If data arrives before the style (or vice versa) neither races ahead — `addGroup` requires the style to be loaded.
+```ts
+const mapReady  = new Promise<void>(resolve => map.map!.once("load", () => resolve()));
+const dataReady = loadCapitals();
 
-- **`map.map!.once("load")`** — MapLibre requires its style to be fully loaded before sources and layers can be added. Wrapping it in a Promise integrates cleanly with `Promise.all`.
+Promise.all([mapReady, dataReady]).then(([, capitals]) => {
+    buildScene(capitals);
+    loadingLayer.mounted.value = false;
+});
+```
 
-- **`loadCapitals()` as the swap point** — the simulated delay lives entirely inside `loadCapitals()`. Replacing `setTimeout` with a real `fetch()` requires no other changes; the rest of the demo is identical.
+## API
+
+- `canvas.layer`: the overlay layer; its `mounted` value shows or removes it
+- `Boxes.copy`, `Vectors.copy`: size the pane and centre the label
+
+## See also
+
+- `maps/03-point-layer`

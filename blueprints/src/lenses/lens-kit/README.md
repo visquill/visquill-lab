@@ -1,64 +1,38 @@
-# lens-kit
+# Lens Kit
 
-Primitives for building radial visualizations: draggable circles with reactive arcs, arc slices to position content on, and attachment functions that place bar plots and text along those arcs.
+Building blocks for radial lenses: a circle with an active arc, masked bands around it, and bar plots and titles placed along slices of the arc.
 
-## What it gives you
+## Usage
 
-A `createLens()` that returns a draggable circle with a reactive radius and an active arc defining where content may go. `createBoundedRing()` places a masked annular band on the lens. `createRingSpan()` carves a slice of that band into a named zone. `attachBarPlot()` and `attachTitle()` place content along the arc of a span. Everything is reactive — changing radius, position, or arc angle propagates automatically.
-
-## Basic usage
-
-```typescript
+```ts
 import * as Lenses from "./lens-kit"
 
-const lens = Lenses.createLens(canvas, {
-    center: [400, 300],
-    radius: 120,
-    startAngle: -Math.PI / 2,
-    radialSpan: Math.PI * 2
-})
+const lens = Lenses.createLens(canvas, { rimRadius: 120, rimStyle: "rim" })
+Attach.pointToPoint(lens.location, handle)
 
-const ring = Lenses.createBoundedRing(lens, {
-    outerOffset: 180,
-    innerOffset: 10
-})
+const band = Lenses.createBoundedRing(lens, { outerRadius: 180, innerRadius: 40 })
+const span = Lenses.createRingSpan(band, { start: 0.02, extent: 0.29 })
 
-const span = Lenses.createRingSpan(ring, {
-    position: 0,
-    span: 0.5
+const plot = Lenses.attachBarPlot(band.layer, span, {
+    barWidth: 16,
+    categories: [{ style: "category-1", name: "N" }, { style: "category-2", name: "S" }],
+    offset: 20,
+    valueLabels: { style: "value-label", distance: 8 },
 })
+plot.bars[0].height.value = 82
 
-Lenses.attachBarPlot(span, {
-    values: [0.2, 0.5, 0.8],
-    style: "my-bar"
-})
+Lenses.attachTitle(span, { text: "Region A", style: "plot-title", offset: -10 })
 ```
+
+Radii, angles, `start` and `extent` are `Real` values: animate them and everything attached follows.
 
 ## Options
 
-**`createLens(layer, options)`**
-
-| Option | Type | Description |
-|---|---|---|
-| `center` | `Point` | Initial position of the draggable handle |
-| `radius` | `number` | Expanded radius in canvas units |
-| `startAngle` | `number` | Start of the active arc in radians |
-| `radialSpan` | `number` | Angular extent of the active arc (`2π` = full circle) |
-
-**`createBoundedRing(lens, options)`**
-
-| Option | Type | Description |
-|---|---|---|
-| `outerOffset` | `number` | Width of the band outward from the lens rim |
-| `innerOffset` | `number` | Gap between the rim and the inner edge of the band |
-
-**`createRingSpan(ring, options)`**
-
-| Option | Type | Description |
-|---|---|---|
-| `position` | `number` | Start of the span as a fraction of the ring's arc (0–1) |
-| `span` | `number` | Width of the span as a fraction of the ring's arc |
-
-**`attachBarPlot(span, options)`** — places a hedgehog bar plot along the span's arc. **`attachTitle(span, options)`** — places arc-following text at the center of the span.
-
-All numeric values returned (`radius`, `startAngle`, `radialSpan`, `position`, `span`) are reactive `Real`s — pass them to `Animate.eased()` to animate, or write `.value` directly to update instantly.
+| Function | Main options |
+|---|---|
+| `createLens` | `rimRadius`, `location`, `radialSpan` (default π), `startAngle`: the middle of the arc (default −π/2, top) |
+| `createBoundedRing` | `innerRadius`, `outerRadius`: band around the rim; content outside is masked |
+| `createRingSpan` | `start`, `extent`: fractions of the arc |
+| `attachBarPlot` | `categories`, `barWidth`, `barOffset`, `offset`, `barCaptions`, `valueLabels`, `maxExtent` |
+| `attachTitle` | `text`, `style`, `offset`, `minLength`, `minRadius` |
+| `attachGridLines` | `count`, `distance`, `style`, `vertexCount` |

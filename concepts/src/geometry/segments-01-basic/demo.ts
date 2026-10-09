@@ -2,7 +2,7 @@
 // @category Geometry
 // @group Segments
 
-import {VisQuill, Reactive, Segments, Points, Boxes, Circles} from "@visquill/visquill-gdk"
+import {VisQuill, Reactive, Values, Segments, Points, Boxes, Circles, Vectors} from "@visquill/visquill-gdk"
 import './styles.css'
 
 // ─── Layout ───────────────────────────────────────────────────────────────
@@ -33,7 +33,7 @@ export function run(div: HTMLDivElement) {
     {
         const p1  = canvas.handles.disk("endpoint", [leftPanelX - 130, panelY - 80])
         const p2  = canvas.handles.disk("endpoint", [leftPanelX + 130, panelY + 80])
-        canvas.visuals.segment("segment", p1, p2)
+        const s   = canvas.visuals.segment("segment", p1, p2)
 
         // Midpoint marker
         const mid    = canvas.visuals.circle("midpoint-marker")
@@ -50,7 +50,6 @@ export function run(div: HTMLDivElement) {
         const pointLbl    = canvas.text.label("", "point-at-label")
 
         Reactive.do([p1, p2], () => {
-            const s  = Segments.segment(p1, p2)
             const m  = Segments.midPoint(s)
             const l  = Segments.len(s)
             const hl = Segments.horizontalLength(s)
@@ -73,7 +72,6 @@ export function run(div: HTMLDivElement) {
         })
 
         Reactive.do([p1, p2, ratio], () => {
-            const s   = Segments.segment(p1, p2)
             const pt  = Segments.pointAt(s, ratio.value)
             Circles.circleAt(pt, 6, pointMarker)
             Points.moveUp(pt, 16, pointLbl)
@@ -96,20 +94,16 @@ export function run(div: HTMLDivElement) {
         const dirLbl = canvas.text.label("", "measurement-label")
 
         Reactive.do([origin, dirPt], () => {
-            // Direction vector from origin to dirPt handle
-            const dx = dirPt.x - origin.x
-            const dy = dirPt.y - origin.y
+            // Direction vector from origin to dirPt handle (not normalized:
+            // its length becomes the segment's length)
+            const v = Vectors.direction(origin, dirPt)
 
-            const s   = Segments.directedSegment(origin, { x: dx, y: dy })
-            const l   = Segments.len(s)
-            const dir = Segments.direction(s)
-            const m   = Segments.midPoint(s)
+            Segments.directedSegment(origin, v, seg)
+            const l   = Segments.len(seg)
+            const dir = Segments.direction(seg)
+            const m   = Segments.midPoint(seg)
 
-            // Copy computed endpoints to the visual
-            Points.copy(s.at(0), seg.at(0))
-            Points.copy(s.at(1), seg.at(1))
-
-            Circles.circleAt(s.at(1), 5, arrow)
+            Circles.circleAt(seg.at(1), 5, arrow)
 
             Points.moveUp(m, 28, lenLbl)
             lenLbl.value = `len = ${l.value.toFixed(0)}px`
@@ -160,7 +154,7 @@ function buildSlider(
     })
 
     Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
+        Values.lerp(min, max, t, value)
         valLbl.value = value.value.toFixed(2)
     })
 

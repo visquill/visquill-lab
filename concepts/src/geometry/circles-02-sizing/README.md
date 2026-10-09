@@ -1,13 +1,39 @@
 # Inflate & Scale
 
-Two ways to resize a circle, side by side.
+Change a circle's size by adding to its radius or by multiplying it.
 
-## What you see
+## How it works
 
-A dashed base circle in the centre. The **delta** slider (left) controls `inflate` — the indigo circle grows or shrinks by that many pixels. The **factor** slider (right) controls `scale` — the orange circle's radius is multiplied by that factor. Labels above and below the base circle show the resulting radius as you drag.
+Both results are computed from the same fixed base circle. `Circles.inflate` adds a fixed amount to the radius, so the gap to the base circle is the same at every size:
 
-## Key concepts
+```ts
+Reactive.do([delta], () => {
+    Circles.inflate(baseCircle, delta.value, inflatedCircle)
+    const ir = Circles.radius(inflatedCircle)
+    // …
+})
+```
 
-- **`Circles.inflate(circle, delta)`** — adds `delta` to the radius; negative values shrink the circle; the change is absolute and independent of the current size
-- **`Circles.scale(circle, factor)`** — multiplies the radius by `factor`; the change is relative, so the same factor produces a larger absolute change on a bigger circle
-- **`Circles.radius(circle)`** — reads back the radius of the result, used here to position the labels and display the value
+`Circles.scale` multiplies the radius. The same factor makes a big circle grow by more pixels than a small one:
+
+```ts
+Reactive.do([factor], () => {
+    Circles.scale(baseCircle, factor.value, scaledCircle)
+    // …
+})
+```
+
+`Circles.radius` reads the new radius back to place the labels.
+
+## API
+
+- `Circles.inflate`: adds an amount to the radius; negative values shrink
+- `Circles.scale`: multiplies the radius by a factor
+- `Circles.radius`: the radius of a circle
+- `Circles.circleAt`: the base circle from center and radius
+- `Values.lerp`: maps the slider position to a value
+
+## See also
+
+- `geometry/circles-01-construction`
+- `geometry/boxes-02-growing`

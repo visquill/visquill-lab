@@ -1,14 +1,38 @@
 # Point Attachments
 
-Four methods for attaching a point to a shape — it follows reactively when the shape moves or resizes.
+Four ways to attach a pin to a shape. Most options accept a reactive value.
 
-## What you see
+## How it works
 
-Four panels. In each, the orange dot is the attached point; its small direction indicator shows the pin's orientation. **pointToSegment** — sliders control position along the segment and perpendicular distance; drag the segment endpoints to move the whole thing. **pointToCircle** — sliders control angle and radial distance offset; drag the circle center. **pointToRectangleEdge** — slider controls the position along the top edge; drag the corner handle to resize the rectangle. **pointToPoint** — the orange follower stays at a fixed vector offset from the blue source; drag the source.
+The sliders return `Real` values, and these go straight into the `Attach` options. The binding then follows both the shape and the slider, without a reaction of its own. With `orientation: "relative"` the pin also points along the shape; the short dotted line shows its direction.
 
-## Key concepts
+```ts
+Attach.pointToSegment(pin, canvas.shapes.segment(segA, segB), {
+    position: position,
+    distance: distance,
+    side: "left",
+    orientation: "relative",
+})
+// …
+Attach.pointToCircle(pin, circle, {
+    angle:    angle,
+    distance: distance,
+    orientation: "relative",
+})
+```
 
-- **`Attach.pointToSegment(pin, segment, { position, distance, side })`** — pins a point to a position along a segment with optional perpendicular offset; when `orientation: "relative"`, the pin's direction aligns with the segment
-- **`Attach.pointToCircle(pin, circle, { angle, distance })`** — places a point on the circle's circumference at `angle` radians, offset radially by `distance`
-- **`Attach.pointToRectangleEdge(pin, rect, { placement, anchorPosition })`** — attaches to a named edge (`"top"`, `"bottom"`, `"left"`, `"right"`) at a position along it
-- **`Attach.pointToPoint(point, target, { offset })`** — follows the target with a fixed `[dx, dy]` offset; the simplest attachment
+`Attach.pointToCircle` takes the angle in radians and a radial distance, which may be negative. `Attach.pointToRectangleEdge` names the edge with `placement` and the position along it with `anchorPosition`.
+
+## API
+
+- `Attach.pointToSegment`: a pin at a position along a segment, optionally to one side
+- `Attach.pointToCircle`: a pin at an angle on a circle, optionally outside or inside it
+- `Attach.pointToRectangleEdge`: a pin at a position along one edge of a rectangle
+- `Attach.pointToPoint`: a point at a fixed offset from another point
+- `Attach.circleCenterToPoint`, `Attach.circleRadiusToValue`: bind a circle's center and radius
+- `Values.lerp`: maps the slider ratio into the slider's range
+
+## See also
+
+- `reactions/attach-01-basics`
+- `geometry/pins-03-placement`

@@ -3,7 +3,7 @@
 
 import {
     VisQuill, Reactive, Boxes, Circles, Symbols, Fits,
-    Svg, Animate, Points,
+    Svg, Animate, Points, Segments,
     type RvgGroup
 } from "@visquill/visquill-gdk"
 import './styles.css'
@@ -48,8 +48,8 @@ const buttonBottomOffset = 50
  * Demonstrates nested viewports.
  *
  * A parent box viewport contains four child viewports arranged in a
- * 2×2 checkerboard: box viewports at (0,0) and (1,1), circle viewports
- * at (0,1) and (1,0).  Each child has its own content, boundary, and
+ * 2×2 checkerboard: box viewports at top-left and bottom-right, circle
+ * viewports at top-right and bottom-left.  Each child has its own content, boundary, and
  * origin — and its own independent pan and zoom.
  *
  * A "Fit All" button below the parent viewport triggers an animated fit
@@ -58,7 +58,8 @@ const buttonBottomOffset = 50
  *
  * This demo brings together concepts from all previous viewport demos:
  *  - Box and circle viewports (from the first two demos)
- *  - Animated fitting with `Animate.pin.eased()` (from Animated Focus)
+ *  - Animated origin changes (from Animated Panning / Focus), here
+ *    with `Animate.pin.eased()`
  *  - `Fits.boxInBox()` and `Fits.boxInCircle()` returning target pins
  *
  * The new concept is **nesting**: child viewports are created on the
@@ -72,11 +73,13 @@ export function run(div: HTMLDivElement) {
     const canvas = rvg.canvas
 
     // ─── Instruction label ────────────────────────────────────────────
-    canvas.text.labelAt(
+    const instructions = canvas.text.label(
         "Pan & zoom the parent or any child independently · Click Fit All to reset",
-        { x: 500, y: 20 },
         "instructions"
     )
+    Reactive.do([rvg.frame], () => {
+        Points.moveDown(Segments.midPoint(Boxes.topSide(rvg.frame)), 20, instructions)
+    })
 
     // ─── Parent viewport ──────────────────────────────────────────────
     // The outermost viewport — everything else lives inside its content.
@@ -162,7 +165,7 @@ function buildBoxChild(
 
     // Position and size the child boundary in the parent's coordinate space.
     Boxes.centeredBox(
-        [row * gridSpacing, col * gridSpacing],
+        [col * gridSpacing, row * gridSpacing],
         childBoxSize, childBoxSize,
         child.boundary
     )
@@ -203,7 +206,7 @@ function buildCircleChild(
 
     // Position and size the child boundary.
     Circles.circleAt(
-        [row * gridSpacing, col * gridSpacing],
+        [col * gridSpacing, row * gridSpacing],
         childCircleRadius,
         child.boundary
     )

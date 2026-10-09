@@ -1,13 +1,37 @@
 # Reflection & Rotation
 
-Three spatial transforms on points — two reflections and a rotation.
+Mirror a point through a point or across a line, or rotate it around a pivot.
 
-## What you see
+## How it works
 
-Three panels, each with a blue source handle and an orange result. **reflect** — drag the source or the purple pivot; the result is always directly opposite the pivot from the source. **reflectOverLine** — drag the source or either line endpoint; the result is the mirror image across the line, with a dashed connector showing the perpendicular. **rotateAround** — drag the source or pivot, then use the slider to rotate; the two dashed radii show the angle swept.
+`Points.reflect` mirrors through a point: the pivot ends up halfway between source and result, the same as a half turn. `Points.reflectOverLine` mirrors across the infinite line through a segment. The demo passes the drawn mirror segment itself:
 
-## Key concepts
+```ts
+Reactive.do([source, lineA, lineB], () => {
+    Segments.segment(lineA, lineB, mirror)
+    const r = Points.reflectOverLine(source, mirror)
+    // …
+})
+```
 
-- **`reflect(point, pivot)`** — reflects through a point: the pivot is the midpoint between source and result; equivalent to rotating 180°
-- **`reflectOverLine(point, line)`** — reflects across a line: the result is equidistant from the line on the opposite side; the connector from source to result is always perpendicular to the line
-- **`rotateAround(point, pivot, angle)`** — rotates a point around a pivot by an angle in radians; positive values rotate counterclockwise
+`Points.rotateAround` turns a point around a pivot by an angle in radians:
+
+```ts
+const r = Points.rotateAround(source, pivot, angle.value)
+```
+
+## API
+
+- `Points.reflect`: mirrors a point through another point
+- `Points.reflectOverLine`: mirrors a point across a line
+- `Points.rotateAround`: rotates a point around a pivot
+- `Segments.segment`: writes the mirror segment from its two handles
+- `Values.lerp`: maps the slider position to an angle
+
+## Notes
+
+Positive angles in `Points.rotateAround` turn clockwise on screen, because y grows downward.
+
+## See also
+
+- `geometry/shapes-02-mirror`

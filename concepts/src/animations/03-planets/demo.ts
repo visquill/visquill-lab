@@ -1,10 +1,8 @@
 //@name Orbit
 //@category Animations
 
-// Demonstrates point animations using moveTo and followPoint.
-// A courier token hops between planets using Animate.moveTo; a ghost trail
-// follows it with Animate.followPoint, showing the contrast between
-// eased and exponential interpolation in 2D space.
+// Demonstrates point animations: a courier hops between planets with
+// Animate.point.eased, and a ghost chases it with Animate.point.follow.
 
 import {VisQuill, Animate, Reactive, Vectors, Attach, type Point, EasingFunctions} from "@visquill/visquill-gdk"
 import './styles.css'
@@ -62,9 +60,8 @@ export function run(div: HTMLDivElement) {
     // Dashed line connecting ghost to courier makes the lag tangible
     canvas.visuals.segment("trail", ghost, courier)
 
-    // ─── Sync visuals to data ─────────────────────────────────────────────
-    // position drives the courier visual and re-aims the ghost follow each
-    // time moveTo writes a new interpolated value into it
+    // ─── Ghost ────────────────────────────────────────────────────────────
+    // Every time the courier moves, the ghost is re-aimed at it
     Reactive.do([courier], () => {
         Animate.point.follow(ghost, courier, { alpha: 0.06 })
     })

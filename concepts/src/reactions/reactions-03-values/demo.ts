@@ -104,14 +104,10 @@ export function run(div: HTMLDivElement) {
     const btnReset = canvas.visuals.box("button-reset")
     const lblPlus  = canvas.text.labelAt("+",     [cx - buttonW - buttonGap, buttonY], "button-label")
     const lblMinus = canvas.text.labelAt("−",     [cx,                       buttonY], "button-label")
-    const lblReset = canvas.text.labelAt("reset", [cx + buttonW + buttonGap, buttonY], "button-label")
+    const lblReset = canvas.text.labelAt("reset", [cx + buttonW + buttonGap, buttonY], "button-reset-label")
 
     Reactive.do([rvg.frame], () => {
-        const mid = Points.midPoint(
-            Boxes.bottomSide(rvg.frame).at(0),
-            Boxes.bottomSide(rvg.frame).at(1)
-        )
-        const base = Points.moveUp(mid, Boxes.height(rvg.frame).value - buttonY)
+        const base = Points.moveDown(Segments.midPoint(Boxes.topSide(rvg.frame)), buttonY)
 
         const cPlus  = Points.moveLeft( base, buttonW + buttonGap)
         const cMinus = base

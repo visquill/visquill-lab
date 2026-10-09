@@ -1,13 +1,29 @@
-# Polyline - Mapping
+# Mapping
 
-Two editable polylines: a shape and a path. The shape's segment-length proportions are projected onto the path to produce a mapped result.
+Place the vertices of one polyline along another, keeping their spacing.
 
-## What you see
+## How it works
 
-Orange handles define the shape polyline (shown in its original position for reference). Blue handles define the path (shown as a faint dashed curve). The orange result curve is the shape mapped onto the path. Drag either set of handles to see the effect: changing the shape alters the pattern, changing the path alters where and how that pattern is laid out.
+`Polylines.mapOnPolyline` looks at how far along its own length each vertex of the shape sits, as a fraction. It then puts a vertex at the same fraction of the path's length. A short edge in the shape becomes a short stretch of the path; a long edge a long one.
 
-## Key concepts
+```ts
+Reactive.do([...shapeHandles, ...pathHandles], () => {
+    Polylines.polyline(shapeHandles, shapePolyline)
+    Polylines.smooth(pathHandles, smoothingIterations, pathSmooth)
 
-- **`Polylines.mapOnPolyline(shape, target, result)`** — for each vertex of `shape`, computes its normalised position along the shape's own length and its perpendicular offset from the shape's baseline. It then places the result vertex at the same normalised position along `target`, displaced perpendicularly by the same amount. The segment-length proportions of `shape` are therefore preserved: a short segment in the shape maps to a proportionally short portion of the path, a long one to a longer portion.
-- **Shape vs path** — the shape defines the *pattern* (what proportions and offsets to use); the path defines the *layout* (the curve to follow). They are independent: editing one never affects the other.
-- **`Polylines.copy()`** — used to write the rebuilt shape polyline into the visual so the reference drawing stays in sync with the handles.
+    Polylines.mapOnPolyline(shapePolyline, pathSmooth, mapped)
+})
+```
+
+The result has as many vertices as the shape, and they all lie on the path. Only the spacing of the shape matters: moving an orange handle up or down changes the result only as far as it changes the edge lengths.
+
+## API
+
+- `Polylines.mapOnPolyline`: places a polyline's vertices along another polyline by length fraction
+- `Polylines.polyline`: writes vertices into a polyline
+- `Polylines.smooth`: rounds the path
+
+## See also
+
+- `geometry/polylines-07-distance-smapling`
+- `plots/curves-01-along-polyline`

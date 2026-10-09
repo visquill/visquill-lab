@@ -2,7 +2,7 @@
 // @category Geometry
 // @group Arcs
 
-import { VisQuill, Arcs, Circles, Reactive, Points, Boxes, Segments, Svg } from "@visquill/visquill-gdk"
+import { VisQuill, Arcs, Vectors, Circles, Reactive, Points, Boxes, Segments, Svg } from "@visquill/visquill-gdk"
 import './styles.css'
 
 // ─── Layout ───────────────────────────────────────────────────────────────
@@ -53,15 +53,15 @@ export function run(div: HTMLDivElement) {
             // keep end handle on the perimeter
             Circles.closestPoint(ghostCircle, endH, endH)
 
-            const sa = Math.atan2(startH.y - center.y, startH.x - center.x)
-            const ea = Math.atan2(endH.y   - center.y, endH.x   - center.x)
-            let sw = ea - sa
-            if (sw <= 0) sw += 2 * Math.PI
+            // angles on screen, measured clockwise
+            const startDir = Vectors.direction(center, startH)
+            const sa = Vectors.angle(startDir, true)
+            const sw = Vectors.angleTo(startDir, Vectors.direction(center, endH), true)
 
             Arcs.arcAt(center, r, sa, sw, arc)
 
             Points.copy(Points.moveDown(center,15), label)
-            label.value = `r = ${r.value.toFixed(0)}  sweep = ${(sw * 180 / Math.PI).toFixed(0)}°`
+            label.value = `r = ${r.value.toFixed(0)}  sweep = ${(sw.value * 180 / Math.PI).toFixed(0)}°`
         })
 
         const caption = canvas.text.label("arcAt(center, r, startAngle, sweepAngle)", "panel-label")
@@ -91,8 +91,8 @@ export function run(div: HTMLDivElement) {
             Circles.circleAt(center, r, ghostCircle)
             Circles.closestPoint(ghostCircle, endH, endH)
 
-            const sa = Math.atan2(startH.y - center.y, startH.x - center.x)
-            const ea = Math.atan2(endH.y   - center.y, endH.x   - center.x)
+            const sa = Vectors.angle(Vectors.direction(center, startH), true)
+            const ea = Vectors.angle(Vectors.direction(center, endH), true)
 
             Arcs.arcBetween(center, r, sa, ea, clockwise, arc)
 
@@ -147,15 +147,15 @@ export function run(div: HTMLDivElement) {
             Circles.circleAt(center, r, ghostCircle)
             Circles.closestPoint(ghostCircle, endH, endH)
 
-            const sa = Math.atan2(startH.y - center.y, startH.x - center.x)
-            const ea = Math.atan2(endH.y   - center.y, endH.x   - center.x)
-            let sw = ea - sa
-            if (sw <= 0) sw += 2 * Math.PI
+            // angles on screen, measured clockwise
+            const startDir = Vectors.direction(center, startH)
+            const sa = Vectors.angle(startDir, true)
+            const sw = Vectors.angleTo(startDir, Vectors.direction(center, endH), true)
 
             Arcs.arcFromCircle(ghostCircle, sa, sw, arc)
 
             Points.copy(Points.moveDown(center,15), label)
-            label.value = `r = ${r.value.toFixed(0)}  sweep = ${(sw * 180 / Math.PI).toFixed(0)}°`
+            label.value = `r = ${r.value.toFixed(0)}  sweep = ${(sw.value * 180 / Math.PI).toFixed(0)}°`
         })
 
         const caption = canvas.text.label("arcFromCircle(circle, startAngle, sweepAngle)", "panel-label")
@@ -187,15 +187,14 @@ export function run(div: HTMLDivElement) {
             // Keep sagitta handle centred on chord midpoint x
             sagH.x = (p1.x + p2.x) / 2
 
-            const midX = sagH.x
             const sag  = sagH.y-cy     // positive = downward = left of p1→p2
 
             Arcs.arcFromSagitta(p1, p2, sag, arc)
 
             Points.copy(p1,   chord.at(0))
             Points.copy(p2,   chord.at(1))
-            sagSeg.at(0).x = midX ;  sagSeg.at(0).y = cy
-            sagSeg.at(1).x = midX ;  sagSeg.at(1).y = sagH.y
+            Points.midPoint(p1, p2, sagSeg.at(0))
+            Points.copy(sagH, sagSeg.at(1))
 
             Points.copy(Points.moveDown(Arcs.midPoint(arc),10), label)
             label.value = `sagitta = ${sag.toFixed(0)}`

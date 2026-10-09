@@ -1,17 +1,12 @@
 // @name Distances
 // @category Reactions
 // @group Reactive
-import { VisQuill, Reactive, Points, Vectors, Circles } from "@visquill/visquill-gdk"
+import { VisQuill, Reactive, Points, Circles } from "@visquill/visquill-gdk"
 import "./styles.css"
 
 /**
- * Interactive Distance Visualizer
- *
- * Demonstrates VisQuill's computational capabilities for calculating
- * and visualizing various distance measurements:
- * - Point to Point distance
- * - Point to Segment distance (closest point)
- * - Point to Circle distance (radial)
+ * Three distance measurements, each recomputed by a reaction:
+ * point to point, point to segment, point to circle.
  *
  * @param div - The div element that will contain the graphic
  */
@@ -80,19 +75,13 @@ export function run(div: HTMLDivElement) {
 
     const distanceCircleEdge = canvas.values.real()
     const labelCircle = canvas.text.label("", false, 0, -15, false, "distance-label")
-    const distanceToCenter = canvas.values.real()
+
     Reactive.do([pointD, circleCenter, circleRadius], () => {
-        const direction = Vectors.normalize(Vectors.direction(circleCenter, pointD))
-
-        Vectors.add(circleCenter, Vectors.scale(direction, circleRadius.value), closestOnCircle)
-
-
-        Points.distanceToPoint(pointD, circleCenter, distanceToCenter)
-        distanceCircleEdge.value = distanceToCenter.value - circleRadius.value
+        Circles.circleAt(circleCenter, circleRadius, circle)
+        Circles.closestPoint(circle, pointD, closestOnCircle)
+        Circles.distanceTo(circle, pointD, distanceCircleEdge)
 
         Points.midPoint(pointD, closestOnCircle, labelCircle)
         labelCircle.value = `${distanceCircleEdge.value.toFixed(1)} px`
-
-        Circles.circleAt(circleCenter, circleRadius, circle)
     }, true)
 }

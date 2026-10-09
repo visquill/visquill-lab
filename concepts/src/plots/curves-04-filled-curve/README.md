@@ -1,12 +1,34 @@
 # Filled Curve
 
-A filled area chart plotted against a polyline baseline.
+An area chart is two shapes from the same values: the filled band and its top line.
 
-## What you see
+## How it works
 
-A smooth polyline baseline in grey. A light-orange filled polygon covers the area between the baseline and its offset curve. A darker orange line sits on top as the curve outline. Both are static — there are no interactive handles — so the focus is purely on the layering relationship between the filled area and the outline.
+`Curves.alongPolylineUniform` spreads the values evenly over the length of the baseline and offsets each point by its value. `Curves.filledAlongPolyline` uses the same positions and returns a closed polygon between the baseline and that curve.
 
-## Key concepts
+```ts
+Curves.filledAlongPolyline(baseline, values, true, filledArea)
+Curves.alongPolylineUniform(baseline, values, true, curveOutline)
+```
 
-- **`Curves.filledAlongPolyline(baseline, values, left, result)`** — produces the closed filled polygon stitched between the baseline and the offset curve; drawn first so the outline sits on top
-- **`Curves.alongPolylineUniform(baseline, values, left, result)`** — produces the offset curve with values distributed uniformly along the baseline length; drawn on top of the filled area as the visible boundary
+The filled area is created first, so the outline is drawn on top of it. Both run once, because the baseline and the values never change.
+
+The baseline is a polyline smoothed with `Polylines.smooth`.
+
+```ts
+const baseline = canvas.visuals.polyline(
+    "baseline",
+    Polylines.smooth(baselinePoints, smoothingIterations)
+)
+```
+
+## API
+
+- `Curves.filledAlongPolyline`: the closed area between a polyline and its offset curve
+- `Curves.alongPolylineUniform`: the offset curve, values spread evenly along the polyline
+- `Polylines.smooth`: rounds the corners of a polyline
+
+## See also
+
+- `plots/curves-01-along-polyline`
+- `plots/curves-05-along-baseline`

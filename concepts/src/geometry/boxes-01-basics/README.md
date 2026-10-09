@@ -1,19 +1,42 @@
-# Boxes - Inspection
+# Inspection
 
-Drag two corner handles to reshape a box and watch all its properties and named points update live.
+Build a box from two points and read its sides, corners and measurements.
 
-## What you see
+## How it works
 
-A resizable box defined by two draggable handles. Four coloured sides are labelled with the method that returns each one. Five corner/center dots show the named points. A monospaced info panel on the left reports ten scalar properties in real time.
+`Boxes.spannedBox` makes the smallest box that contains both handles, so either handle can be dragged past the other. All other parts of the demo react to the box.
 
-## Key concepts
+```ts
+const box = canvas.visuals.box("box-fill")
+Reactive.do([hTL, hBR], () => {
+    Boxes.spannedBox(hTL, hBR, box)
+})
+```
 
-- **`Boxes.spannedBox(p1, p2)`** — constructs the smallest box containing both points; either handle can cross the other without breaking the box
-- **`Boxes.topSide()` / `bottomSide()` / `leftSide()` / `rightSide()`** — return each edge as a `Segment`
-- **`Boxes.topLeft()` / `topRight()` / `bottomLeft()` / `bottomRight()` / `center()`** — the five named points of a box
-- **`Boxes.width()` / `height()` / `area()` / `circumference()`** — basic dimensional properties
-- **`Boxes.diameter()`** — length of the diagonal
-- **`Boxes.aspectRatio()`** — width ÷ height
-- **`Boxes.longestSide()` / `shortestSide()`** — the greater and lesser of width and height
-- **`Boxes.isSquare()`** — true when width equals height exactly
-- **`Boxes.isEmpty()`** — true when width or height is zero or negative (handles coincide or cross)
+The side functions return segments, the corner functions return points:
+
+```ts
+Reactive.do([box], () => {
+    const t = Boxes.topSide(box)
+    // …
+    Segments.copy(t, sides[0].seg)
+    // …
+})
+```
+
+The info panel calls one function per line, for example `Boxes.aspectRatio(box)`. Each returns a `Real` (or a `Bool`), so `.value` gives the number.
+
+## API
+
+- `Boxes.spannedBox`: the smallest box containing two points
+- `Boxes.topSide`, `Boxes.bottomSide`, `Boxes.leftSide`, `Boxes.rightSide`: the sides as segments
+- `Boxes.topLeft`, `Boxes.topRight`, `Boxes.bottomLeft`, `Boxes.bottomRight`, `Boxes.center`: named points
+- `Boxes.width`, `Boxes.height`, `Boxes.area`, `Boxes.circumference`: size
+- `Boxes.diameter`: length of the diagonal
+- `Boxes.aspectRatio`, `Boxes.longestSide`, `Boxes.shortestSide`: proportions
+- `Boxes.isSquare`, `Boxes.isEmpty`: checks; a box is empty when its area is zero or negative
+
+## See also
+
+- `geometry/boxes-02-growing`
+- `geometry/rectangles-02-accessors`

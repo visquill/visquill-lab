@@ -16,15 +16,8 @@ const vertexCount   = 6
 const probeStart: [number, number] = [cx, cy - 50]
 
 // ─── Initial vertex positions (regular hexagon) ───────────────────────────
-const initialVertices: [number, number][] = Array.from(
-    { length: vertexCount },
-    (_, i) => {
-        const angle = (i / vertexCount) * Math.PI * 2 - Math.PI / 2
-        return [
-            Math.round(cx + polygonRadius * Math.cos(angle)),
-            Math.round(cy + polygonRadius * Math.sin(angle)),
-        ]
-    }
+const initialVertices = Array.from({ length: vertexCount }, (_, i) =>
+    Points.placeOnCircle([cx, cy], polygonRadius, (i / vertexCount) * Math.PI * 2 - Math.PI / 2)
 )
 
 // Colours applied to the probe depending on inside/outside state.

@@ -1,13 +1,40 @@
-# Boxes - Inflate & Pad
+# Inflate & Pad
 
-Two ways to expand or shrink a box, shown simultaneously so the difference is immediately clear.
+Grow or shrink a box, either by the same amount on opposite sides or per side.
 
-## What you see
+## How it works
 
-A dashed grey source box in the centre. The blue box is the `inflate` result; the orange box is the `pad` result. Both are live — drag the sliders and both update at once. Negative values shrink.
+Both results start from the same fixed source box, which never changes.
 
-## Key concepts
+`Boxes.inflate` adds `dx` to the left and to the right side, and `dy` to the top and to the bottom. A `dx` of 20 makes the box 40 pixels wider.
 
-- **`Boxes.inflate(box, dx, dy)`** — expands by `dx` on *each* horizontal side and `dy` on *each* vertical side; the expansion is always symmetric. A dx of 20 makes the box 40 pixels wider.
-- **`Boxes.pad(box, left, top, right, bottom)`** — expands each side independently; the four values can differ and can have opposite signs. Useful for asymmetric insets such as leaving extra room on one side for a label.
-- The key distinction: `inflate` has 2 parameters and is always symmetric; `pad` has 4 parameters and each side is controlled separately.
+```ts
+Reactive.do([dx, dy], () => {
+    Boxes.inflate(source, dx.value, dy.value, inflateResult)
+})
+```
+
+`Boxes.pad` takes one amount per side, so the box can grow on one side and shrink on another, for example to leave room for a label.
+
+```ts
+Reactive.do([padL, padT, padR, padB], () => {
+    Boxes.pad(source, padL.value, padT.value, padR.value, padB.value, padResult)
+})
+```
+
+Negative values shrink. Each slider returns a `Real` that `Values.lerp` maps from the slider position to its range.
+
+## API
+
+- `Boxes.inflate`: grows a box by `dx` on the left and right and `dy` on top and bottom
+- `Boxes.pad`: grows each side of a box by its own amount
+- `Boxes.spannedBox`: the source box from two corners
+- `Values.lerp`: maps the slider position to a value
+
+## Notes
+
+Shrinking by more than half the width or height is not clamped: the box turns inside out and `Boxes.isEmpty` becomes true.
+
+## See also
+
+- `geometry/boxes-01-basics`

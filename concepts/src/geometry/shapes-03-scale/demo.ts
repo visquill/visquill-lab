@@ -24,14 +24,17 @@ const arrowVertices: [number, number][] = [
 
 // Scale handles start at 1× in each axis.
 // Drag right to grow X; drag down to grow Y.
-// The handles sit on the axes of the arrow's centroid.
+// The handles sit on the axes through the anchor (cx, cy).
 const hXStart: [number, number] = [cx + 80,  cy]       // on the right (+x axis)
 const hYStart: [number, number] = [cx,        cy + 40]  // below (+y axis)
+
+// Distance from the anchor that means scale 1 (the handles' start positions).
+const refX = hXStart[0] - cx
+const refY = hYStart[1] - cy
 
 // Range limits so scale can't go negative.
 const minScale   = 0.15
 const maxScale   = 4.0
-const trackLen   = 180   // reference length for computing scale factor
 
 /**
  * Demonstrates `Shapes.scaleBy()` with independent X and Y scale factors.
@@ -62,23 +65,20 @@ export function run(div: HTMLDivElement) {
     })
 
     // ─── Anchor ───────────────────────────────────────────────────────
-    // Fixed at the shape centroid; shown as a small dot.
-    const anchorDot = canvas.visuals.point("anchor")
-    const anchor    = { x: cx, y: cy }
+    // The fixed point of the scaling; shown as a small dot.
+    const anchor = canvas.visuals.point("anchor", [cx, cy])
 
     // ─── Scale handles ────────────────────────────────────────────────
-    // X handle: only horizontal movement matters — constrain visually by
-    // snapping its y back to cy in the reactive block.
     const hX = canvas.handles.disk("handle-x", hXStart)
     const hY = canvas.handles.disk("handle-y", hYStart)
 
     // ─── Track lines ──────────────────────────────────────────────────
-    // Show the axis the handle travels along.
-    const trackX = canvas.visuals.segment("track-x")
-    const trackY = canvas.visuals.segment("track-y")
+    // Each handle is kept on its track, which spans minScale…maxScale.
+    const trackX = canvas.visuals.segment("track-x", [cx + refX * minScale, cy], [cx + refX * maxScale, cy])
+    const trackY = canvas.visuals.segment("track-y", [cx, cy + refY * minScale], [cx, cy + refY * maxScale])
 
     // ─── Ghost shape ──────────────────────────────────────────────────
-    const ghost = canvas.visuals.polygon("ghost")
+    canvas.visuals.polygon("ghost", arrowVertices)
 
     // ─── Scaled shape ─────────────────────────────────────────────────
     const scaled = canvas.visuals.polygon("scaled")
@@ -101,35 +101,16 @@ export function run(div: HTMLDivElement) {
 
     // ─── Reactive block ───────────────────────────────────────────────
     Reactive.do([hX, hY], () => {
-        // Derive scale factors from handle offset relative to anchor.
-        // X handle: horizontal displacement only.
-        const rawX = (hX.x - anchor.x) / trackLen
-        const rawY = (hY.y - anchor.y) / trackLen
+        // Keep each handle on its track.
+        Points.closestPointOnSegment(hX, trackX, hX)
+        Points.closestPointOnSegment(hY, trackY, hY)
 
-        const scaleX = Math.max(minScale, Math.max(-maxScale, rawX < 0 ? rawX : rawX))
-        const scaleY = Math.max(minScale, Math.max(-maxScale, rawY < 0 ? rawY : rawY))
-
-        // Snap handles to their respective axes (ignore off-axis drag).
-        // (We mutate the reactive value to constrain the handle.)
-        hX.y = anchor.y
-        hY.x = anchor.x
-
-        // Track lines along each axis.
-        Points.copy({ x: anchor.x - trackLen, y: anchor.y }, trackX.at(0))
-        Points.copy({ x: anchor.x + trackLen, y: anchor.y }, trackX.at(1))
-        Points.copy({ x: anchor.x, y: anchor.y - trackLen }, trackY.at(0))
-        Points.copy({ x: anchor.x, y: anchor.y + trackLen }, trackY.at(1))
-
-        // Ghost.
-        const base = canvas.shapes.polygon(arrowVertices)
-        Shapes.copy(base, ghost)
+        // Scale factor = distance from the anchor relative to the start distance.
+        const scaleX = Points.distanceToPoint(anchor, hX).value / refX
+        const scaleY = Points.distanceToPoint(anchor, hY).value / refY
 
         // Scale around anchor.
-        const result = Shapes.scaleBy(base, anchor, scaleX, scaleY)
-        Shapes.copy(result, scaled)
-
-        // Anchor dot.
-        Points.copy(anchor, anchorDot)
+        Shapes.scaleBy(arrowVertices, anchor, scaleX, scaleY, scaled)
 
         // Handle labels.
         Points.moveRight(hX, 14, labelXHead)

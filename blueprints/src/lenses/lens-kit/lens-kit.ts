@@ -37,9 +37,10 @@ export interface LensOptions extends RingOptions {
     location?: Point | VectorLike,
     /** Radius of the lens in canvas units. */
     rimRadius: number,
-    /** Width of the active arc in radians. `2π` is a full circle. */
+    /** Width of the active arc in radians. `2π` is a full circle. Defaults to `π`. */
     radialSpan?: number,
-    /** Angle in radians where the arc begins, measured clockwise from 3 o'clock. Defaults to `0`. */
+    /** Angle in radians of the middle of the active arc, clockwise from 3 o'clock.
+     *  Defaults to `-π/2` (top). */
     startAngle?: number,
 }
 
@@ -93,7 +94,7 @@ export interface Ring {
     rim: Circle,
     /** Reactive radius in canvas units. Writing `.value` resizes the ring and all attached content. */
     radius: Real,
-    /** Reactive start angle of the active arc in radians, measured clockwise from 3 o'clock. */
+    /** Reactive angle of the middle of the active arc in radians, clockwise from 3 o'clock. */
     anchorAngle: Real,
     /** Reactive arc width in radians. `2π` is a full circle. */
     radialSpan: Real,
@@ -159,11 +160,11 @@ export interface BarPlot {
  *
  * @param group - The parent layer to create the lens in.
  * @param options - Geometry and style configuration.
- * @returns A `Lens` with reactive `radius`, `startAngle`, `radialSpan`, and `location`.
+ * @returns A `Lens` with reactive `radius`, `anchorAngle` (from `startAngle`), `radialSpan`, and `location`.
  *
  * @example
  * const lens = createLens(canvas, {
- *     radius: 100,
+ *     rimRadius: 100,
  *     radialSpan: Math.PI * 1.5,
  *     startAngle: Math.PI / 2,
  *     location: { x: 300, y: 300 },
@@ -209,16 +210,16 @@ export function createRingSpan(ring: Ring, options?: { extent?: number, start?: 
 
 /**
  * Creates a child ring whose radius is an offset from its parent's rim.
- * The child inherits and stays in sync with the parent's `startAngle` and `radialSpan`.
+ * The child shares the parent's `anchorAngle` and `radialSpan`.
  * Use this to build concentric layers radiating outward from a lens.
  *
  * @param parent - The ring to offset from.
  * @param options - Geometry and style configuration.
- * @param options.radius - Outward offset from the parent's rim in canvas units. Defaults to `0`.
+ * @param options.rimRadius - Outward offset from the parent's rim in canvas units. Defaults to `0`.
  * @returns A new `Ring` that tracks the parent's geometry reactively.
  *
  * @example
- * const outer = createRing(lens, { radius: 20 })  // sits 20px outside the lens rim
+ * const outer = createRing(lens, { rimRadius: 20 })  // sits 20px outside the lens rim
  */
 export function createRing(parent: Ring, options?: RingOptions): Ring {
     const layer = parent.layer.layer(options?.stylePrefix ?? "")
@@ -277,7 +278,7 @@ export function createBoundedRing(parent: Ring, options: BoundedRingOptions): Bo
  *
  * The polyline's angular position is derived from `position` (where within the span
  * it starts) and its arc width from `span` (what fraction of the span it covers).
- * Both update reactively when the ring's `startAngle` or `radialSpan` changes,
+ * Both update reactively when the ring's `anchorAngle` or `radialSpan` changes,
  * so the polyline repositions automatically during animation.
  *
  * @param layer - The parent layer to create the polyline in.
@@ -306,7 +307,7 @@ export function attachPolyline(layer: RvgGroup, ringSpan: RingSpan, options: {
     const offset = layer.values.real(options.offset ?? 0)
     const maxExtent = layer.values.real(options.maxExtent ?? Number.MAX_VALUE)
     Reactive.do([span,ring.rim,maxExtent,position, ring.anchorAngle, ring.radialSpan, ringSpan.start, ringSpan.extent], () => {
-        // compute the start angle of the ring span: we assume that the
+        // Start and width of the span on the circle, in radians.
         const startRingSpan = ringSpanStartAngle(ringSpan)
         const extentRingSpan = ringSpanExtent(ringSpan)
         const circumference = Circles.circumference(ring.rim).value
@@ -328,8 +329,7 @@ export function attachPolyline(layer: RvgGroup, ringSpan: RingSpan, options: {
 }
 
 /**
- * Compute the start angle of a ring. Currently, it is assumed that the ring's
- * anchor is centered on the ring. '
+ * Start angle of a ring's active arc: `anchorAngle` is the middle of the arc.
  * @param ring
  */
 function ringStartAngle(ring: Ring) {
@@ -358,7 +358,7 @@ function ringSpanExtent(ringSpan: RingSpan) {
  * @returns A `BarPlot` with a `bars` array and reactive `position`, `span`, and `offset`.
  *
  * @example
- * const plot = attachBarPlot(span, {
+ * const plot = attachBarPlot(span.ring.layer, span, {
  *     categories: [{ style: "bar-a", name: "Alpha" }, { style: "bar-b", name: "Beta" }],
  *     barWidth: 20,
  *     offset: 20,

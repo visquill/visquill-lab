@@ -2,7 +2,7 @@
 // @category Geometry
 // @group Polygons
 
-import {VisQuill, Attach} from "@visquill/visquill-gdk";
+import {VisQuill, Attach, Points} from "@visquill/visquill-gdk";
 import './styles.css';
 
 /**
@@ -26,9 +26,7 @@ export function run(div: HTMLDivElement) {
     const handles = []
     for (let i = 0; i < 5; i++) {
         const angle = (i * 2 * Math.PI / 5) - Math.PI / 2; // Start from top
-        const x = centerX + radius * Math.cos(angle);
-        const y = centerY + radius * Math.sin(angle);
-        handles.push(canvas.handles.disk("vertex", [x, y]));
+        handles.push(canvas.handles.disk("vertex", Points.placeOnCircle([centerX, centerY], radius, angle)));
     }
     const polygon = canvas.visuals.polygon("shape", handles);
 

@@ -1,13 +1,37 @@
 # Point Placement
 
-Three methods for placing a point at a specific position on or beside a geometric shape.
+Place a point on a circle by angle, on an arc by ratio, or beside a segment.
 
-## What you see
+## How it works
 
-Three panels. In each, drag the slider to move the orange point. **placeOnCircle** — the point travels the full circumference; the angle is in radians from the positive X axis. **placeOnArc** — the point travels a partial arc defined by a start direction, end direction, and winding; ratio 0 and 1 correspond to the endpoints. **placeBesideSegment** — the point sits at a fixed perpendicular distance from the segment at a given ratio; the dashed line shows the perpendicular offset.
+Each panel calls one `Points.place…` function with the slider's value and draws the result:
 
-## Key concepts
+```ts
+Reactive.do([angle], () => {
+    const pt = Points.placeOnCircle([cx, cy], r, angle.value)
+    // …
+})
+```
 
-- **`placeOnCircle(center, radius, angle)`** — places a point on the circumference at an absolute angle in radians
-- **`placeOnArc(center, radius, startDir, endDir, ratio, clockwise)`** — places a point along a circular arc; the arc is defined by two direction vectors and a winding, not by angles
-- **`placeBesideSegment(p1, p2, ratio, distance, left)`** — places a point perpendicular to a segment at a given ratio along it; `left` is relative to the A→B direction
+`Points.placeOnCircle` measures the angle from the positive x axis; on screen, growing angles turn clockwise. `Points.placeOnArc` takes the arc as two directions from the center plus a winding flag, and a ratio from 0 (start) to 1 (end). The grey arc is drawn by calling it 49 times. `Points.placeBesideSegment` goes to a ratio along the segment, then a distance to its left or right:
+
+```ts
+const onSeg  = Points.placeOnSegment(p1, p2, ratio.value)
+const beside = Points.placeBesideSegment(p1, p2, ratio.value, dist, true)
+```
+
+## API
+
+- `Points.placeOnCircle`: a point on a circle at an angle
+- `Points.placeOnArc`: a point at a ratio along an arc between two directions
+- `Points.placeOnSegment`: a point at a ratio along a segment
+- `Points.placeBesideSegment`: a point at a distance beside a segment
+
+## Notes
+
+In `Points.placeOnArc` the winding flag is mirrored compared with `Arcs.arcBetween`: `false` runs clockwise on screen. With `false` the arc here passes through the bottom.
+
+## See also
+
+- `geometry/pins-03-placement`
+- `geometry/arcs-01-construction`

@@ -71,7 +71,7 @@ export function run(div: HTMLDivElement) {
             width: 120,
             height: 40,
             style: "button-outlined",
-            label: {text: "Outlined"}
+            label: {text: "Outlined", style: "label-outlined"}
         })
     }
 
@@ -118,9 +118,9 @@ export function run(div: HTMLDivElement) {
             {text: "↖", style: "label-top-left",     anchorX: "left",   anchorY: "top",    x: 50,  y: 470},
             {text: "↑", style: "label-top-center",   anchorX: "center", anchorY: "top",    x: 170, y: 470},
             {text: "↗", style: "label-top-right",    anchorX: "right",  anchorY: "top",    x: 290, y: 470},
-            {text: "←", style: "label-middle-left",  anchorX: "left",   anchorY: "center", x: 50,  y: 570},
-            {text: "·", style: "label-middle-center", anchorX: "center", anchorY: "center", x: 170, y: 570},
-            {text: "→", style: "label-middle-right", anchorX: "right",  anchorY: "center", x: 290, y: 570},
+            {text: "←", style: "label-center-left",  anchorX: "left",   anchorY: "center", x: 50,  y: 570},
+            {text: "·", style: "label-center-center", anchorX: "center", anchorY: "center", x: 170, y: 570},
+            {text: "→", style: "label-center-right", anchorX: "right",  anchorY: "center", x: 290, y: 570},
             {text: "↙", style: "label-bottom-left",  anchorX: "left",   anchorY: "bottom", x: 50,  y: 670},
             {text: "↓", style: "label-bottom-center", anchorX: "center", anchorY: "bottom", x: 170, y: 670},
             {text: "↘", style: "label-bottom-right",  anchorX: "right",  anchorY: "bottom", x: 290, y: 670},
@@ -146,13 +146,13 @@ export function run(div: HTMLDivElement) {
         const group = canvas.layer()
 
         const label = canvas.text.label("Toggle Buttons & Options Panel", "section-label")
-        label.x = 50
-        label.y = 750
+        label.x = 520
+        label.y = 50
 
         // Single standalone toggleButton — cycles through named string values
         const theme = new Options.Strings({values: ["Light", "Dark", "High Contrast"], title: "Theme"})
         Controls.toggleButton(group, {
-            bottomLeft: {x: 50, y: 800},
+            bottomLeft: {x: 520, y: 100},
             width: 200,
             height: 36,
             style: "toggle-button",
@@ -166,7 +166,7 @@ export function run(div: HTMLDivElement) {
         const enabled = new Options.Strings({values: ["Off", "On"], title: "Grid"})
 
         Controls.optionsPanel(group, {
-            anchor: {x: 300, y: 800},
+            anchor: {x: 520, y: 180},
             entries: [sizes, angles, enabled],
             width: 160,
             height: 36,

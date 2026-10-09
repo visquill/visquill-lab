@@ -27,7 +27,7 @@ export function run(div: HTMLDivElement) {
 
     // ─── Instruction label ────────────────────────────────────────────
     const instructions = canvas.text.label(
-        "Drag the handle to move the pin · Click buttons to transform its orientation",
+        "Click the buttons to turn, scale and move the pin",
         "instructions"
     )
     Reactive.do([rvg.frame], () => {

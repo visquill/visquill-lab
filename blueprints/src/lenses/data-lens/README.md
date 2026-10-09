@@ -1,53 +1,37 @@
-# data-lens
+# Data Lens
 
-A higher-level layer on top of lens-kit that drives lenses from declarative scheme objects and manages coordination between multiple lenses.
+Lenses built from a plain scheme object, plus groups that make several lenses share the circle and stick together.
 
-## What it gives you
+## Usage
 
-You describe what each lens should show in a plain object — its data, color palette, arc layout, and which dimensions to display. `data-lens` handles the arc geometry, reactive wiring, bar plots, labels, and group behavior. Multiple lenses share a single drag interaction and update together.
+```ts
+import { createInteractiveLens, createProximityGroup, createSnapGroup } from "./data-lens"
 
-## Basic usage
+const lenses = schemes.map(scheme => createInteractiveLens(layer, scheme, "handle"))
 
-```typescript
-import { createDataLens } from "./data-lens"
+createProximityGroup(layer, lenses, { threshold: 100, arcGap: 0.1, arcLayout: equal })
+createSnapGroup(layer, lenses, { snapDistance: 50, unsnapDistance: 75 })
 
-createDataLens(canvas, {
-    center: [400, 300],
-    lenses: [
-        {
-            id: "income",
-            palette: ["#7ebce6", "#4197cc", "#0072b2", "#005a8c", "#004466"],
-            dimensions: [
-                { label: "Age",    values: [0.2, 0.4, 0.6, 0.7, 0.9] },
-                { label: "Gender", values: [0.3, 0.5, 0.8] }
-            ]
-        }
-    ]
-})
+lenses[0].plots[0].bars[0].height.value = 62
+lenses[0].aspect.value = "gender"   // show the plot with aspect "gender"
 ```
+
+`equal` is an `ArcLayoutFunction` defined in the demo: it splits the circle among the lenses of a group.
 
 ## Options
 
-**`createDataLens(layer, options)`**
+`DataLensScheme`, one per lens:
 
-| Option | Type | Description |
-|---|---|---|
-| `center` | `Point` | Initial position of the shared drag handle |
-| `lenses` | `LensScheme[]` | One entry per lens |
+| Field | Meaning |
+|---|---|
+| `rimRadius`, `innerRadius`, `outerRadius` | lens radius and the band around it |
+| `radialSpan`, `startAngle` | arc width and its middle (default top) |
+| `plots` | one `BarPlotScheme` per `aspect`; each covers the whole arc |
+| `initialAspect` | the plot shown first |
+| `title`, `onCollapse` | arc title; radii when `size` goes to 0 |
 
-**`LensScheme`**
+`createProximityGroup`: lenses closer than `threshold` form a group; `arcLayout` assigns each its arc.
 
-| Field | Type | Description |
-|---|---|---|
-| `id` | `string` | Used as the CSS class prefix for this lens |
-| `palette` | `string[]` | Color ramp applied to bar segments, lightest to darkest |
-| `dimensions` | `DimensionScheme[]` | Each dimension occupies a span of the arc |
-| `gridLines` | `object` | Optional radial grid lines — `count`, `style`, `offset` |
+`createSnapGroup`: handles closer than `snapDistance` move together until they are `unsnapDistance` apart.
 
-**`DimensionScheme`**
-
-| Field | Type | Description |
-|---|---|---|
-| `label` | `string` | Arc-following title for this dimension |
-| `values` | `number[]` | Bar heights as fractions (0–1) |
-| `style` | `string` | CSS class for the bars (defaults to palette-derived class) |
+`createDropBox(box, lens)` collapses a lens while its centre is in the box.

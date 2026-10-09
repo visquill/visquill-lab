@@ -1,16 +1,42 @@
 # Circle Viewport
 
-A circular clipping viewport with pan and zoom, sized reactively to fill its container.
+The same viewport as the box version, clipped to a circle.
 
-## What you see
+## How it works
 
-A dashed circle inscribed in the container.  Inside it, scattered diamond shapes represent the content world.  Shapes that extend beyond the circle's edge are clipped.  Two coordinate labels inside the content scroll with the world; a label on the frame layer stays fixed.  Drag to pan the content, scroll (or pinch) to zoom.
+`canvas.viewports.circle` works like `canvas.viewports.box`, but `viewport.boundary` is a `Circle`. `Boxes.inscribeCircle` sets it to the largest circle inside the inset frame. The rim sits on the `frame` layer, so it is not clipped and does not pan or zoom.
 
-## Key concepts
+```ts
+const viewport = canvas.viewports.circle({ panning: true, zooming: true })
+// …
+const rim = frame.visuals.circle("rim")
+// …
+Reactive.do([rvg.frame], () => {
+    Boxes.inscribeCircle(Boxes.inflate(rvg.frame, -viewportInset, -viewportInset), viewport.boundary)
+    Circles.copy(viewport.boundary, rim)
+})
+```
 
-- **`viewports.circle()`** — creates a viewport whose clip region is a circle; pass `{ panning: true, zooming: true }` to enable interaction
-- **`viewport.boundary`** — the reactive `Circle` that defines the clipping region; anything outside it is hidden
-- **`viewport.content` vs `viewport.frame`** — `content` is the pannable, zoomable canvas inside the clip; `frame` is a static overlay drawn on top, outside the clip, ideal for rims and fixed labels
-- **`viewport.origin`** — the `Pin` that encodes the current pan offset and zoom level; write to it to change the view programmatically
-- **`Boxes.inscribeCircle()`** — computes the largest circle that fits inside a rectangle, used here to size the viewport boundary to the container
-- **`Fits.boxInCircle()`** — calculates the origin pin that fits a world-space bounding box into a circle, with optional padding via `Circles.inflate()`
+`Fits.boxInCircle` writes the `viewport.origin` pin that fits the bounding box of the content into a slightly smaller circle.
+
+```ts
+Reactive.do([rvg.frame], () => {
+    Fits.boxInCircle(
+        content.getVisualBoundingBox(),
+        Circles.inflate(viewport.boundary, -fitPadding),
+        viewport.origin
+    )
+})
+```
+
+## API
+
+- `canvas.viewports.circle`: a viewport clipped to a circle, with optional panning and zooming
+- `Boxes.inscribeCircle`: the largest circle inside a box
+- `Fits.boxInCircle`: the origin that fits a box into a circle
+- `Circles.inflate`: leaves padding inside the boundary
+
+## See also
+
+- `viewport/01-box-viewport`
+- `viewport/06-multiple-viewports`

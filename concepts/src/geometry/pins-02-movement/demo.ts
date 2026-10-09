@@ -52,15 +52,11 @@ export function run(div: HTMLDivElement) {
     })
 
 
-    // ─── Source arrow ─────────────────────────────────────────────────
-    const sourceShaft = canvas.visuals.segment("source-shaft")
-    const sourceDot   = canvas.visuals.circle("source-tip")
+    // ─── Pin position ─────────────────────────────────────────────────
+    const sourceDot = canvas.visuals.circle("source-tip")
 
     Reactive.do([pin], () => {
-        const tip = Pins.moveForward(pin, 1)
-        Points.copy(pin, sourceShaft.at(0))
-        Points.copy(tip, sourceShaft.at(1))
-        Circles.circleAt(tip, dotRadius, sourceDot)
+        Circles.circleAt(pin, dotRadius, sourceDot)
     })
 
     // ─── Derived positions ────────────────────────────────────────────

@@ -28,8 +28,8 @@ export interface DataLensScheme {
     radialSpan: number,
 
     /**
-     * Angle in radians where the arc begins, measured clockwise from 3 o'clock.
-     * Defaults to `0`. A value of `-π/2` starts the arc at 12 o'clock.
+     * Angle in radians of the middle of the active arc, clockwise from 3 o'clock.
+     * Defaults to `-π/2` (the arc is centred at 12 o'clock).
      */
     startAngle?: number,
 
@@ -65,9 +65,8 @@ export interface DataLensScheme {
     initialAspect: string,
 
     /**
-     * The plots to render on this lens, in order.
-     * Each plot receives an arc proportional to its number of categories:
-     * a plot with twice as many categories gets twice the arc width.
+     * The plots of this lens, one per aspect. Each covers the whole active arc;
+     * only the plot whose `aspect` equals the lens' current aspect is shown.
      */
     plots: BarPlotScheme[],
 

@@ -83,10 +83,7 @@ export function run(div: HTMLDivElement) {
     // This smoothed version is what all sampling methods operate on.
     const polyline = canvas.visuals.polyline(
         "polyline-smooth",
-        Polylines.smooth(
-            canvas.visuals.polyline("polyline-raw", polylinePoints),
-            smoothingIterations
-        )
+        Polylines.smooth(polylinePoints, smoothingIterations)
     )
 
     // ─── Slider value ──────────────────────────────────────────────────

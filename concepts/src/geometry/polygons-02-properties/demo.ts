@@ -29,15 +29,8 @@ const rowConvexity         = 395
 // Vertex 0 is at the top; vertices increase clockwise in screen space.
 // The "0" marker on vertex 0 shows where the boundary traversal starts,
 // which is important for understanding the winding direction readout.
-const initialVertices: [number, number][] = Array.from(
-    { length: vertexCount },
-    (_, i) => {
-        const angle = (i / vertexCount) * Math.PI * 2 - Math.PI / 2
-        return [
-            Math.round(cx + polygonRadius * Math.cos(angle)),
-            Math.round(cy + polygonRadius * Math.sin(angle)),
-        ]
-    }
+const initialVertices = Array.from({ length: vertexCount }, (_, i) =>
+    Points.placeOnCircle([cx, cy], polygonRadius, (i / vertexCount) * Math.PI * 2 - Math.PI / 2)
 )
 
 /**
@@ -129,9 +122,9 @@ export function run(div: HTMLDivElement) {
         Polygons.polygon(handles, polygon)
 
         // ── Measurements ──────────────────────────────────────────────
-        // area() is always positive regardless of winding.
-        // orientedArea() is positive when CCW, negative when CW —
-        // making it sensitive to winding in a way that area() is not.
+        // area() ignores the winding.
+        // orientedArea() is positive when clockwise on screen, negative
+        // when counter-clockwise.
         Polygons.area(polygon,         areaVal)
         Polygons.perimeter(polygon,    perimeterVal)
         Polygons.orientedArea(polygon, orientedAreaVal)

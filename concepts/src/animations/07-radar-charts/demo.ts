@@ -5,7 +5,7 @@
 // Three charts are placed on the canvas, each bound to a rotating data slice.
 // Clicking the controls cycles through data sets and chart geometry with eased transitions.
 
-import { VisQuill, Animate, Attach, Reactive, type Point, type Real } from "@visquill/visquill-gdk"
+import { VisQuill, Animate, Attach, Reactive, type Point } from "@visquill/visquill-gdk"
 import { Controls, Options } from "@visquill/visquill-blueprints"
 import { createRadarChart, type RadarChart } from "./radar"
 import './styles.css'
@@ -89,7 +89,7 @@ export function run(div: HTMLDivElement) {
     // ── Controls panel ────────────────────────────────────────────────────────
 
     // Bind the dataOptions control manually so clicks advance dataIndex
-    dataOptions.bind(dataIndex as unknown as Real)
+    dataOptions.bind(dataIndex)
 
     Controls.optionsPanel(controls, {
         anchor:  { x: 10, y: 40 },

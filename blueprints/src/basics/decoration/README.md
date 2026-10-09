@@ -1,54 +1,46 @@
 # Decoration
 
-Utilities for placing labels along polylines and at the edges of rectangles.
+Labels that follow shapes: one per polyline segment, or one per rectangle edge.
 
-## What it gives you
+## Usage
 
-`labelsAlongPolyline()` places one label per polyline segment, centered along each segment and optionally rotated to follow its angle. `labelsAtRectangles()` places one label per rectangle, positioned at a specified edge with configurable alignment and distance.
-
-## Basic usage
-
-```typescript
+```ts
 import { Decoration } from "@visquill/visquill-blueprints"
 
-// Label per polyline segment
 Decoration.labelsAlongPolyline(group, {
-    baseline: myPolyline,
-    labels: [
-        { text: "Q1", style: "label-quarter" },
-        { text: "Q2", style: "label-quarter" }
-    ]
+    baseline,
+    labels: [{ text: "Q1", style: "label-quarter" }, { text: "Q2", style: "label-quarter" }],
 })
 
-// Label at the top edge of each bar
 Decoration.labelsAtRectangles(group, {
-    rectangles: myBars,
+    rectangles,
     labels: ["80", "120", "95"],
     placement: "top",
     position: "center",
-    distance: 5,
-    style: "label-value"
+    distance: 12,
+    style: "label-value",
 })
 ```
 
+The labels are attached, so they move when the polyline or the rectangles change.
+
 ## Options
 
-**`Decoration.labelsAlongPolyline(group, options)`**
+`Decoration.labelsAlongPolyline(group, options)`: label i sits in the middle of segment i.
 
-| Option | Type | Description |
-|---|---|---|
-| `baseline` | `Polyline` | The polyline whose segments the labels follow |
-| `labels` | `string[] \| LabelDescription[]` | One entry per segment; strings use the default style |
-| `style` | `string` | Default CSS class applied when no per-label style is given |
-| `autoFlip` | `boolean` | Flips labels on segments that run right-to-left (default: false) |
+| Option | Meaning |
+|---|---|
+| `labels` | strings or `{ text, style }`; extra labels are dropped |
+| `distance` | distance to the left of the segment (default 0) |
+| `style` | class for plain-string labels |
+| `autoFlip` | keep labels readable on right-to-left segments (default true) |
 
-**`Decoration.labelsAtRectangles(group, options)`**
+`Decoration.labelsAtRectangles(group, options)`: label i sits at rectangle i.
 
-| Option | Type | Description |
-|---|---|---|
-| `rectangles` | `Rectangle[]` | One label is placed per rectangle |
-| `labels` | `string[] \| LabelDescription[]` | Label texts or descriptions |
-| `placement` | `"top" \| "bottom" \| "left" \| "right"` | Which edge to anchor to |
-| `position` | `"start" \| "center" \| "end"` | Alignment along that edge |
-| `distance` | `number \| Real` | Gap between the edge and the label |
-| `style` | `string` | CSS class for all labels |
+| Option | Meaning |
+|---|---|
+| `labels` | strings, `{ text, style }`, or a count of empty labels |
+| `placement` | edge: `top`, `bottom`, `left`, `right` |
+| `position` | `start`, `center`, `end` or a ratio along the edge |
+| `distance` | gap to the edge, one value or one `Real` per label |
+| `angle`, `autoFlip` | rotation in radians; flip with the rectangle |

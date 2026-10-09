@@ -111,12 +111,6 @@ export function run(div: HTMLDivElement) {
 
         // Pin lens to handle
         Attach.pointToPoint(lens.anchor, handle)
-
-        // Compute outer radius
-        const outerRadius = lens.values.real()
-        Reactive.do([radius, barOffset], () => {
-            outerRadius.value = radius.value + barOffset.value + 20
-        })
     }
 
     function createInteraction() {

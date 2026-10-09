@@ -6,7 +6,7 @@
 // each at a different alpha. The spread between followers visualises directly
 // how alpha controls the lag between a point and its target.
 
-import {VisQuill, Animate, Reactive, type Point, EasingFunctions} from "@visquill/visquill-gdk"
+import {VisQuill, Animate, Reactive, Circles, EasingFunctions} from "@visquill/visquill-gdk"
 import './styles.css'
 
 // ─── Attractor path ───────────────────────────────────────────────────────
@@ -14,13 +14,9 @@ import './styles.css'
 // them in a loop, giving followers a continuously moving target.
 const CX = 240, CY = 210, ORBIT_R = 130
 const WAYPOINT_COUNT = 6
-const WAYPOINTS: Point[] = Array.from({length: WAYPOINT_COUNT}, (_, i) => {
-    const a = (i / WAYPOINT_COUNT) * Math.PI * 2
-    return {x: CX + Math.cos(a) * ORBIT_R, y: CY + Math.sin(a) * ORBIT_R}
-})
 
 // ─── Followers ────────────────────────────────────────────────────────────
-// Twelve dots. Alpha runs from 0.16 (fast, close to attractor) down to 0.04
+// Twelve dots. Alpha runs from 0.10 (fast, close to attractor) down to 0.01
 // (slow, far behind). Each group of four shares a CSS class for size/opacity.
 const FOLLOWER_COUNT = 12
 const ALPHA_MAX = 0.10, ALPHA_MIN = 0.01
@@ -36,15 +32,15 @@ export function run(div: HTMLDivElement) {
     const canvas = rvg.layer("swarm-")
 
     // ─── Orbit path hint (faint circle) ───────────────────────────────────
-    const orbitPts: Point[] = Array.from({length: 60}, (_, i) => {
-        const a = (i / 60) * Math.PI * 2
-        return {x: CX + Math.cos(a) * ORBIT_R, y: CY + Math.sin(a) * ORBIT_R}
-    })
-    canvas.visuals.polygon("orbit", orbitPts)
+    const orbit = canvas.visuals.circle("orbit")
+    Circles.circleAt([CX, CY], ORBIT_R, orbit)
+    const waypoints = Array.from({length: WAYPOINT_COUNT}, (_, i) =>
+        Circles.pointAt(orbit, i / WAYPOINT_COUNT)
+    )
 
     // ─── Attractor ────────────────────────────────────────────────────────
     // Invisible point that drives all followers. CSS sets r:0.
-    const attractor = canvas.visuals.point("attractor", WAYPOINTS[0])
+    const attractor = canvas.visuals.point("attractor", waypoints[0])
 
     // ─── Followers ────────────────────────────────────────────────────────
     // Each dot reacts to attractor changes and calls follow with its own alpha.
@@ -53,7 +49,7 @@ export function run(div: HTMLDivElement) {
     for (let i = 0; i < FOLLOWER_COUNT; i++) {
         const t     = i / (FOLLOWER_COUNT - 1)
         const alpha = ALPHA_MAX - t * (ALPHA_MAX - ALPHA_MIN)
-        const dot   = canvas.visuals.point(followerClass(i), WAYPOINTS[0])
+        const dot   = canvas.visuals.point(followerClass(i), waypoints[0])
 
         Reactive.do([attractor], () => {
             Animate.point.follow(dot, attractor, {alpha})
@@ -67,7 +63,7 @@ export function run(div: HTMLDivElement) {
     const state = canvas.values.real(0)
 
     Reactive.do([state], () => {
-        const target = WAYPOINTS[state.value % WAYPOINT_COUNT]
+        const target = waypoints[state.value % WAYPOINT_COUNT]
         Animate.point.eased(attractor, target, 1000, {
             easing: EasingFunctions.easeInOutSine,
             onComplete: () => { state.value += 1 },

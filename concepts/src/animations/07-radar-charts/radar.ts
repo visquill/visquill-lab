@@ -5,8 +5,8 @@ import {
     Reactive,
     type Real,
     type RvgGroup, type Segment,
-    Values,
-    Vectors
+    Points,
+    Values
 } from "@visquill/visquill-gdk";
 
 export type RadarChart =
@@ -79,21 +79,16 @@ export function createRadarChart(canvas: RvgGroup, options: {
         return curves
     }
 
+    // A value is a ratio along its ray (0 = inner circle, 1 = outer circle).
+    // Stacked curves add up the values of the curves below them.
     function updateCurves(): void {
-        for (let rayIndex = 0; rayIndex < rays.length; rayIndex++) {
-            const ray = rays[rayIndex]
-            let start = ray.at(0)
-            const dir = Vectors.normalize(Vectors.direction(start, ray.at(1)))
-
-            for (let curveIndex = 0; curveIndex < curves.length; curveIndex++) {
-                const curve = curves[curveIndex]
-                const value = data[curveIndex][rayIndex]
-                const length = rayLength.value * value.value
-                const p = Vectors.add(start, Vectors.scale(dir, length), curve.at(rayIndex))
-                if (options.stackedCurves) {
-                    start = p
-                }
-            }
-        }
+        rays.forEach((ray, rayIndex) => {
+            let ratio = 0
+            curves.forEach((curve, curveIndex) => {
+                const value = data[curveIndex][rayIndex].value
+                ratio = options.stackedCurves ? ratio + value : value
+                Points.placeOnSegment(ray.at(0), ray.at(1), ratio, curve.at(rayIndex))
+            })
+        })
     }
 }

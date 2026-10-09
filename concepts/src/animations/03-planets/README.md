@@ -1,15 +1,36 @@
 # Orbit
 
-Point-based animation using `Animate.moveTo` and `Animate.followPoint`.
+Two ways to animate a point: to a target in a fixed time, or chasing a target.
 
-## What you see
+## How it works
 
-An orange courier token hops between five draggable planets in a loop. A faded ghost token trails behind it via exponential interpolation. A dashed line connects the two, making the lag between eased and follow immediately visible. Drag any planet to reshape the path — the courier will aim at its new position the next time it visits.
+The courier hops from planet to planet with `Animate.point.eased`. Each hop takes the same time and, when it completes, advances `state`, which starts the next hop. Each hop takes its easing function from a list of five.
 
-## Key concepts
+```ts
+Animate.point.eased(courier, target, HOP_DURATION, {
+    easing,
+    onComplete: () => { state.value += 1 }
+})
+```
 
-- **`Animate.moveTo` as the state transition driver** — each hop is a single `moveTo` call on a reactive point ref instead of the two separate `eased(x, …)` + `eased(y, …)` calls the scalar state machine required; the `onComplete` callback advances `state.value` exactly as before
-- **`Animate.followPoint` for the ghost** — called inside `Reactive.do([position], …)` whenever the courier's animated position changes, it continuously re-aims the ghost toward the courier's current location; the low `alpha: 0.06` keeps the ghost visibly behind even on short hops
-- **Separation of data and display** — `position` and `ghostPos` are plain reactive point refs; the state machine only writes values, never touches visuals directly; two separate `Reactive.do` blocks sync each ref to its visual, mirroring the `x`/`y`/`angle` pattern from the state machine demo
-- **Draggable planet handles** — planets are `canvas.handles.disk()` rather than fixed visuals, so the courier always aims at their current position at the moment each hop starts; no re-registration needed
-- **Per-hop easing variety** — `EASINGS` cycles through four functions so each leg has a distinct feel, demonstrating that easing applies uniformly across both axes in 2D space (`easeOutBack` visibly overshoots the target planet before settling)
+The ghost has no duration. `Animate.point.follow` moves it towards the courier on every frame, and a reaction re-aims it whenever the courier moves. A low `alpha` keeps it behind; when the courier stops, the ghost catches up.
+
+```ts
+Reactive.do([courier], () => {
+    Animate.point.follow(ghost, courier, { alpha: 0.06 })
+})
+```
+
+The planets are draggable handles, and each hop targets a handle, so dragging a planet changes the route.
+
+## API
+
+- `Animate.point.eased`: animates a point to a target in a fixed time
+- `Animate.point.follow`: moves a point towards a target on every frame
+- `canvas.handles.disk`: a draggable point
+- `Attach.pointToPoint`: keeps the labels next to their planets
+
+## See also
+
+- `animations/10-swarm`
+- `animations/02-state-machine`

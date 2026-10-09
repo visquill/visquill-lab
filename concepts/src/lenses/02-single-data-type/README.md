@@ -1,14 +1,38 @@
-# Single Data Type Lens
+# One Data Type
 
-A draggable lens that counts scattered data points by category and displays the counts as a hedgehog bar chart around its perimeter.
+A lens that counts the points inside it per category and shows the counts as bars around its rim.
 
-## What you see
+## How it works
 
-Colored dots scattered across the canvas — red, green, blue, orange. A circular lens with bars growing outward from its rim, one bar per color. Drag the lens to move it across the canvas and watch the bars grow and shrink reactively as points fall inside or outside the boundary. Use the buttons to animate the radius, arc span, rotation, and bar offset.
+The lens is a layer attached to a drag handle. A polyline with 5 points is laid along the ring with `Attach.polylineToCircle`; span and rotation come from the options panel. `Plots.labeledHedgeHogBars` from the blueprints puts one bar on each of its 4 segments.
 
-## Key concepts
+```ts
+const baseline = lens.visuals.polyline("hedgehog-path", 5)
+Attach.polylineToCircle(baseline, ring, span, {distance: 10, angle: rotation})
+```
 
-- **Hedgehog path** — a polyline that follows the circle's perimeter acts as the baseline; bars grow perpendicularly outward from it, one per data category
-- **`Reactive.do([lens.anchor, radius], ...)`** — the count recomputes whenever the lens moves or its radius changes; `Points.distanceToPoint()` is called for every data point to test membership
-- **`Animate.follow(height, target)`** — smoothly interpolates the bar height to the new count rather than snapping instantly, giving the chart a fluid feel
-- **Animated lens properties** — `radius`, `barOffset`, `startAngle`, and `radialSpan` are all reactive `Real`s; the control buttons animate them with `Animate.eased()`, and the geometry reacts automatically
+Whenever the lens moves or its radius changes, the points of each category inside the circle are counted. `Animate.real.follow` moves each bar height towards the new count.
+
+```ts
+Reactive.do([lens.anchor, radius], () => {
+    for (let i = 0; i < dataTypes.length; i++) {
+        const count = countPoints(points[i])
+        Animate.real.follow(heights[i], count / numberOfDataPoints * 400)
+        valueLabels[i].value = count.toString()
+    }
+})
+```
+
+A point counts when `Points.distanceToPoint` to the lens centre is less than the radius.
+
+## API
+
+- `Attach.polylineToCircle`: lays a polyline along a circle, with a span, a distance and a start angle
+- `Attach.circleRadiusToValue`: ties the ring's radius to the option
+- `Attach.pointToPoint`: moves the lens layer with the handle
+- `Animate.real.follow`: eases a value towards a target
+- `Points.distanceToPoint`: the membership test
+
+## See also
+
+- `lenses/03-two-data-types`

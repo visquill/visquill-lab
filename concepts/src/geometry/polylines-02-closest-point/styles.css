@@ -8,11 +8,6 @@
     stroke-dasharray: 4, 4;
 }
 
-.demos-polyline-closest-polyline-raw {
-    fill: none;
-    stroke: none;
-}
-
 .demos-polyline-closest-polyline-smooth {
     fill: none;
     stroke: #334155;

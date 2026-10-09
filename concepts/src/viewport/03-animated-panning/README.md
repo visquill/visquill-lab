@@ -1,26 +1,36 @@
 # Animated Panning
 
-Click any shape to smoothly pan the viewport until that shape is centred.
+Animate the viewport origin to bring a clicked shape to the centre.
 
-## What you see
+## How it works
 
-A rectangular viewport containing scattered diamond shapes, with a small blue dot marking the viewport centre.  Click any diamond and the view glides until the shape sits directly over the centre marker.  Manual drag-to-pan and scroll-to-zoom still work alongside the click-to-pan behaviour.
+The view of a viewport is the pin `viewport.origin`. `Viewports.panPointTo` returns a new origin in which a world point lands on a given screen point, with the same zoom. `Animate.pin.easedAt` then moves the origin there over `panDuration` milliseconds.
 
-## How it builds on Box Viewport
+```ts
+for (const shape of shapes) {
+    const svg    = Svg.get(shape)
+    const center = Boxes.center(Rectangles.boundingBox(shape))
 
-The viewport setup is identical to the Box Viewport demo.  Three new concepts are layered on top:
+    svg.addEventListener("click", () => {
+        const vCenter = Boxes.center(viewport.boundary)
+        const target  = Viewports.panPointTo(viewport.origin, center, vCenter)
+        Animate.pin.easedAt(viewport.origin, target, vCenter, panDuration)
+    })
+}
+```
 
-| Addition | Purpose |
-|---|---|
-| `Svg.get(shape)` | Access the underlying SVG element to attach a DOM click listener |
-| `Viewports.panPointTo()` | Compute a target origin that would place a world-space point at the viewport centre |
-| `Animate.pin.easedAt()` | Transition the viewport origin to the target with an eased animation |
+`Svg.get` returns the SVG element of a visual, so plain DOM listeners work. The centre marker is drawn on the `frame` layer and does not move.
 
-Content fitting is done once on load rather than reactively — after that the user navigates via clicks or dragging.
+The content is fitted once with `Fits.boxInBox` at start, not on every resize, so it does not undo the user's navigation.
 
-## Key concepts
+## API
 
-- **`Svg.get()`** — returns the raw SVG DOM element for any VisQuill visual, enabling standard `addEventListener` calls
-- **`Rectangles.boundingBox()`** — computes the bounding box of a shape so its centre can be found with `Boxes.center()`
-- **`Viewports.panPointTo(origin, worldPoint, viewportCenter)`** — returns a new origin `Pin` that moves `worldPoint` to `viewportCenter` without changing the zoom level
-- **`Animate.pin.easedAt(pin, target, pivot, duration)`** — animates a pin from its current value to `target` over `duration` ms with easing, pivoting around a fixed screen point
+- `Viewports.panPointTo`: the origin that moves a world point to a screen point
+- `Animate.pin.easedAt`: eases a pin to a target, interpolating around a screen point
+- `Svg.get`: the SVG element of a visual
+- `Rectangles.boundingBox`: the bounding box of a shape
+
+## See also
+
+- `viewport/01-box-viewport`
+- `viewport/04-animated-focus`

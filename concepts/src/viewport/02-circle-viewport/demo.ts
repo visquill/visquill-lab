@@ -15,6 +15,9 @@ const worldSize = 600
 const minShapeSize = 10
 const maxShapeSize = 28
 
+// Inset between the container edge and the viewport boundary.
+const viewportInset = 40
+
 // Padding inside the viewport boundary when fitting content.
 const fitPadding = 20
 
@@ -76,9 +79,9 @@ export function run(div: HTMLDivElement) {
 
     // ─── Reactive boundary sizing ─────────────────────────────────────
     // Whenever the container resizes, inscribe the largest circle that
-    // fits inside the frame and mirror its geometry to the visible rim.
+    // fits inside the inset frame and mirror its geometry to the visible rim.
     Reactive.do([rvg.frame], () => {
-        Boxes.inscribeCircle(Boxes.inflate(rvg.frame,-40,-40), viewport.boundary)
+        Boxes.inscribeCircle(Boxes.inflate(rvg.frame, -viewportInset, -viewportInset), viewport.boundary)
         Circles.copy(viewport.boundary, rim)
     })
 

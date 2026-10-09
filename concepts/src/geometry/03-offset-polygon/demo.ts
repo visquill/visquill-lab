@@ -2,7 +2,7 @@
 // @category Geometry
 // @group Misc
 
-import { type Point, Reactive, VisQuill, ConvexHulls, Offsets, Vectors, Segments } from "@visquill/visquill-gdk";
+import { type Point, Reactive, VisQuill, ConvexHulls, Offsets, Points, Segments } from "@visquill/visquill-gdk";
 import './styles.css';
 
 /**
@@ -46,11 +46,12 @@ export function run(div: HTMLDivElement) {
 
     Segments.pointAt(track, 0.5, slider);
 
+    // Keep the handle on the track; the distance is how far it is from the track's start.
     Reactive.do([slider], () => {
-        Vectors.copy([Math.max(100, Math.min(300, slider.x)), 50], slider);
-        distance.value = slider.x - 100;
+        Points.closestPointOnSegment(slider, track, slider);
+        Points.distanceToPoint(track.at(0), slider, distance);
         label.value = distance.value.toFixed(0) + "px";
-        Vectors.add(slider, [0, 25], label);
+        Points.moveDown(slider, 25, label);
     }, true);
 
     // ─── Instructions ────────────────────────────────────────────────────────

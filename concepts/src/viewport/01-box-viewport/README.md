@@ -1,26 +1,48 @@
 # Box Viewport
 
-A rectangular clipping viewport with pan and zoom, sized reactively to fill its container.
+A viewport clips its content to a rectangle and lets the user pan and zoom inside it.
 
-## What you see
+## How it works
 
-A dashed rectangle inset from the container edge.  Inside it, scattered diamond shapes represent the content world.  Shapes that extend beyond the rectangle's edge are clipped.  Two coordinate labels inside the content scroll with the world; a label on the frame layer stays fixed.  Drag to pan the content, scroll (or pinch) to zoom.
+`canvas.viewports.box` returns a viewport with two layers. Shapes on `content` are clipped to `viewport.boundary` and move with pan and zoom. Shapes on `frame` are drawn on top and stay fixed, so the rim goes there.
 
-## How it differs from Circle Viewport
+```ts
+const viewport = canvas.viewports.box({ panning: true, zooming: true })
+const content = viewport.content
+const frame   = viewport.frame
 
-The structure is intentionally identical.  Only three things change:
+const rim = frame.visuals.box("rim")
+```
 
-| Circle Viewport | Box Viewport |
-|---|---|
-| `viewports.circle()` | `viewports.box()` |
-| `Boxes.inscribeCircle()` → boundary | `Boxes.inflate()` → boundary |
-| `Fits.boxInCircle()` | `Fits.boxInBox()` |
+The boundary is an ordinary `Box`. It is set from the container on every resize, and `Fits.boxInBox` writes the `viewport.origin` pin that fits all content into it.
 
-Everything else — content creation, frame labels, reactive wiring — is the same code.
+```ts
+Reactive.do([rvg.frame], () => {
+    Boxes.inflate(rvg.frame, -viewportInset, -viewportInset, viewport.boundary)
+    Boxes.copy(viewport.boundary, rim)
+})
 
-## Key concepts
+Reactive.do([rvg.frame], () => {
+    Fits.boxInBox(
+        content.getVisualBoundingBox(),
+        Boxes.inflate(viewport.boundary, -fitPadding, -fitPadding),
+        viewport.origin
+    )
+})
+```
 
-- **`viewports.box()`** — creates a viewport whose clip region is an axis-aligned rectangle; the API mirrors `viewports.circle()` exactly
-- **`viewport.boundary`** — here a reactive `Box` instead of a `Circle`, but used in the same way
-- **`Boxes.inflate()`** — shrinks (or grows) a rectangle by a fixed inset on each axis; used here to derive the viewport boundary from the container frame
-- **`Fits.boxInBox()`** — calculates the origin pin that fits a world-space bounding box into a rectangle, the rectangular counterpart to `Fits.boxInCircle()`
+## API
+
+- `canvas.viewports.box`: a viewport clipped to a rectangle, with optional panning and zooming
+- `Boxes.inflate`: shrinks the frame to the viewport boundary
+- `Fits.boxInBox`: the origin that fits a box into another box
+- `Symbols.diamond`: the content shapes
+
+## Notes
+
+The fit runs again on every resize, so it also undoes the user's pan and zoom.
+
+## See also
+
+- `viewport/02-circle-viewport`
+- `viewport/03-animated-panning`

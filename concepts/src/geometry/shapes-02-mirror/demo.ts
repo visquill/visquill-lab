@@ -3,7 +3,7 @@
 // @group Shapes
 
 import {
-    VisQuill, Reactive, Shapes, Boxes, Segments, Points,
+    VisQuill, Reactive, Shapes, Boxes, Segments, Points, Polylines,
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -60,10 +60,10 @@ export function run(div: HTMLDivElement) {
 
     // ─── Axis line ────────────────────────────────────────────────────
     // Extended visual line through the two handle points.
-    const axisLine = canvas.visuals.segment("axis-line")
+    const axisLine = canvas.visuals.polyline("axis-line")
 
     // ─── Original shape ───────────────────────────────────────────────
-    const original = canvas.visuals.polygon("original")
+    const original = canvas.visuals.polygon("original", arrowVertices)
 
     // ─── Mirrored shape ───────────────────────────────────────────────
     const mirrored = canvas.visuals.polygon("mirrored")
@@ -74,29 +74,14 @@ export function run(div: HTMLDivElement) {
 
     // ─── Reactive block ───────────────────────────────────────────────
     Reactive.do([hP1, hP2], () => {
-        const baseShape = canvas.shapes.polygon(arrowVertices)
-
-        // Original shape is always the base.
-        Shapes.copy(baseShape, original)
-
         // Mirror across the line p1 → p2.
-        const reflected = Shapes.mirror(baseShape, hP1, hP2)
-        Shapes.copy(reflected, mirrored)
+        Shapes.mirror(original, hP1, hP2, mirrored)
 
-        // Extend the axis line well beyond the handles for clarity.
-        const dx = hP2.x - hP1.x
-        const dy = hP2.y - hP1.y
-        const len = Math.sqrt(dx * dx + dy * dy) || 1
-        const ext = 600
-        const nx  = dx / len
-        const ny  = dy / len
-        Points.copy({ x: hP1.x - nx * ext, y: hP1.y - ny * ext }, axisLine.at(0))
-        Points.copy({ x: hP2.x + nx * ext, y: hP2.y + ny * ext }, axisLine.at(1))
+        // Extend the axis line 80 px beyond both handles for clarity.
+        Polylines.extend([hP1, hP2], 80, 80, axisLine)
 
-        // Labels: centroid of each shape.
-        const origCentroid = Shapes.centroid(baseShape)
-        const reflCentroid = Shapes.centroid(reflected)
-        Points.moveDown(origCentroid, 60, labelOriginal)
-        Points.moveDown(reflCentroid, 60, labelMirrored)
+        // Labels below the centroid of each shape.
+        Points.moveDown(Shapes.centroid(original), 60, labelOriginal)
+        Points.moveDown(Shapes.centroid(mirrored), 60, labelMirrored)
     }, true)
 }

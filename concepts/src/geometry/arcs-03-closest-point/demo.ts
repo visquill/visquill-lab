@@ -3,7 +3,7 @@
 // @group Arcs
 
 import {
-    VisQuill, Arcs, Circles, Reactive, Points, Boxes, Segments,
+    VisQuill, Arcs, Vectors, Circles, Reactive, Points, Boxes, Segments,
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -40,10 +40,10 @@ export function run(div: HTMLDivElement) {
         Circles.circleAt(center, r, ghostCircle)
         Circles.closestPoint(ghostCircle, endH, endH)
 
-        const sa = Math.atan2(startH.y - center.y, startH.x - center.x)
-        const ea = Math.atan2(endH.y   - center.y, endH.x   - center.x)
-        let sw = ea - sa
-        if (sw <= 0) sw += 2 * Math.PI
+        // angles on screen, measured clockwise
+        const startDir = Vectors.direction(center, startH)
+        const sa = Vectors.angle(startDir, true)
+        const sw = Vectors.angleTo(startDir, Vectors.direction(center, endH), true)
 
         Arcs.arcAt(center, r, sa, sw, arc)
     })

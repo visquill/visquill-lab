@@ -1,13 +1,27 @@
-# Shapes — Orientate
+# Orientate
 
-Rotate a shape by dragging a target direction handle, with a source handle defining what "forward" means.
+Turn a shape around an anchor so that one direction points where another one does.
 
-## What you see
+## How it works
 
-An asymmetric arrow shape with a fixed anchor at its centroid.  A white handle sets the source orientation — the direction the shape considers forward.  A purple handle sets the target orientation.  The shape rotates so that source aligns with target.  A faint ghost shows the original unrotated position for reference.  The angle between source and target is shown as a live readout near the anchor.
+`Shapes.orientate` takes two vectors instead of an angle: the shape's own "forward" direction and the direction it should face. It turns the shape around the anchor by the angle between them. The vertex list can be passed directly as the shape; the result goes into the visual polygon:
 
-## Key concepts
+```ts
+const srcDir = Vectors.direction(anchor, hSource)
+const tgtDir = Vectors.direction(anchor, hTarget)
+// …
+Shapes.orientate(arrowVertices, anchor, srcDir, tgtDir, arrow)
+```
 
-- **`Shapes.orientate()`** — rotates a shape around an anchor point so that one direction vector aligns with another; both vectors are defined relative to the anchor, not as absolute angles; if either vector is zero-length the shape is returned unchanged
-- **`Shapes.copy()`** — used here to write the result of `orientate()` into an existing polygon visual without creating a new canvas object on every reactive update
-- **Ghost shape** — the original unmodified shape is copied once into a separate polygon visual outside the reactive block and never updated, giving a stable reference that costs nothing to maintain
+Only the directions count, not the lengths. The angle shown below the anchor comes from `Vectors.angleTo`, measured clockwise on screen.
+
+## API
+
+- `Shapes.orientate`: rotates a shape so a source direction turns into a target direction
+- `Vectors.direction`: the vector from the anchor to a handle
+- `Vectors.angleTo`: the angle between two directions
+
+## See also
+
+- `geometry/shapes-04-transform`
+- `geometry/pins-03-placement`

@@ -3,7 +3,7 @@
 // @group Bars
 
 import {
-    VisQuill, Reactive, Boxes, Segments, Points, Bars,type Rectangle,
+    VisQuill, Reactive, Boxes, Segments, Points, Pins, Bars, type Rectangle,
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -12,13 +12,13 @@ const barWidth  = { value: 160 }
 const barHeight = { value: 70 }
 
 /**
- * Demonstrates `Bars.fromPin` and `Bars.fromAnchoredPin` with different
- * anchor ratios on a shared draggable pin.
+ * Demonstrates `Bars.fromAnchoredPin` with different anchor ratios on a
+ * shared draggable pin.
  *
  * Three bars share the same pin (position + orientation) but differ in
  * where along their width the pin sits:
  *  - Green:  anchor 0.0 — pin is at the left edge.
- *  - Orange: anchor 0.5 — pin is at the centre (equivalent to `fromPin`).
+ *  - Orange: anchor 0.5 — pin is at the centre.
  *  - Purple: anchor 1.0 — pin is at the right edge.
  *
  * Drag the position handle to move all three bars, or drag the direction
@@ -43,7 +43,7 @@ export function run(div: HTMLDivElement) {
 
     // ─── Pin handles ───────────────────────────────────────────────────
     // The pin is defined by two draggable handles: a position and a
-    // direction end-point.  Orientation = dirHandle − posHandle.
+    // direction end-point; the pin sits on posHandle and points to dirHandle.
     const posHandle = canvas.handles.disk("pos-handle", [450, 280])
     const dirHandle = canvas.handles.disk("dir-handle", [590, 280])
 
@@ -69,9 +69,7 @@ export function run(div: HTMLDivElement) {
 
     // ─── Reactive block ────────────────────────────────────────────────
     Reactive.do([posHandle, dirHandle], () => {
-        const dx  = dirHandle.x - posHandle.x
-        const dy  = dirHandle.y - posHandle.y
-        const pin = { x: posHandle.x, y: posHandle.y, dx, dy }
+        const pin = Pins.placeAndAlignOnSegment(posHandle, dirHandle, 0)
 
         Bars.fromAnchoredPin(pin, { value: 0.0 }, barWidth, barHeight, true, barLeft as Rectangle)
         Bars.fromAnchoredPin(pin, { value: 0.5 }, barWidth, barHeight, true, barCenter as Rectangle)

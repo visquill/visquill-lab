@@ -1,14 +1,32 @@
+# Mirror
 
-# Shapes — Mirror
+Reflect a shape across the line through two points.
 
-Reflect a shape across a draggable two-point axis and watch the mirrored copy update in real time.
+## How it works
 
-## What you see
+`Shapes.mirror` reflects every vertex across the infinite line through `p1` and `p2`. The two handles only fix the line's position and direction; their distance does not matter:
 
-An asymmetric arrow shape on the left side of the canvas.  Two orange handles define a reflection axis — the infinite line passing through both points.  A teal mirrored copy appears on the other side.  Dragging either handle rotates or shifts the axis; both shapes update instantly.  The axis line extends well beyond the handles to make clear it represents an infinite line, not just the segment between the two points.
+```ts
+Reactive.do([hP1, hP2], () => {
+    Shapes.mirror(original, hP1, hP2, mirrored)
+    // …
+}, true)
+```
 
-## Key concepts
+To show that the line is infinite, the drawn axis runs 80 px past both handles. `Polylines.extend` lengthens the line through the two handles at each end:
 
-- **`Shapes.mirror()`** — reflects every vertex of a shape across the infinite line defined by two points; the line has no length limit — only its direction and position matter
-- **`Shapes.centroid()`** — used here to place the shape labels at a stable central position that tracks each shape as it moves
-- **Axis extension** — the visible axis line is extended far beyond the handle positions by projecting along the normalised direction vector; this makes the infinite-line semantics of `mirror()` visually explicit
+```ts
+Polylines.extend([hP1, hP2], 80, 80, axisLine)
+```
+
+The labels sit below each shape's `Shapes.centroid`.
+
+## API
+
+- `Shapes.mirror`: reflects a shape across a line through two points
+- `Shapes.centroid`: the average position of a shape's vertices
+- `Polylines.extend`: lengthens a polyline at its start and end
+
+## See also
+
+- `geometry/points-02-reflection-rotation`

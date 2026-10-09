@@ -1,21 +1,41 @@
-# Polygon Properties
+# Properties
 
-Drag the vertices of a hexagon and watch area, perimeter, winding direction, and convexity update live.
+Measure a polygon: area, perimeter, oriented area, winding, convexity and centroid.
 
-## What you see
+## How it works
 
-A six-vertex polygon with draggable handles.  Vertex 0 is highlighted in orange — the boundary is traversed from there in vertex order, which determines winding.  A green dot marks the centroid.  A metrics panel on the right shows five live readouts.
+One reaction rebuilds the polygon from the handles and writes every measurement into a value from `canvas.values`:
 
-## Things to try
+```ts
+Reactive.do(handles, () => {
+    Polygons.polygon(handles, polygon)
 
-- **Make it concave** — drag a vertex inward past the centre.  Watch convexity toggle from "Convex" to "Concave".
-- **Cross two edges** — drag a vertex far enough to self-intersect the polygon.  The oriented area changes sign even though the absolute area keeps growing.
-- **Reverse winding** — rearrange vertices so the boundary travels the other way.  The winding label flips; the absolute area stays the same but oriented area flips sign.
+    Polygons.area(polygon,         areaVal)
+    Polygons.perimeter(polygon,    perimeterVal)
+    Polygons.orientedArea(polygon, orientedAreaVal)
 
-## Key concepts
+    Polygons.isConvex(polygon,    isConvexVal)
+    Polygons.isClockwise(polygon, isClockwiseVal)
 
-- **`Polygons.area()`** — always positive; does not reflect winding direction
-- **`Polygons.orientedArea()`** — positive when counter-clockwise, negative when clockwise; sign flips when the boundary self-intersects or the winding reverses; this is what distinguishes it from `area()`
-- **`Polygons.perimeter()`** — total length of all edges, including the closing edge from the last vertex back to vertex 0
-- **`Polygons.centroid()`** — the geometric centre of mass of the enclosed area; stays inside a convex polygon but can approach a "waist" in a concave one
-- **`Polygons.isClockwise()` / `isConvex()`** — reactive boolean properties that toggle as the shape is reshaped; winding is defined relative to the vertex order starting at vertex 0
+    Polygons.centroid(polygon, centroid)
+    // …
+}, true)
+```
+
+The winding is the direction in which the vertices run, starting at vertex 0 (marked). The oriented area is positive when they run clockwise on screen and negative otherwise; `Polygons.area` drops the sign. The perimeter includes the closing edge back to vertex 0.
+
+## API
+
+- `Polygons.polygon`: writes vertices into a polygon
+- `Polygons.area`, `Polygons.orientedArea`: area without and with the winding's sign
+- `Polygons.perimeter`: the length of all edges
+- `Polygons.isClockwise`, `Polygons.isConvex`: winding and convexity checks
+- `Polygons.centroid`: the center of mass of the area
+
+## Notes
+
+For a self-intersecting polygon the parts with opposite winding cancel: a figure-eight can have area 0.
+
+## See also
+
+- `geometry/polygons-05-orientation`

@@ -3,7 +3,7 @@
 // @group Attach
 import {
     VisQuill, Reactive, Attach, Points,  Boxes, Segments,
-    type RvgGroup, type RvgGraphic, type Real
+    Values, type RvgGroup, type RvgGraphic, type Real, type Circle, type Point
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -39,13 +39,7 @@ export function run(div: HTMLDivElement) {
         const inner  = canvas.visuals.circle("inner-circle")
         const outer    = canvas.visuals.circle("outer-circle")
 
-        Attach.circleCenterToPoint(inner, canvas.values.point([cx, cy]))
-        Attach.circleRadiusToValue(inner, canvas.values.real(baseRadius))
-
-        Reactive.do([radiusHandle], () => {
-            const r = Math.max(20, Points.distanceToPoint({ x: cx, y: cy }, radiusHandle).value)
-            Attach.circleRadiusToValue(inner, r)
-        })
+        radiusFromHandle(canvas, inner, cx, radiusHandle)
 
         Attach.circleToCircle(outer, inner, 20)
 
@@ -62,12 +56,7 @@ export function run(div: HTMLDivElement) {
         const circle  = canvas.visuals.circle("inner-circle")
         const polygon = canvas.visuals.polygon("polygon",5)
 
-        Attach.circleCenterToPoint(circle, canvas.values.point([cx, cy]))
-
-        Reactive.do([radiusHandle], () => {
-            const r = Math.max(20, Points.distanceToPoint({ x: cx, y: cy }, radiusHandle).value)
-            Attach.circleRadiusToValue(circle, r)
-        })
+        radiusFromHandle(canvas, circle, cx, radiusHandle)
 
         const angle = buildSlider(canvas, rvg, "start angle", 0, Math.PI * 2, 0, cx, sliderY)
 
@@ -86,12 +75,7 @@ export function run(div: HTMLDivElement) {
         const circle   = canvas.visuals.circle("inner-circle")
         const polyline = canvas.visuals.polyline("arc-polyline",10)
 
-        Attach.circleCenterToPoint(circle, canvas.values.point([cx, cy]))
-
-        Reactive.do([radiusHandle], () => {
-            const r = Math.max(20, Points.distanceToPoint({ x: cx, y: cy }, radiusHandle).value)
-            Attach.circleRadiusToValue(circle, r)
-        })
+        radiusFromHandle(canvas, circle, cx, radiusHandle)
 
         const span  = buildSlider(canvas, rvg, "span (rad)", 0.5, Math.PI * 2, Math.PI, cx, sliderY + 22)
         const angle = buildSlider(canvas, rvg, "angle (rad)", 0, Math.PI * 2, 0, cx, sliderY - 22)
@@ -104,6 +88,17 @@ export function run(div: HTMLDivElement) {
 
         canvas.text.labelAt("polylineToCircle(polyline, circle, span, { angle })", { x: cx, y: cy - baseRadius - 50 }, "panel-label")
     }
+}
+
+// ─── Circle at (cx, cy) whose radius follows a handle ─────────────────────
+// The radius is one Real, attached once; the reaction only writes it.
+function radiusFromHandle(canvas: RvgGroup, circle: Circle, cx: number, handle: Point) {
+    const radius = canvas.values.real(baseRadius)
+    Attach.circleCenterToPoint(circle, canvas.values.point([cx, cy]))
+    Attach.circleRadiusToValue(circle, radius)
+    Reactive.do([handle], () => {
+        Values.max(20, Points.distanceToPoint([cx, cy], handle), radius)
+    })
 }
 
 // ─── Slider ───────────────────────────────────────────────────────────────
@@ -138,7 +133,7 @@ function buildSlider(
     })
 
     Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
+        Values.lerp(min, max, t, value)
     })
 
     return value

@@ -1,14 +1,41 @@
-# Point Matching
+# External Labeling
 
-Optimal one-to-one assignment between a set of sites and a set of ports on an offset polygon.
+Connect sites to ports around them with leader lines that do not cross.
 
-## What you see
+## How it works
 
-Twenty draggable sites. Their convex hull is offset outward and evenly-spaced ports are distributed around the offset boundary. Each site is connected to its assigned port by a leader line. Drag any site or the slider and the assignments recompute — leader lines never cross unnecessarily.
+One reaction chains four steps. The convex hull of the sites is grown by `Offsets.polygon`. `Distribute.pointsOnPolygon` spreads one port per site evenly along that outline. `Match.pointsWithPoints` then pairs each site with its own port so that the total leader length is as small as possible.
 
-## Key concepts
+```ts
+Reactive.do([...sites, distance], () => {
+    ConvexHulls.topStart(sites, polygon);
+    Offsets.polygon(polygon, distance, true, 1, offset);
+    Distribute.pointsOnPolygon(ports, offset);
+    const assignment = Match.pointsWithPoints(sites, ports);
+    for (let i = 0; i < sites.length; i++) {
+        const p1 = ports[assignment[i]];
+        const p2 = sites[i];
+        Segments.segment(p1, p2, leaders[i]);
+    }
+}, true);
+```
 
-- **`Distribute.pointsOnPolygon(ports, polygon)`** — places a fixed number of points evenly around a polygon's perimeter; the ports array is pre-allocated and written in-place
-- **`Match.pointsWithPoints(sites, ports)`** — returns an index array solving the optimal one-to-one assignment that minimises total distance; `assignment[i]` is the port index for site `i`
-- **Mixed dependency array** — `Reactive.do([...sites, distance], ...)` combines an array spread with a scalar value; the block fires when any site moves or the distance changes
-- **Pipeline composition** — hull → offset → distribute → match all run sequentially inside one reactive block, keeping the data flow explicit and easy to follow
+The ports come from `Points.array`, created once. `Distribute.pointsOnPolygon` moves them in place.
+
+## API
+
+- `ConvexHulls.topStart`: the convex hull of a set of points
+- `Offsets.polygon`: a polygon offset from a baseline polygon
+- `Distribute.pointsOnPolygon`: spreads points evenly along a polygon's edges
+- `Match.pointsWithPoints`: an optimal one-to-one pairing of two point sets
+- `Points.array`: a list of new points
+- `Segments.segment`: writes a leader line between two points
+
+## Notes
+
+A pairing with the smallest total length never has two crossing leaders, since uncrossing them would make the total shorter.
+
+## See also
+
+- `geometry/match-basic`
+- `geometry/03-offset-polygon`

@@ -1,0 +1,130 @@
+/* Copy of visquill-site/src/styles/tokens.css (source of truth). Do not edit here:
+   change the site file and copy it again. Copied 2026-10-07. */
+
+/* ============================================================================
+   VisQuill — Design Tokens
+   Single source of truth. No component or page should hardcode a color, radius,
+   or font again — everything references a variable defined here.
+
+   Palette philosophy: the gold is the brand (pulled from the logo). The quill
+   writes in ink, so gold pairs with a warm near-black "ink" and warm "cream"
+   backgrounds. Gold is an ACCENT/identity color, never a primary action color
+   on light backgrounds (it fails contrast on white/cream). Ink carries text and
+   primary actions; gold pops on ink section bands.
+   ============================================================================ */
+
+:root {
+  /* ---- Raw brand palette --------------------------------------------------
+     Gold values sampled directly from quill-white.png. */
+  --vq-gold:        #C2994C;  /* logo gold — identity, accents, gold-on-ink   */
+  --vq-gold-deep:   #A57404;  /* darker gold — gold text/borders on light     */
+  --vq-gold-bright: #D8B36A;  /* lighter gold — hover/accents ON ink bands     */
+  --vq-gold-tint:   #F2E6CC;  /* pale gold — badge/highlight surfaces on cream */
+
+  --vq-ink:         #1C1A17;  /* warm near-black — primary text & buttons      */
+  --vq-ink-soft:    #3B372F;  /* secondary text                                */
+  --vq-ink-raised:  #262219;  /* raised surface inside ink sections            */
+
+  --vq-cream:       #FAF6EF;  /* page background — warm off-white               */
+  --vq-cream-deep:  #F1EADB;  /* alternating light band / subtle fills         */
+  --vq-white:       #FFFFFF;  /* elevated card surface (pops against cream)     */
+
+  --vq-border:      #E7DECB;  /* warm hairline                                 */
+  --vq-muted:       #6E6656;  /* muted text / captions                         */
+
+  /* Muted functional colors (kept low-saturation to sit in the palette) */
+  --vq-success:     #3F7A5B;
+  --vq-danger:      #B4433A;
+
+  /* ---- Semantic aliases (LIGHT / default) ---------------------------------
+     Components reference these, not the raw palette, so tone bands can remap
+     them. See utilities.css for [data-tone="ink"] / [data-tone="cream-deep"]. */
+  --vq-bg:            var(--vq-cream);
+  --vq-fg:            var(--vq-ink);
+  --vq-fg-muted:      var(--vq-muted);
+  --vq-surface:       var(--vq-white);
+  --vq-border-color:  var(--vq-border);
+  --vq-accent:        var(--vq-gold);
+  --vq-accent-strong: var(--vq-gold-deep);   /* accent that passes contrast on light */
+  --vq-focus:         var(--vq-gold-deep);
+
+  /* Button semantics (remapped inside ink bands so primary stays visible) */
+  --vq-btn-primary-bg: var(--vq-ink);
+  --vq-btn-primary-fg: var(--vq-cream);
+
+  /* ---- Typography --------------------------------------------------------- */
+  --vq-font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --vq-font-sans:    "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --vq-font-mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Type scale (~1.25 major third, rem-based) */
+  --vq-text-xs:   0.8125rem;  /* 13px */
+  --vq-text-sm:   0.9375rem;  /* 15px */
+  --vq-text-base: 1rem;       /* 16px */
+  --vq-text-lg:   1.1875rem;  /* 19px */
+  --vq-text-xl:   1.5rem;     /* 24px */
+  --vq-text-2xl:  1.875rem;   /* 30px */
+  --vq-text-3xl:  2.375rem;   /* 38px */
+  --vq-text-4xl:  3rem;       /* 48px */
+  --vq-text-5xl:  3.75rem;    /* 60px — display */
+
+  --vq-leading-tight:  1.15;
+  --vq-leading-snug:   1.35;
+  --vq-leading-normal: 1.65;
+
+  --vq-weight-regular:  400;
+  --vq-weight-medium:   500;
+  --vq-weight-semibold: 600;
+  --vq-weight-bold:     700;
+
+  --vq-tracking-tight:  -0.02em;   /* large display headings          */
+  --vq-tracking-normal: 0;
+  --vq-tracking-wide:   0.08em;    /* eyebrows / small-caps labels    */
+
+  /* ---- Spacing scale (4px base) ------------------------------------------ */
+  --vq-space-1:  0.25rem;
+  --vq-space-2:  0.5rem;
+  --vq-space-3:  0.75rem;
+  --vq-space-4:  1rem;
+  --vq-space-5:  1.5rem;
+  --vq-space-6:  2rem;
+  --vq-space-7:  3rem;
+  --vq-space-8:  4rem;
+  --vq-space-9:  6rem;
+  --vq-space-10: 8rem;
+
+  /* ---- Radius (only THREE — kills the old 17-value scatter) -------------- */
+  --vq-radius:      0.5rem;
+  --vq-radius-lg:   1rem;
+  --vq-radius-pill: 999px;
+
+  /* ---- Shadows (warm-tinted, not pure black) ---------------------------- */
+  --vq-shadow-sm: 0 1px 2px rgba(28, 26, 23, 0.06),
+                  0 1px 3px rgba(28, 26, 23, 0.05);
+  --vq-shadow-md: 0 4px 12px rgba(28, 26, 23, 0.08),
+                  0 2px 4px rgba(28, 26, 23, 0.05);
+  --vq-shadow-lg: 0 12px 32px rgba(28, 26, 23, 0.12),
+                  0 4px 8px rgba(28, 26, 23, 0.06);
+
+  /* ---- Motion ----------------------------------------------------------- */
+  --vq-ease:       cubic-bezier(0.22, 1, 0.36, 1);
+  --vq-transition: 180ms var(--vq-ease);
+
+  /* ---- Layout ----------------------------------------------------------- */
+  --vq-container:       72rem;   /* 1152px — standard content width */
+  --vq-container-wide:  84rem;   /* 1344px — galleries / wide media */
+  --vq-container-prose: 42rem;   /* 672px  — long-form reading      */
+  --vq-gutter:          1.5rem;  /* page horizontal padding (mobile) */
+  --vq-tap:             2.75rem; /* 44px — minimum touch target      */
+  --vq-header-h:        3.75rem; /* sticky header height (for embeds) */
+
+  /* ---- Z-index scale ---------------------------------------------------- */
+  --vq-z-header:  850;
+  --vq-z-overlay: 2000;
+}
+
+/* Global tokens are plain CSS, so this one query uses the literal `md` value
+   (48rem) from styles/_breakpoints.scss. Keep it in sync if the map changes. */
+@media (min-width: 48rem) {
+  :root { --vq-gutter: 2rem; }
+}

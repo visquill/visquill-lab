@@ -1,15 +1,37 @@
 # Radar Charts
 
-Stacked radar charts as draggable, reactively animated nodes.
+Animate the numbers behind a chart, and the chart follows.
 
-## What you see
+## How it works
 
-Three radar charts on the canvas, each showing six stacked colour bands across eight rays. The charts share a common scale so relative sizes stay comparable as you cycle through datasets. Each chart is offset into the block sequence so all three always show distinct data. Grab anywhere inside a chart to reposition it. The controls panel cycles through datasets, inner-radius sizes, and ray lengths — every transition animates simultaneously across all three charts.
+`createRadarChart` (in `radar.ts`) returns the chart's inputs as `Real` values: `innerRadius`, `rayLength`, and `data`, one value per curve and ray. One reaction redraws the chart whenever any of them changes:
 
-## Key concepts
+```ts
+Reactive.do(data.flat().concat(outerRadius), () => {
+    Circles.circleAt([0, 0], innerRadius, innerCircle)
+    Circles.circleAt([0, 0], outerRadius, outerCircle)
+    // …
+    updateCurves()
+})
+```
 
-- **`createRadarChart` as a self-contained component** — the factory returns a `{ group, innerRadius, rayLength, data }` handle; the caller drives the reactive values from outside without knowing anything about the internal geometry
-- **`Animate.eased` on scalar `Real` refs** — `innerRadius`, `rayLength`, and each data cell are plain `Real` values; a single `Animate.eased(ref, target, 1000)` call inside `Reactive.do` is all that is needed for smooth geometry transitions
-- **Shared normalisation** — `maxStackedValue` is computed once over all blocks before any chart is created; every `assignData` call divides by this global maximum so curves always fill the same proportion of ray length regardless of the active dataset
-- **Index-offset data rotation** — each chart receives `blocks[(dataIndex + chartIndex) % blocks.length]`; advancing `dataIndex` by one rotates all three charts in a single `Reactive.do` callback, keeping them permanently out of phase
-- **Invisible drag handles** — each chart anchor is a `handles.disk` with `fill: none; stroke: none`; the hit area covers the full chart radius so the whole surface is draggable without anything visual competing with the chart
+The rays are spread over the circles with `Distribute.pointsOnCircle`. A value is a ratio along its ray, and stacked curves add up the values below them:
+
+```ts
+ratio = options.stackedCurves ? ratio + value : value
+Points.placeOnSegment(ray.at(0), ray.at(1), ratio, curve.at(rayIndex))
+```
+
+Changing the data animates every value with `Animate.real.eased`; the controls animate the radius and the ray length. All values are divided by the largest stack in the data, so no stack goes past the outer circle.
+
+## API
+
+- `Animate.real.eased`: animates a `Real` to a target value
+- `Reactive.do`: runs a function whenever its inputs change
+- `Points.placeOnSegment`: the point at a ratio along a segment
+- `Distribute.pointsOnCircle`: spreads points evenly over a circle
+- `Circles.circleAt`: a circle from centre and radius
+
+## See also
+
+- `animations/01-easing`

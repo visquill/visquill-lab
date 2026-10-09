@@ -1,13 +1,31 @@
-# Shapes — Bounding Box
+# Bounding Box
 
-Drag five symbol shapes around the canvas and watch individual and collective bounding boxes update live.
+Find the axis-aligned box around one shape, or around many.
 
-## What you see
+## How it works
 
-Five shapes — a diamond, rectangle, square, and two triangles — each in a distinct colour and each draggable by clicking anywhere on the shape.  A faint dashed box outlines each shape individually.  A heavier dashed black box encloses all five shapes together.  Moving any shape shrinks or grows both its individual box and the collective box instantly.
+`Shapes.boundingBox` returns the smallest box with horizontal and vertical sides that contains a shape. `Shapes.boundingBoxOfShapes` does the same for a whole list. Each shape is built from a `Symbols` function at its handle:
 
-## Key concepts
+```ts
+builtShapes.forEach((shape, i) => {
+    Shapes.copy(shape, shapeVisuals[i])
+    const bb = Shapes.boundingBox(shape)
+    Boxes.copy(bb, indivBoxes[i])
+})
 
-- **`Shapes.boundingBox()`** — computes the smallest axis-aligned box that fully contains a single shape; called once per shape on every update
-- **`Shapes.boundingBoxOfShapes()`** — computes the smallest axis-aligned box that fully contains every shape in a collection; the result grows and shrinks as shapes are dragged toward or away from the current extremes
-- **`Symbols`** — each shape is built from `Symbols.diamond()`, `Symbols.rectangle()`, `Symbols.square()`, and `Symbols.triangle()` using the handle position as the centre; the handle is a large transparent disk so the whole shape feels draggable rather than a single point
+const collective = Shapes.boundingBoxOfShapes(builtShapes)
+Boxes.copy(collective, collectiveBox)
+```
+
+The handles are large transparent disks, so the whole shape can be grabbed, not only its center.
+
+## API
+
+- `Shapes.boundingBox`: the axis-aligned box around a shape
+- `Shapes.boundingBoxOfShapes`: the axis-aligned box around several shapes
+- `Symbols.diamond`, `Symbols.rectangle`, `Symbols.square`, `Symbols.triangle`: the shapes, centered on a point
+- `Shapes.copy`, `Boxes.copy`: write the results into the visuals
+
+## See also
+
+- `geometry/boxes-01-basics`

@@ -66,7 +66,7 @@
 
 /* "button-reset"  →  demos-reactive-values-button-reset */
 .demos-reactive-values-button-reset {
-    fill: none;
+    fill: white;  /* not "none": an unfilled shape only receives clicks on its stroke */
     stroke: #aaa;
     stroke-width: 1.5px;
     rx: 6px;
@@ -80,6 +80,17 @@
 .demos-reactive-values-button-label {
     fill: white;
     font-size: 18px;
+    font-family: ui-sans-serif, system-ui, -apple-system;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+}
+
+/* "button-reset-label"  →  demos-reactive-values-button-reset-label */
+.demos-reactive-values-button-reset-label {
+    fill: #555;
+    font-size: 15px;
     font-family: ui-sans-serif, system-ui, -apple-system;
     font-weight: 600;
     text-anchor: middle;

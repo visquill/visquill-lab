@@ -110,7 +110,7 @@ export function run(div: HTMLDivElement) {
 
         Reactive.do([pinA, pinB], () => {
             const p = Pins.interpolate(pinA, pinB, ghostT)
-            const tip = Pins.moveForward(p, 1)
+            const tip = Pins.moveForward(p, 20)
             Circles.circleAt(p, ghostRadius, ghostDot)
             Points.copy(p,   ghostShaft.at(0))
             Points.copy(tip, ghostShaft.at(1))

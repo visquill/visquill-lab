@@ -3,7 +3,7 @@
 // @group Shapes
 
 import {
-    VisQuill, Reactive, Shapes, Boxes, Segments, Points, Pins,
+    VisQuill, Reactive, Shapes, Boxes, Segments, Points, Vectors,
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -33,7 +33,7 @@ const targetOrientationStart: [number, number] = [cx + 120, cy - 100]
  * Demonstrates `Shapes.orientate()` — rotating a shape so that one
  * direction aligns with another.
  *
- * The shape is anchored at its centroid.  A white handle sets the
+ * The shape rotates around a fixed anchor.  A white handle sets the
  * *source* orientation (the shape's "forward" direction) and a purple
  * handle sets the *target* direction.  `orientate()` rotates the shape
  * so the source aligns with the target.
@@ -63,13 +63,13 @@ export function run(div: HTMLDivElement) {
 
     // ─── Base shape (ghost) ───────────────────────────────────────────
     // Shows the original unrotated shape as a faint reference.
-    const ghost = canvas.visuals.polygon("ghost")
+    canvas.visuals.polygon("ghost", arrowVertices)
 
     // ─── Transformed shape ────────────────────────────────────────────
     const arrow = canvas.visuals.polygon("arrow")
 
-    // ─── Anchor point (centroid) ──────────────────────────────────────
-    const anchorPt = canvas.visuals.point("anchor")
+    // ─── Anchor point (rotation centre) ───────────────────────────────
+    const anchor = canvas.visuals.point("anchor", [cx, cy])
 
     // ─── Source orientation handle ────────────────────────────────────
     // White handle — defines the shape's "forward" direction.
@@ -84,9 +84,6 @@ export function run(div: HTMLDivElement) {
     const sourceAxis = canvas.visuals.segment("axis-source")
     const targetAxis = canvas.visuals.segment("axis-target")
 
-    // ─── Anchor pin (fixed at centroid) ───────────────────────────────
-    const anchorPin = canvas.values.pin([cx, cy])
-
     // ─── Labels ───────────────────────────────────────────────────────
     const sourceLabel = canvas.text.label("source", "axis-label-source")
     const targetLabel = canvas.text.label("target", "axis-label-target")
@@ -94,30 +91,16 @@ export function run(div: HTMLDivElement) {
 
     // ─── Reactive block ───────────────────────────────────────────────
     Reactive.do([hSource, hTarget], () => {
-        const anchor = Pins.getPosition(anchorPin)
+        // Source and target orientation vectors (anchor → handle).
+        const srcDir = Vectors.direction(anchor, hSource)
+        const tgtDir = Vectors.direction(anchor, hTarget)
 
-        // Build source and target orientation vectors (anchor → handle).
-        const srcDir = { x: hSource.x - anchor.x, y: hSource.y - anchor.y }
-        const tgtDir = { x: hTarget.x - anchor.x, y: hTarget.y - anchor.y }
-
-        // Compute the angle between them for the label.
-        const srcAngle = Math.atan2(srcDir.y, srcDir.x)
-        const tgtAngle = Math.atan2(tgtDir.y, tgtDir.x)
-        let   delta    = ((tgtAngle - srcAngle) * 180 / Math.PI + 360) % 360
+        // Angle between them for the label, clockwise on screen, in (-180°, 180°].
+        let delta = Vectors.angleTo(srcDir, tgtDir, true).value * 180 / Math.PI
         if (delta > 180) delta -= 360
 
-        // Build base shape from constant vertices.
-        const baseShape = canvas.shapes.polygon(arrowVertices)
-
-        // Ghost stays at the original position.
-        Shapes.copy(baseShape, ghost)
-
         // orientate() rotates the shape around anchor so srcDir → tgtDir.
-        const oriented = Shapes.orientate(baseShape, anchor, srcDir, tgtDir)
-        Shapes.copy(oriented, arrow)
-
-        // Anchor dot.
-        Points.copy(anchor, anchorPt)
+        Shapes.orientate(arrowVertices, anchor, srcDir, tgtDir, arrow)
 
         // Axis lines.
         Points.copy(anchor,  sourceAxis.at(0))

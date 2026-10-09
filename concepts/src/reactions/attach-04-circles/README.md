@@ -1,13 +1,37 @@
 # Circle Attachments
 
-Three methods for attaching geometry to a circle — an outer ring, a polygon, and an arc of points.
+Attach a circle, a polygon or a polyline to a circle.
 
-## What you see
+## How it works
 
-Three panels, each with a dashed inner circle whose radius is controlled by a drag handle. **circleToCircle** — an indigo outer circle maintains a fixed 20px gap from the inner; resize the inner and the outer follows. **polygonToCircle** — an orange polygon has its vertices evenly distributed around the circle; the angle slider rotates the whole polygon. **polylineToCircle** — a green polyline's vertices are spread along an arc; the span slider controls the arc's angular width, the angle slider rotates it.
+Each panel's circle has its center and radius attached to values. A reaction writes the handle's distance into the radius value; everything attached to the circle follows.
 
-## Key concepts
+```ts
+const radius = canvas.values.real(baseRadius)
+Attach.circleCenterToPoint(circle, canvas.values.point([cx, cy]))
+Attach.circleRadiusToValue(circle, radius)
+Reactive.do([handle], () => {
+    Values.max(20, Points.distanceToPoint([cx, cy], handle), radius)
+})
+```
 
-- **`Attach.circleToCircle(outer, inner, distance)`** — keeps `outer` concentric with `inner`, its radius equal to `inner.radius + distance`
-- **`Attach.polygonToCircle(polygon, circle, { angle })`** — distributes all polygon vertices evenly around the circle; the number of sides is determined by the polygon's vertex count
-- **`Attach.polylineToCircle(polyline, circle, span, { angle, anchorPosition })`** — distributes polyline vertices along an arc of `span` radians; `anchorPosition` controls whether `angle` refers to the arc's start, center, or end
+`Attach.circleToCircle` keeps a second circle around the first at a fixed distance. `Attach.polygonToCircle` spreads a polygon's vertices evenly around the circle, starting at `angle`. `Attach.polylineToCircle` spreads a polyline's vertices over an arc of `span` radians.
+
+## API
+
+- `Attach.circleCenterToPoint`: binds a circle's center to a point
+- `Attach.circleRadiusToValue`: binds a circle's radius to a value
+- `Attach.circleToCircle`: a concentric circle at a fixed distance
+- `Attach.polygonToCircle`: polygon vertices evenly around a circle
+- `Attach.polylineToCircle`: polyline vertices along an arc of a circle
+- `Values.max`: the larger of two values
+- `Values.lerp`: maps the slider ratio into the slider's range
+
+## Notes
+
+Call `Attach` functions once, outside reactions. Each call adds a binding, so calling one inside `Reactive.do` adds a new one on every change. To change a bound value later, write the `Real` you attached.
+
+## See also
+
+- `reactions/attach-03-points`
+- `geometry/circles-01-construction`

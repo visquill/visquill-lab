@@ -2,8 +2,8 @@
 // @category Geometry
 // @group Rectangles
 import {
-    VisQuill, Reactive, Rectangles, Points,
-    type RvgGroup, type Real, Pins, Circles
+    VisQuill, Reactive, Values, Rectangles, Points,
+    type RvgGroup, type Real, Pins, Circles, Vectors
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -48,7 +48,8 @@ export function run(div: HTMLDivElement) {
 
     // ─── anchoredRectangle ────────────────────────────────────────────
     // xRatio=0 anchors the left edge at the pin; xRatio=1 the right.
-    // yRatio=0 anchors the top;  yRatio=1 the bottom.
+    // yRatio=0 anchors the bottom edge; yRatio=1 the top (for an
+    // unrotated pin; both follow the pin's orientation).
     {
         const pin    = canvas.handles.disk("pin-handle", [midX, panelY])
         Pins.rotateBy(pin,-Math.PI / 8,pin)
@@ -78,7 +79,7 @@ export function run(div: HTMLDivElement) {
 
         const height = buildSlider(canvas,  "height", 10, 120, 50, rightX, sliderBaseY)
 
-        // Side toggle: drag above/below the midpoint of the base segment.
+        // Side toggle: drag it to either side of the base segment.
         const toggle  = canvas.handles.disk("side-toggle", [rightX, panelY - 80])
         const sideLbl = canvas.text.label("side: left", "toggle-label")
         Reactive.do([toggle], () => {
@@ -86,8 +87,8 @@ export function run(div: HTMLDivElement) {
         })
 
         Reactive.do([p1, p2, height, toggle], () => {
-            const my    = (p1.y + p2.y) / 2
-            const left  = toggle.y < my
+            // Negative cross product: toggle lies left of p1 → p2 (on screen).
+            const left  = Vectors.crossProduct(Vectors.direction(p1, p2), Vectors.direction(p1, toggle)).value < 0
             sideLbl.value = `side: ${left ? "left" : "right"}`
             Rectangles.alongSegment(p1, p2, height, left, result)
         })
@@ -125,7 +126,7 @@ function buildSlider(
     })
 
     Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
+        Values.lerp(min, max, t, value)
         valLbl.value = value.value.toFixed(1)
     })
 

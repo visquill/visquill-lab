@@ -3,7 +3,7 @@
 // @group Points
 
 import {
-    VisQuill, Reactive, Points, Circles, Boxes, Segments,
+    VisQuill, Reactive, Values, Points, Circles, Boxes, Segments,
     type RvgGroup, type RvgGraphic, type Real
 } from "@visquill/visquill-gdk"
 import './styles.css'
@@ -72,11 +72,9 @@ export function run(div: HTMLDivElement) {
         const lblResult = canvas.text.label("result", "result-label")
 
         Reactive.do([source, lineA, lineB], () => {
-            const seg = canvas.shapes.segment(lineA, lineB)
-            const r   = Points.reflectOverLine(source, seg)
+            Segments.segment(lineA, lineB, mirror)
+            const r = Points.reflectOverLine(source, mirror)
             Circles.circleAt(r, 8, result)
-            Points.copy(lineA,  mirror.at(0))
-            Points.copy(lineB,  mirror.at(1))
             Points.copy(source, perp.at(0))
             Points.copy(r,      perp.at(1))
             Points.moveUp(source, 16, lblSource)
@@ -154,7 +152,7 @@ function buildSlider(
     })
 
     Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
+        Values.lerp(min, max, t, value)
     })
 
     return value

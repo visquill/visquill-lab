@@ -49,10 +49,9 @@ export function run(div: HTMLDivElement) {
     })
 
     // ─── Baseline ──────────────────────────────────────────────────────
-    const rawBaseline = canvas.visuals.polyline("baseline-raw", baselinePoints)
-    const baseline    = canvas.visuals.polyline(
+    const baseline = canvas.visuals.polyline(
         "baseline",
-        Polylines.smooth(rawBaseline, smoothingIterations)
+        Polylines.smooth(baselinePoints, smoothingIterations)
     )
 
     // ─── Filled area (drawn first, underneath) ─────────────────────────

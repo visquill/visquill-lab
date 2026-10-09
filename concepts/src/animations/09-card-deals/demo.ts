@@ -2,11 +2,11 @@
 //@category Animations
 
 // Demonstrates staggered animation of multiple independent objects.
-// Cards fly from a deck to a fanned hand one by one using Animate.point.eased
-// for position and Animate.real.eased for rotation, with setTimeout for stagger.
-// Clicking again collects them back with a reverse stagger.
+// Cards fly from a deck to a fanned hand one by one. Each card is a layer;
+// Animate.pin.eased moves and turns its anchor pin in one animation, with
+// setTimeout for the stagger. Clicking again collects them back.
 
-import {VisQuill, Animate, Reactive, Vectors, Pins, Svg, EasingFunctions} from "@visquill/visquill-gdk"
+import {VisQuill, Animate, Pins, Svg, EasingFunctions} from "@visquill/visquill-gdk"
 import {Controls} from "@visquill/visquill-blueprints"
 import './styles.css'
 
@@ -20,15 +20,16 @@ const DECK_X = 250, DECK_Y = 330
 // the visible cards, so they appear to fan upward from a shared hand point.
 const ARC_X = 250, ARC_Y = 610, ARC_R = 370, SPREAD = 0.65
 
-function fanPosition(i: number) {
+// The pin of card i in the fan: on the circle, turned along its tangent.
+// Angles start at 3 o'clock, so -π/2 is the top of the circle.
+function fanPin(i: number) {
     const t = i / (CARD_COUNT - 1)
-    const a = (t - 0.5) * SPREAD           // radians from centre of fan
-    return {
-        x: ARC_X + Math.sin(a) * ARC_R,
-        y: ARC_Y - Math.cos(a) * ARC_R,
-        angle: a,
-    }
+    const angle = -Math.PI / 2 + (t - 0.5) * SPREAD
+    return Pins.placeAndAlignOnCircle([ARC_X, ARC_Y], ARC_R, angle)
 }
+
+// The pin of the deck: upright, at the deck position.
+const DECK_PIN = Pins.withOrientation([DECK_X, DECK_Y], [1, 0])
 
 export function run(div: HTMLDivElement) {
     const rvg = VisQuill.create(div, "demos-")
@@ -43,32 +44,16 @@ export function run(div: HTMLDivElement) {
     }
 
     // ─── Cards ─────────────────────────────────────────────────────────
-    // Each card is a position Point + angle Real driving a layer group.
-    // The pattern mirrors the state machine demo: Vectors.copy(point, anchor)
-    // moves the anchor without disturbing its orientation, then
-    // Pins.withOrientation sets the rotation separately.
+    // Each card is a layer with the card drawn around its origin. The layer's
+    // anchor is a pin (position + orientation), so animating the anchor moves
+    // and turns the card together.
 
-    const cards: Array<{
-        pos:   ReturnType<typeof canvas.visuals.point>,
-        angle: ReturnType<typeof canvas.values.real>,
-    }> = []
-
-    for (let i = 0; i < CARD_COUNT; i++) {
-        const pos   = canvas.visuals.point("card-pos", {x: DECK_X, y: DECK_Y})
-        const angle = canvas.values.real(0)
-
+    const cards = Array.from({length: CARD_COUNT}, () => {
         const layer = canvas.layer()
-        Vectors.copy([DECK_X, DECK_Y], layer.anchor)
+        Pins.copy(DECK_PIN, layer.anchor)
         layer.visuals.box("card", [-CARD_W / 2, -CARD_H / 2], [CARD_W / 2, CARD_H / 2])
-
-        // Keep the layer's pin in sync with position and angle
-        Reactive.do([pos, angle], () => {
-            Vectors.copy(pos, layer.anchor)
-            Pins.withOrientation(layer.anchor, Vectors.fromAngle(angle), layer.anchor)
-        })
-
-        cards.push({pos, angle})
-    }
+        return layer.anchor
+    })
 
     // ─── Deal / Collect ────────────────────────────────────────────────
     // Cards are created 0→6 so card 6 sits on top (SVG z-order).
@@ -79,14 +64,9 @@ export function run(div: HTMLDivElement) {
 
     function deal() {
         for (let i = CARD_COUNT - 1; i >= 0; i--) {
-            const card = cards[i]
-            const fan  = fanPosition(i)
             const delay = (CARD_COUNT - 1 - i) * 130
             setTimeout(() => {
-                Animate.point.eased(card.pos, {x: fan.x, y: fan.y}, 520, {
-                    easing: EasingFunctions.easeOutCubic,
-                })
-                Animate.real.eased(card.angle, fan.angle, 520, {
+                Animate.pin.eased(cards[i], fanPin(i), 520, {
                     easing: EasingFunctions.easeOutCubic,
                 })
             }, delay)
@@ -97,13 +77,9 @@ export function run(div: HTMLDivElement) {
         // Stagger from outside inward: abs distance from centre determines delay
         const centre = (CARD_COUNT - 1) / 2
         for (let i = 0; i < CARD_COUNT; i++) {
-            const card  = cards[i]
             const delay = Math.round(Math.abs(i - centre)) * 80
             setTimeout(() => {
-                Animate.point.eased(card.pos, {x: DECK_X, y: DECK_Y}, 420, {
-                    easing: EasingFunctions.easeInCubic,
-                })
-                Animate.real.eased(card.angle, 0, 420, {
+                Animate.pin.eased(cards[i], DECK_PIN, 420, {
                     easing: EasingFunctions.easeInCubic,
                 })
             }, delay)

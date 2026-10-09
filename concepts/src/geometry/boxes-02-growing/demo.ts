@@ -2,7 +2,7 @@
 // @category Geometry
 // @group Boxes
 import {
-    VisQuill, Reactive, Boxes, Segments, Points, type RvgGroup, type RvgGraphic, type Real
+    VisQuill, Reactive, Values, Boxes, Segments, Points, type RvgGroup, type RvgGraphic, type Real
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -123,7 +123,7 @@ function buildSlider(
     })
 
     Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
+        Values.lerp(min, max, t, value)
         valLbl.value = `${value.value.toFixed(0)}`
     })
 

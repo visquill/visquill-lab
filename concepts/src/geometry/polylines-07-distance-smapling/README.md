@@ -1,13 +1,37 @@
-# Polyline Distance Sampling
+# Distance Sampling
 
-Sampling a range of evenly spaced points along a polyline using path-length distances.
+Sample a polyline at distances in pixels from its start, instead of at ratios.
 
-## What you see
+## How it works
 
-A smooth polyline with two handles on a ruler at the bottom. The handles define a start and end distance along the curve. The section of the polyline between those distances is highlighted, and ten sample dots with tangent arrows appear evenly spaced within the range. Labels in the top-left show the start distance, end distance, and total polyline length in pixels. Dragging either handle narrows or widens the range; the samples reposition instantly.
+`Polylines.pinsAtDistances` works like `Polylines.pinsAt`, but each entry is a distance along the line in pixels. The demo converts the two slider ratios into distances with `Polylines.len` and spreads the samples evenly between them:
 
-## Key concepts
+```ts
+Reactive.do([ratioA, ratioB], () => {
+    const totalLength = Polylines.len(polyline).value
+    // …
+    const distA = rA * totalLength
+    const distB = rB * totalLength
 
-- **`Polylines.pinsAtDistances(polyline, distances)`** — samples multiple pins in a single walk along the curve; distances are in path-length pixels, not ratios
-- **`Polylines.len(polyline)`** — returns the total path length, used here to convert the slider ratios into actual distances
-- **`Polylines.slice(polyline, ratioA, ratioB, result)`** — extracts the sub-section of the polyline between two normalised positions, used to draw the highlighted range
+    const distances = Array.from({ length: sampleCount }, (_, i) =>
+        ( {value: distA + (distB - distA) * (i / (sampleCount - 1))}))
+
+    const pins = Polylines.pinsAtDistances(polyline, distances)
+    // …
+    Polylines.slice(polyline, rA, rB, highlight)
+    // …
+}, true)
+```
+
+Polyline ratios are fractions of the length, so `Polylines.slice` with the same ratios highlights exactly the sampled range.
+
+## API
+
+- `Polylines.pinsAtDistances`: pins at many distances along a polyline, in one walk
+- `Polylines.len`: the length of a polyline
+- `Polylines.slice`: the part between two ratios
+- `Pins.moveForward`, `Pins.getPosition`: the arrow tips
+
+## See also
+
+- `geometry/polylines-06-batch-sampling`

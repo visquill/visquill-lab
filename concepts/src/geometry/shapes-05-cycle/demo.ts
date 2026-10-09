@@ -3,7 +3,7 @@
 // @group Shapes
 
 import {
-    VisQuill, Reactive, Shapes, Boxes, Segments, Points,  type Box,
+    VisQuill, Reactive, Shapes, Boxes, Segments, Points, Pins, type Box,
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -41,9 +41,10 @@ function trackGeometry(frame: Box) {
  * Demonstrates `Shapes.cycleBy()` — cyclically shifting the starting
  * vertex of a shape without changing its geometry.
  *
- * The highlighted dot marks vertex 0.  Drag the slider to shift the
- * offset; the dot jumps to the new starting vertex so the effect is
- * immediately visible.  The shape itself does not move or change shape.
+ * Every vertex is labelled with its index in the cycled shape, and the
+ * highlighted dot marks vertex 0.  Drag the slider to shift the offset;
+ * the indices rotate around the arrow and the dot jumps to the new
+ * starting vertex.  The shape itself does not move or change shape.
  *
  * @param div - The div element that will contain the graphic.
  */
@@ -68,17 +69,18 @@ export function run(div: HTMLDivElement) {
 
     // ─── Shape and vertex visuals ─────────────────────────────────────
     const arrow        = canvas.visuals.polygon("arrow")
-    const vertexDots   = arrowVertices.map(() => canvas.visuals.point("vertex-dot"))
+    // All vertex dots at their fixed geometric positions.
+    arrowVertices.forEach(pos => canvas.visuals.point("vertex-dot", pos))
     const vertex0Dot   = canvas.visuals.point("vertex-zero")
-    const vertex0Label = canvas.text.label("0", "vertex-zero-label")
+    // Label i always reads "i"; it is moved to vertex i of the cycled shape.
+    const indexLabels  = arrowVertices.map((_, i) =>
+        canvas.text.label(String(i), i === 0 ? "vertex-zero-label" : "vertex-index-label")
+    )
     const offsetLabel  = canvas.text.label("offset: 0", "offset-label")
 
     // ─── Slider ───────────────────────────────────────────────────────
     const track = canvas.visuals.box("slider-track")
     const thumb = canvas.handles.disk("slider-thumb", [cx - sliderMargin, cy])
-
-    // ─── Base shape (created once, outside reactive blocks) ───────────
-    const base = canvas.shapes.polygon(arrowVertices)
 
     // ─── Layout reactive — frame resize only ──────────────────────────
     // Repositions the track and constrains the thumb to it.
@@ -95,29 +97,31 @@ export function run(div: HTMLDivElement) {
     Reactive.do([thumb, rvg.frame], () => {
         const { trackLeftX, trackRightX, trackY, midX } = trackGeometry(rvg.frame)
 
-        // Constrain thumb to track.
-        thumb.y = trackY
-        thumb.x = Math.max(trackLeftX, Math.min(trackRightX, thumb.x))
+        // Constrain thumb to the track's centre line.
+        const line = Segments.segment({ x: trackLeftX, y: trackY }, { x: trackRightX, y: trackY })
+        Points.closestPointOnSegment(thumb, line, thumb)
 
         // Map thumb position → discrete integer offset.
-        const t      = (thumb.x - trackLeftX) / (trackRightX - trackLeftX)
+        const t      = Points.relativePositionOnSegment(thumb, line).value
         const offset = Math.round(t * (vertexCount - 1))
 
         // Snap thumb to the nearest discrete stop.
-        thumb.x = trackLeftX + (offset / (vertexCount - 1)) * (trackRightX - trackLeftX)
+        Points.placeOnSegment(line.at(0), line.at(1), offset / (vertexCount - 1), thumb)
 
         // Cycle the shape and draw it.
-        Shapes.copy(Shapes.cycleBy(base, offset), arrow)
+        Shapes.cycleBy(arrowVertices, offset, arrow)
 
-        // All vertex dots at their fixed geometric positions.
-        arrowVertices.forEach((pos, i) =>
-            Points.copy({ x: pos[0], y: pos[1] }, vertexDots[i])
-        )
+        // Index labels — read from the cycled shape, so they rotate
+        // around the arrow as the offset changes.  Each label sits just
+        // outside its vertex: a pin from the centre through the vertex,
+        // moved 16 px further.
+        indexLabels.forEach((label, i) => {
+            const pin = Pins.placeAndAlignOnSegment({ x: cx, y: cy }, arrow.at(i), 1)
+            Pins.getPosition(Pins.moveForward(pin, 16), label)
+        })
 
-        // Vertex 0 highlight — index `offset` in the original array.
-        const v0pos = arrowVertices[offset % vertexCount]
-        Points.copy({ x: v0pos[0], y: v0pos[1] }, vertex0Dot)
-        Points.moveUp({ x: v0pos[0], y: v0pos[1] }, 18, vertex0Label)
+        // Vertex 0 highlight — the first vertex of the cycled shape.
+        Points.copy(arrow.at(0), vertex0Dot)
 
         // Offset readout centred above the track.
         offsetLabel.value = `offset: ${offset}`

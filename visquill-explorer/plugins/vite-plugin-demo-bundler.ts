@@ -3,22 +3,29 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { build } from 'vite'
 
-interface DemoBundlerOptions {
-    demosDir: string | string[]
-    outDir?: string
-    exclude?: string[]
+interface DemoTarget {
+    demosDir: string
+    outDir: string
 }
+
+interface DemoBundlerOptions {
+    targets: DemoTarget[]
+    exclude?: string[]
+    /** Output folder the target outDirs are in (default 'dist') */
+    distDir?: string
+}
+
+/** The GDK as a fixed entry: every demo imports it from here, and the explorer disposes through it. */
+export const SHARED_GDK = 'shared/visquill-gdk'
 
 /**
  * Vite plugin that bundles demo TypeScript files for production.
  * Works with a folder-centric approach where each folder = one demo.
- * All .ts files in a folder are bundled together.
+ * All .ts files of all demo folders are built in one build, each as its own entry
+ * (`<outDir>/<folder>/<file>.js`, as before). Code they share — the GDK, MapLibre, blueprints —
+ * goes into chunks under `shared/` once instead of into every demo.
  */
 export function demoBundlerPlugin(options: DemoBundlerOptions): Plugin {
-    const demosDirs = Array.isArray(options.demosDir)
-        ? options.demosDir
-        : [options.demosDir]
-
     const excludedFolders = new Set([
         'node_modules',
         'dist',
@@ -28,7 +35,7 @@ export function demoBundlerPlugin(options: DemoBundlerOptions): Plugin {
         ...(options.exclude || [])
     ])
 
-    let outDir = options.outDir || 'dist'
+    const distDir = options.distDir || 'dist'
     let isBuild = false
 
     /**
@@ -85,77 +92,52 @@ export function demoBundlerPlugin(options: DemoBundlerOptions): Plugin {
     }
 
     /**
+     * Demo folders of a target with their output folder
+     */
+    function targetFolders(target: DemoTarget): Array<{ relativePath: string, absolutePath: string, outputDir: string }> {
+        const absoluteDemosDir = path.isAbsolute(target.demosDir)
+            ? target.demosDir
+            : path.resolve(process.cwd(), target.demosDir)
+
+        if (!fs.existsSync(absoluteDemosDir)) {
+            console.warn(`⚠️  Demos directory not found: ${absoluteDemosDir}`)
+            return []
+        }
+
+        const baseFolderName = path.relative(process.cwd(), absoluteDemosDir)
+        return findDemoFolders(absoluteDemosDir).map(({ path: relativePath, absolutePath }) => ({
+            relativePath,
+            absolutePath,
+            outputDir: path.join(target.outDir, baseFolderName, relativePath.replace(/\\/g, '/'))
+        }))
+    }
+
+    /**
      * Copy all demo-related files to build output
      */
     function copyDemoAssets() {
         console.log('📦 Copying demo assets to build output...')
 
-        for (const demosDir of demosDirs) {
-            const absoluteDemosDir = path.isAbsolute(demosDir)
-                ? demosDir
-                : path.resolve(process.cwd(), demosDir)
-
-            if (!fs.existsSync(absoluteDemosDir)) {
-                console.warn(`⚠️  Demos directory not found: ${absoluteDemosDir}`)
-                continue
-            }
-
-            const baseFolderName = path.relative(process.cwd(), absoluteDemosDir)
-            const demoFolders = findDemoFolders(absoluteDemosDir)
-
-            console.log(`📂 Found ${demoFolders.length} demo folders in ${baseFolderName}:`)
-            demoFolders.forEach(folder => {
-                console.log(`   - ${folder.path || '(root)'} -> ${folder.absolutePath}`)
-            })
-
-            for (const { path: relativePath, absolutePath } of demoFolders) {
-                const outputDir = path.join(
-                    outDir,
-                    baseFolderName,
-                    relativePath.replace(/\\/g, '/')
-                )
-
+        for (const target of options.targets) {
+            for (const { relativePath, absolutePath, outputDir } of targetFolders(target)) {
                 if (!fs.existsSync(outputDir)) {
                     fs.mkdirSync(outputDir, { recursive: true })
                 }
 
                 // Copy all .ts files
-                const tsFiles = getFilesByExtension(absolutePath, '.ts')
-                for (const tsFile of tsFiles) {
-                    const fileName = path.basename(tsFile)
-                    const tsTarget = path.join(outputDir, fileName)
-                    fs.copyFileSync(tsFile, tsTarget)
+                for (const tsFile of getFilesByExtension(absolutePath, '.ts')) {
+                    fs.copyFileSync(tsFile, path.join(outputDir, path.basename(tsFile)))
                 }
 
-                // Copy CSS file (if exists)
-                const cssFiles = getFilesByExtension(absolutePath, '.css')
-                if (cssFiles.length > 0) {
-                    const cssFile = cssFiles[0] // Take first CSS file
-                    const cssFileName = path.basename(cssFile)
-                    const cssTarget = path.join(outputDir, cssFileName)
-                    fs.copyFileSync(cssFile, cssTarget)
+                // Copy the first CSS, SCSS and Markdown file (if any)
+                for (const extension of ['.css', '.scss', '.md']) {
+                    const file = getFilesByExtension(absolutePath, extension)[0]
+                    if (file) {
+                        fs.copyFileSync(file, path.join(outputDir, path.basename(file)))
+                    }
                 }
 
-                // Copy SCSS file (if exists)
-                const scssFiles = getFilesByExtension(absolutePath, '.scss')
-                if (scssFiles.length > 0) {
-                    const scssFile = scssFiles[0] // Take first CSS file
-                    const scssFileName = path.basename(scssFile)
-                    const scssTarget = path.join(outputDir, scssFileName)
-                    fs.copyFileSync(scssFile, scssTarget)
-                }
-
-                // Copy Markdown file (if exists)
-                const mdFiles = getFilesByExtension(absolutePath, '.md')
-                if (mdFiles.length > 0) {
-                    const mdFile = mdFiles[0] // Take first MD file
-                    const mdFileName = path.basename(mdFile)
-                    const mdTarget = path.join(outputDir, mdFileName)
-                    fs.copyFileSync(mdFile, mdTarget)
-                }
-
-                const relativeDisplay = relativePath || path.basename(absolutePath)
-                console.log(`  ✔ Copied: ${baseFolderName}/${relativeDisplay}`)
+                console.log(`  ✔ Copied: ${relativePath}`)
             }
         }
 
@@ -163,89 +145,58 @@ export function demoBundlerPlugin(options: DemoBundlerOptions): Plugin {
     }
 
     /**
-     * Build demos as ES modules
+     * Build all demos as ES modules in one build, with shared chunks
      */
     async function buildDemos() {
         console.log('🔨 Building demo modules...')
 
-        for (const demosDir of demosDirs) {
-            const absoluteDemosDir = path.isAbsolute(demosDir)
-                ? demosDir
-                : path.resolve(process.cwd(), demosDir)
-
-            if (!fs.existsSync(absoluteDemosDir)) {
-                continue
-            }
-
-            const baseFolderName = path.relative(process.cwd(), absoluteDemosDir)
-            const demoFolders = findDemoFolders(absoluteDemosDir)
-
-            console.log(`🔨 Building ${demoFolders.length} demo folders in ${baseFolderName}`)
-
-            for (const { path: relativePath, absolutePath } of demoFolders) {
-                const tsFiles = getFilesByExtension(absolutePath, '.ts')
-
-                const outputDir = path.join(
-                    outDir,
-                    baseFolderName,
-                    relativePath.replace(/\\/g, '/')
-                )
-
-                // Remove manifest files if they exist
-                const manifestToDelete = path.join(outputDir, 'manifest.json')
-                if (fs.existsSync(manifestToDelete)) {
-                    fs.unlinkSync(manifestToDelete)
+        // Entry name = output path below distDir without extension
+        const input: Record<string, string> = {
+            [SHARED_GDK]: '@visquill/visquill-gdk'
+        }
+        for (const target of options.targets) {
+            for (const { absolutePath, outputDir } of targetFolders(target)) {
+                for (const tsFile of getFilesByExtension(absolutePath, '.ts')) {
+                    const name = path.relative(distDir, path.join(outputDir, path.basename(tsFile, '.ts')))
+                    input[name.replace(/\\/g, '/')] = tsFile
                 }
-
-                // Build each TypeScript file
-                for (const tsFile of tsFiles) {
-                    const fileName = path.basename(tsFile, '.ts')
-
-                    try {
-                        await build({
-                            configFile: false,
-                            build: {
-                                lib: {
-                                    entry: tsFile,
-                                    formats: ['es'],
-                                    fileName: () => `${fileName}.js`
-                                },
-                                outDir: outputDir,
-                                emptyOutDir: false,
-                                minify: false,
-                                manifest: false,
-                                ssrManifest: false,
-                                rollupOptions: {
-                                    external: [],
-                                    output: {
-                                        inlineDynamicImports: true
-                                    }
-                                }
-                            }
-                        })
-
-                        // Clean up manifest again if it was created
-                        if (fs.existsSync(manifestToDelete)) {
-                            fs.unlinkSync(manifestToDelete)
-                        }
-                    } catch (error) {
-                        console.error(`  ✗ Failed to build ${fileName}:`, error)
-                    }
-                }
-
-                const relativeDisplay = relativePath || path.basename(absolutePath)
-                console.log(`  ✔ Built: ${baseFolderName}/${relativeDisplay} (${tsFiles.length} files)`)
             }
         }
 
-        console.log('✅ Demo modules built successfully')
+        await build({
+            configFile: false,
+            logLevel: 'warn',
+            // Asset URLs relative to the chunk, so the build works under any path
+            // (the explorer's /visquill-explorer/, the lab pages' /lab/embed/assets/)
+            base: './',
+            build: {
+                outDir: distDir,
+                emptyOutDir: false,
+                minify: false,
+                manifest: false,
+                ssrManifest: false,
+                modulePreload: false,
+                copyPublicDir: false,
+                rollupOptions: {
+                    input,
+                    // Keep each entry's exports (run); Vite drops them by default for app builds
+                    preserveEntrySignatures: 'strict',
+                    output: {
+                        entryFileNames: '[name].js',
+                        chunkFileNames: 'shared/[name]-[hash].js',
+                        assetFileNames: 'shared/[name]-[hash][extname]'
+                    }
+                }
+            }
+        })
+
+        console.log(`✅ Demo modules built successfully (${Object.keys(input).length - 1} entries)`)
     }
 
     return {
         name: 'vite-plugin-demo-bundler',
 
         configResolved(config) {
-            // outDir = config.build.outDir
             isBuild = config.command === 'build'
         },
 

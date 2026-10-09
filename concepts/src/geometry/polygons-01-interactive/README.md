@@ -1,14 +1,32 @@
-# Interactive Polygon
+# Interactive
 
-Shapes in VisQuill are point arrays — this demo shows what that means in practice.
+A polygon can use handles as its vertices, so it follows them without any reaction.
 
-## What you see
+## How it works
 
-A pentagon with five draggable vertices. Drag any vertex and the polygon reshapes instantly. Labels follow each vertex automatically.
+`canvas.visuals.polygon` takes the handles array. The polygon keeps those point objects as its vertices instead of copying their positions, so dragging a handle moves the vertex:
 
-## Key concepts
+```ts
+const polygon = canvas.visuals.polygon("shape", handles);
+```
 
-- **Shapes as point references** — `canvas.visuals.polygon("shape", handles)` takes the handles array directly; the polygon references those points rather than copying them, so any change to a handle position is immediately reflected in the shape
-- **No `Reactive.do()` needed** — the reactive connection is established at creation time when you pass handles to the polygon constructor
-- **`polygon.at(i)`** — returns a reference to the i-th vertex point, which can then be used as an attach target for labels or other elements
-- **`polygon.toBack()`** — sends the polygon behind the handles so dragging is never blocked by the fill area
+`polygon.at(i)` returns the vertex point itself. The labels are attached to it with an offset, so they follow too:
+
+```ts
+Attach.pointToPoint(label, polygon.at(i), {
+    offset: { x: 15, y: -15 }
+});
+```
+
+The starting pentagon is placed with `Points.placeOnCircle`, beginning at the top.
+
+## API
+
+- `canvas.visuals.polygon`: a visual polygon; given points, it uses them as vertices
+- `Attach.pointToPoint`: keeps a point at another point, here with an offset
+- `Points.placeOnCircle`: a point on a circle at an angle
+
+## See also
+
+- `geometry/polygons-02-properties`
+- `basics/05-attach`

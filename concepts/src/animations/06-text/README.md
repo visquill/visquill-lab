@@ -1,13 +1,28 @@
 # Text Animation
 
-Animating text transitions character by character through a sequence of strings.
+`Animate.string.animate` changes a label's text into another string, character by character.
 
-## What you see
+## How it works
 
-A large text label and a Start button. Click the button and the text animates through a series of strings one at a time, each new string replacing the previous with a character-by-character transition. The sequence runs to the end and stops.
+`currentIndex` selects the string to show. It starts at -1, and the reaction is registered with `false` as its last argument, so it does not run until the Start button sets the index to 0. From then on, every change of the index animates the label to the next string:
 
-## Key concepts
+```ts
+Animate.string.animate(label, strings[currentIndex.value], 100, {
+    onComplete: () => Animate.after(500,advance),
+    durationMode: RvgTextDurationMode.PerCharacter,
+    skipWhitespace: true
+})
+```
 
-- **`Animate.text(label, target, duration, options)`** — animates a text label to a new string; `durationMode: "per-character"` scales the total duration by string length, `deconstruction: "stepwise"` removes characters one by one before building the new ones
-- **`onComplete` callback** — used here to chain animations: when one text transition finishes it increments an index, which triggers the next via a reactive block
-- **Two-reactive-block sequencing** — one block watches the index and starts the text animation; another watches a toggle that fires when the animation completes and advances the index; this avoids nesting callbacks
+With `PerCharacter`, the 100 ms apply to each character, so longer strings take longer. `skipWhitespace` spends no time on spaces. When a string is complete, `Animate.after` waits 500 ms and calls `advance`, which moves to the next string until the last one is shown.
+
+## API
+
+- `Animate.string.animate`: animates a text from its current string to a new one
+- `Animate.after`: calls a function after a delay
+- `RvgTextDurationMode.PerCharacter`: the duration is per character, not for the whole text
+- `Reactive.do`: runs a function whenever its inputs change
+
+## See also
+
+- `animations/02-state-machine`

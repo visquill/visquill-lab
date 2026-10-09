@@ -1,12 +1,45 @@
-# Positioned Segments
+# Positioned
 
-Two advanced construction methods that place a segment relative to existing geometry.
+Place a segment parallel to another one, or at a distance from a point.
 
-## What you see
+## How it works
 
-Two panels stacked vertically. **Top** — `alongSegment`: a grey base segment between two draggable endpoints; the indigo result segment runs parallel to it, offset by `distance`, trimmed by `paddingStart` and `paddingEnd`. **Bottom** — `segmentAtPoint`: an orange reference point with a direction handle; the result segment is placed at `distance` from the point, oriented along the direction, with `ratio` controlling where along the result the reference point projects. A dashed line shows the perpendicular offset.  Drag the cyan toggle handle above or below the base line to flip the side.
+`Segments.alongSegment` puts a segment parallel to the base from `p1` to `p2`, at a distance to its left or right. The paddings shorten it at the start and the end, as for a dimension line:
 
-## Key concepts
+```ts
+Segments.alongSegment(
+    p1, p2,
+    leftSide,
+    distance.value,
+    paddingStart.value,
+    paddingEnd.value,
+    result
+)
+```
 
-- **`Segments.alongSegment(p1, p2, side, distance, paddingStart, paddingEnd)`** — places a segment parallel to the base, offset perpendicularly by `distance`; `paddingStart` and `paddingEnd` trim the result from each end; useful for dimension lines, annotations, and parallel rails
-- **`Segments.segmentAtPoint(point, distance, dir, ratio, side)`** — constructs a segment whose closest point to `point` (at the given `ratio` along the result) is exactly `distance` away; the `ratio` parameter lets you control whether the reference anchors to the start (0), middle (0.5), or end (1) of the result
+The side comes from the toggle handle: a negative cross product means it lies to the left of `p1` → `p2`.
+
+`Segments.segmentAtPoint` builds a segment along a direction, at a distance beside a point. The direction vector also sets the length. The ratio says which part of the segment sits next to the point: 0 its start, 1 its end:
+
+```ts
+Segments.segmentAtPoint(
+    point,
+    distance.value,
+    Vectors.direction(point, dirPt),
+    ratio.value,
+    leftSide,
+    result
+)
+```
+
+## API
+
+- `Segments.alongSegment`: a segment parallel to a base, with distance and paddings
+- `Segments.segmentAtPoint`: a segment beside a point, along a direction
+- `Segments.pointAt`: the end of the dashed distance line
+- `Vectors.crossProduct`, `Vectors.direction`: the side of the toggle, the direction vector
+
+## See also
+
+- `geometry/segments-01-basic`
+- `geometry/rectangles-01-basic`

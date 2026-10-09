@@ -1,21 +1,40 @@
-# Pins - Movement
+# Movement
 
-Four movement directions shown simultaneously from one pin. Rotate with the handle, move with the buttons.
+Move a point relative to a direction instead of along the screen axes.
 
-## What you see
+## How it works
 
-A dashed source arrow with a white handle at its tip. Four coloured shafts branch from the same origin — green (forward), red (backward), blue (left), orange (right) — each showing where the pin would land after calling the corresponding `Pins.move*` method. Four buttons at the bottom actually move the pin; the coloured arrows update immediately.
+Each arrow is a pin moved by one of the four move functions. They step a distance in pixels along the pin's orientation, against it, or 90° to its left or right:
 
-Drag the white handle to change direction and watch all four endpoints rotate together. Click a button to move the pin; the handle snaps to the new tip so dragging still works correctly.
+```ts
+buildDerivedArrow(canvas, pin, "moveLeft",
+    p => Pins.moveLeft(p, moveDistance),     "left",     -labelOffset)
+```
 
-## Key concept
+The handle turns the pin. `Pins.alignToSegment` points it from its own position toward the handle, so the position stays where it is:
 
-Movement in `Pins` is **relative to the pin's own orientation**, not to the world axes. `moveForward` always goes in the direction the pin is pointing; `moveLeft` is always 90° counterclockwise from that. Rotate the source arrow and every coloured endpoint rotates with it.
+```ts
+Reactive.do([hTip], () => {
+    Pins.alignToSegment(pin, Pins.getPosition(pin), hTip, pin)
+    Pins.withLength(pin, moveDistance, pin)
+})
+```
 
-## Key concepts
+The buttons apply the same functions to the pin itself, for example `Pins.moveForward(pin, moveStep, pin)`.
 
-- **`Pins.moveForward(pin, distance)`** — moves along the pin's orientation direction
-- **`Pins.moveBackward(pin, distance)`** — moves opposite to the orientation direction
-- **`Pins.moveLeft(pin, distance)`** — moves 90° counterclockwise from forward
-- **`Pins.moveRight(pin, distance)`** — moves 90° clockwise from forward
-- **`Pins.alignToSegment(pin, p1, p2)`** — points the orientation from p1 toward p2; used here so the tip handle directly controls direction without affecting position
+## API
+
+- `Pins.moveForward`, `Pins.moveBackward`: move along the orientation or against it
+- `Pins.moveLeft`, `Pins.moveRight`: move 90° to the left or right of the orientation
+- `Pins.alignToSegment`: orients a pin along the direction from one point to another
+- `Pins.withLength`: sets the orientation's length
+- `Pins.getPosition`: the position of a pin as a point
+
+## Notes
+
+Left and right are as seen on screen when facing along the orientation: with the pin pointing right, `Pins.moveLeft` goes up.
+
+## See also
+
+- `geometry/pins-01-basics`
+- `geometry/arcs-02-sampling`

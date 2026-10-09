@@ -1,12 +1,5 @@
 /* demos-curve-baseline-<class> */
 
-/* ── Source polyline (invisible) ────────────────────────────────────────── */
-
-.demos-curve-baseline-raw {
-    fill: none;
-    stroke: none;
-}
-
 /* ── Prefix and suffix ──────────────────────────────────────────────────── */
 
 .demos-curve-baseline-seg-prefix,

@@ -1,13 +1,26 @@
 # Easing Functions
 
-Eight easing curves compared side by side through animated bars.
+An easing function decides how an animated value travels from its start to its target.
 
-## What you see
+## How it works
 
-Eight rows, one per easing function. Each row has a labeled button on the left and a colored bar on the right. Click any button to animate all bars to a new value — each bar reaches the target at the same time but travels there differently. Click again to animate back.
+Each row has a `Real` for the length of its bar. `Attach.rectangleHeightToValue` ties the bar to that value, so the bar redraws whenever it changes. A row's button animates its value with `Animate.real.eased` and that row's easing function:
 
-## Key concepts
+```ts
+Attach.rectangleHeightToValue(bar, barValue);
+// …
+Animate.real.eased(barValue, targetValue, 1000, {easing: ease.fn});
+```
 
-- **`Animate.eased(value, target, duration, { easing })`** — animates a reactive `Real` to a target over a fixed duration using the given easing function; the visual updates automatically because the bar's width is bound to that value
-- **`Attach.rectangleHeightToValue(bar, value)`** — creates a persistent reactive binding between a rectangle's dimension and a `Real`; no `Reactive.do()` needed
-- **Easing as a first-class value** — easing functions (`Animate.linear`, `Animate.easeOutCubic`, etc.) are plain functions passed as options, so they can be stored in an array and iterated
+Every animation takes 1000 ms, so the rows differ only in how they move, not in when they arrive. The targets come from one shared list, so each click takes the next value from it.
+
+## API
+
+- `Animate.real.eased`: animates a `Real` to a target value with an easing function
+- `Attach.rectangleHeightToValue`: keeps a rectangle's height equal to a `Real`
+- `Rectangles.alongSegment`: places a rectangle on a segment; here the segments are vertical, so the bars grow to the right
+- `EasingFunctions.easeOutBack`: one of the eight built-in curves shown here
+
+## See also
+
+- `animations/08-clock`

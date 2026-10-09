@@ -53,15 +53,13 @@ export function run(div: HTMLDivElement) {
     const diagLbl      = canvas.text.label("diagonal",  "annotation-label")
 
     Reactive.do(handles, () => {
-        const pts = handles.map(h => ({ x: h.x, y: h.y }))
-
         // centroid — geometric average of all points
-        const c = Points.centroid(pts)
+        const c = Points.centroid(handles)
         Circles.circleAt(c, 8, centroidMark)
         Points.moveUp(c, 16, centroidLbl)
 
         // diagonal — segment connecting the two farthest-apart points
-        const diag = Points.diagonal(pts)
+        const diag = Points.diagonal(handles)
         Points.copy(diag.at(0), diagonalLine.at(0))
         Points.copy(diag.at(1), diagonalLine.at(1))
         Circles.circleAt(diag.at(0), 6, diagEndA)
@@ -70,17 +68,15 @@ export function run(div: HTMLDivElement) {
     })
 
     Reactive.do([...handles, refHandle], () => {
-        const pts = handles.map(h => ({ x: h.x, y: h.y }))
-
         // nearest point to the reference
-        const nearest = Points.pointWithMinDistance(refHandle, pts)
+        const nearest = Points.pointWithMinDistance(refHandle, handles)
         Points.copy(refHandle, nearestLine.at(0))
         Points.copy(nearest,   nearestLine.at(1))
         Circles.circleAt(nearest, 8, nearestMark)
         Points.moveLeft(Points.midPoint(refHandle, nearest), 28, nearestLbl)
 
         // farthest point from the reference
-        const farthest = Points.pointWithMaxDistance(refHandle, pts)
+        const farthest = Points.pointWithMaxDistance(refHandle, handles)
         Points.copy(refHandle, farthestLine.at(0))
         Points.copy(farthest,  farthestLine.at(1))
         Circles.circleAt(farthest, 8, farthestMark)

@@ -3,7 +3,7 @@
 // @group Points
 
 import {
-    VisQuill, Reactive, Points, Circles, Boxes, Segments
+    VisQuill, Reactive, Points, Circles, Boxes, Segments, Polylines
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -33,7 +33,7 @@ export function run(div: HTMLDivElement) {
     {
         const cx = cols[0]
 
-        canvas.visuals.segment("shape-segment", seg1Start, seg1End)
+        const seg = canvas.visuals.segment("shape-segment", seg1Start, seg1End)
         Circles.circleAt(seg1Start, 5, canvas.visuals.circle("endpoint"))
         Circles.circleAt(seg1End,   5, canvas.visuals.circle("endpoint"))
 
@@ -43,7 +43,6 @@ export function run(div: HTMLDivElement) {
         const lbl       = canvas.text.label("", "distance-label")
 
         Reactive.do([p], () => {
-            const seg     = canvas.shapes.segment(seg1Start, seg1End)
             const closest = Points.closestPointOnSegment(p, seg)
             const dist    = Points.distanceToSegment(p, seg)
             Circles.circleAt(p, 7, dot)
@@ -61,17 +60,11 @@ export function run(div: HTMLDivElement) {
     {
         const cx = cols[1]
 
-        // Extended dashed line shows the infinite extent.
-        const extA: [number, number] = [
-            seg2Start[0] - (seg2End[0] - seg2Start[0]) * 1.5,
-            seg2Start[1] - (seg2End[1] - seg2Start[1]) * 1.5,
-        ]
-        const extB: [number, number] = [
-            seg2End[0] + (seg2End[0] - seg2Start[0]) * 1.5,
-            seg2End[1] + (seg2End[1] - seg2Start[1]) * 1.5,
-        ]
-        canvas.visuals.segment("extended-line", extA, extB)
-        canvas.visuals.segment("shape-segment", seg2Start, seg2End)
+        // Extended dashed line shows the infinite extent: the segment,
+        // lengthened by 280 px at both ends.
+        const ext = Polylines.extend([seg2Start, seg2End], 280, 280)
+        canvas.visuals.segment("extended-line", ext.at(0), ext.at(1))
+        const seg = canvas.visuals.segment("shape-segment", seg2Start, seg2End)
         Circles.circleAt(seg2Start, 5, canvas.visuals.circle("endpoint"))
         Circles.circleAt(seg2End,   5, canvas.visuals.circle("endpoint"))
 
@@ -81,8 +74,7 @@ export function run(div: HTMLDivElement) {
         const lbl       = canvas.text.label("", "distance-label")
 
         Reactive.do([p], () => {
-            const seg     = canvas.shapes.segment(seg2Start, seg2End)
-            const closest = Points.closestPointOnLine(p, seg,null)
+            const closest = Points.closestPointOnLine(p, seg)
             const dist    = Points.distanceToLine(p, seg)
             Circles.circleAt(p, 7, dot)
             Points.copy(p,       connector.at(0))

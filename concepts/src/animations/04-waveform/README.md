@@ -1,14 +1,29 @@
 # Waveform
 
-One-shot shape morph animation using `Animate.morph`.
+`Animate.shape.morph` moves every vertex of a shape to a target pose.
 
-## What you see
+## How it works
 
-A polyline cycles through four signal waveforms — flat, sine, square, sawtooth — looping forever. Each transition uses easing that matches the character of the target shape: the sine transition flows smoothly, the square wave snaps, the sawtooth ramps.
+Each pose is an array of 64 points, sampled from a function once at startup: flat, sine, square, sawtooth and back to flat. All poses share the same x values, so the vertices only move up and down.
 
-## Key concepts
+A reaction morphs the polyline to the next pose; when the morph completes it advances `state`, which starts the next one. Each step has its own duration and easing.
 
-- **`Animate.morph` with `onComplete`** — each transition is a one-shot morph; `onComplete` advances `state.value` by 1, re-triggering the reactive block for the next step; the same state machine pattern as the scalar demo, now driving a shape instead of a number
-- **Poses as frozen `Point[]`** — each waveform is sampled once at startup by the `pose` helper; x coordinates are fixed across all poses (only y varies), so the morph moves vertices purely vertically
-- **Easing matches waveform character** — `easeInOutSine` for smooth curves, `easeInOutCubic` for the abrupt square wave snap, `easeInCubic` for the accelerating sawtooth ramp; the easing choice is part of the storytelling
-- **No sync code** — `morph` writes directly into the polyline's `elements` in place; the visual updates automatically with no `Reactive.do` needed for display
+```ts
+Animate.shape.morph(waveform, poses[idx + 1], duration, {
+    easing,
+    onComplete: () => { state.value += 1 }
+})
+```
+
+The morph writes into the polyline's own points, so no code is needed to keep the visual in sync.
+
+## API
+
+- `Animate.shape.morph`: animates the vertices of a shape to the points of a target pose
+- `Reactive.do`: runs a function now and whenever its inputs change
+- `canvas.visuals.polyline`: the polyline that is morphed
+
+## See also
+
+- `animations/05-breathing`
+- `animations/02-state-machine`

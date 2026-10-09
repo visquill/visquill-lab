@@ -1,14 +1,34 @@
 # Simple State Machine
 
-Sequencing animations through a reactive integer that advances on each completion callback.
+Chain animations: each one starts the next when it completes.
 
-## What you see
+## How it works
 
-A dot and a small blue box tracing a square path, looping continuously. The motion alternates between translating along one axis and rotating 90°, with smooth easing on each step.
+`state` is a `Real` that holds the current step. A reaction runs the step's animation whenever `state` changes, and every animation adds 1 to `state` in its `onComplete`:
 
-## Key concepts
+```ts
+function animate(variable: Real, value: number){
+    Animate.real.eased(variable, value, 1000, {onComplete: ()=>state.value+=1})
+}
+// …
+Reactive.do([state], () => {
+    // …
+    states[state.value]?.()
+})
+```
 
-- **State as a reactive `Real`** — an integer value drives the current animation step; when `Reactive.do([state], ...)` fires, it looks up the step in an array and calls `Animate.eased()`
-- **`onComplete` as the state transition** — each animation advances `state.value` by 1 when it finishes, which triggers the reactive block again for the next step; the cycle resets automatically when state exceeds the last index
-- **Separation of data and display** — `x`, `y`, and `angle` are plain reactive `Real` values; a second `Reactive.do([x, y, angle], ...)` block reads them and updates the visual position and rotation; the state machine only writes values, never touches visuals directly
-- **`Pins.orientate()`** — rotates a group anchor to face a given direction vector; `Vectors.fromAngle(angle)` converts the scalar angle into the direction vector it expects
+After the last step the reaction sets `state` back to 0, and `angle` from 2π back to 0, which is the same orientation.
+
+The steps only change three numbers: `x`, `y` and `angle`. A second reaction turns them into the anchor of the box's layer with `Pins.withOrientation`, so the box moves and turns with it.
+
+## API
+
+- `Animate.real.eased`: animates a `Real`; `onComplete` runs when it arrives
+- `Reactive.do`: runs a function now and whenever its inputs change
+- `Pins.withOrientation`: a pin at a point, facing a direction
+- `Vectors.fromAngle`: the unit vector for an angle
+
+## See also
+
+- `animations/03-planets`
+- `animations/04-waveform`

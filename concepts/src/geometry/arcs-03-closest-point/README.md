@@ -1,12 +1,32 @@
-# Arc Closest Point
+# Closest Point
 
-Finding the nearest point on an arc to an arbitrary query point.
+Find the point on an arc nearest to any other point, and how far away it is.
 
-## What you see
+## How it works
 
-An arc with three handles to reshape it, and a freely draggable sky-blue query point. A dashed connector joins the query point to the closest point on the arc, marked in green. A distance label updates live as either the arc or the query point moves. Dragging the query point past an endpoint shows that the result clamps to the endpoint rather than continuing around the underlying circle.
+`Arcs.closestPoint` projects the query point onto the arc. If the projection falls outside the arc's angle range, it returns the nearer endpoint, not a point on the rest of the circle. `Arcs.distanceTo` gives the distance to that point.
 
-## Key concepts
+```ts
+Reactive.do([arc, query], () => {
+    const closest = Arcs.closestPoint(arc, query)
+    const dist    = Arcs.distanceTo(arc, query)
 
-- **`Arcs.closestPoint(arc, p)`** — returns the point on the arc nearest to `p`; clamps to the nearest endpoint if the perpendicular projection falls outside the arc's angular range
-- **`Arcs.distanceTo(arc, p)`** — returns the scalar distance from `p` to the closest point on the arc
+    Circles.circleAt(closest, 5, closestDot)
+
+    Points.copy(query,   connector.at(0))
+    Points.copy(closest, connector.at(1))
+    // …
+})
+```
+
+## API
+
+- `Arcs.closestPoint`: the point on an arc nearest to a given point, clamped to the endpoints
+- `Arcs.distanceTo`: distance from a point to an arc
+- `Arcs.arcAt`: an arc from center, radius, start angle and sweep
+- `Points.midPoint`: places the distance label halfway along the connector
+
+## See also
+
+- `geometry/polylines-02-closest-point`
+- `reactions/reactions-02-distances`

@@ -7,17 +7,8 @@
 .demos-basics-rvg-frame-frame {
     fill: rgba(70, 130, 180, 0.06);
     stroke: #4682b4;
-    stroke-width: 1.5px;
+    stroke-width: 4px;   /* half of it is clipped by the SVG edge */
     stroke-dasharray: 6, 4;
-}
-
-/* ─── Frame Edges ────────────────────────────────────────────────────── */
-
-.demos-basics-rvg-frame-edge {
-    stroke: #4682b4;
-    stroke-width: 4px;
-    stroke-dasharray: 6, 4;
-    fill: none;
 }
 
 /* ─── Corner Markers ─────────────────────────────────────────────────── */

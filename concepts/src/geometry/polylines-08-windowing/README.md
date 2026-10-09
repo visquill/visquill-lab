@@ -1,19 +1,36 @@
 # Polyline Windowing
 
-Finding the portion of a polyline that passes through a rectangular region, expressed as a normalised [start, end] range.
+Find the part of a polyline that runs through a box, as a range of ratios along it.
 
-## What you see
+## How it works
 
-A smooth winding curve crosses a dashed rectangular window. The segment inside the window is highlighted in indigo; the portions outside are dimmed. Green and orange dots mark the exact entry and exit points on the window boundary. A label at the bottom shows the window range as percentages along the full curve. Drag either corner handle to resize or move the window — everything updates live.
+The GDK has no function that clips a polyline to a box, so `windowPolyline` in the demo does it in three steps. It walks the vertices with `Boxes.containsPoint` to find the first and last vertex inside. It intersects the edges just before and after them with the box sides (`segmentBoxIntersection` from `concepts/src/utils/geometry.ts`). Then `Polylines.closestPosition` turns the two crossing points into ratios:
 
-## Key concepts
+```ts
+const start = Polylines.closestPosition(polyline, entryPt).value;
+const end   = Polylines.closestPosition(polyline, exitPt).value;
+```
 
-- **Walking vertices to find the window** — the algorithm iterates over polyline vertices and checks each one against the box using `Boxes.containsPoint`. The first and last vertices inside the box give the rough entry/exit indices. This is O(n) and sufficient for the typical case where the polyline crosses the box once.
+With the ratios, the three slice functions draw the line in three parts:
 
-- **Exact boundary crossing via segment intersection** — the vertex walk finds which segment crosses the boundary, but not where. `segmentBoxIntersection` tests the crossing segment against all four box edges using parametric segment–segment intersection, returning the point closest to the outside vertex. This gives sub-vertex precision for `closestPosition`.
+```ts
+Polylines.slicePrefix(polyline, start, segPrefix);
+Polylines.slice(polyline, start, end,  segSlice);
+Polylines.sliceSuffix(polyline, end,   segSuffix);
+```
 
-- **`Polylines.closestPosition`** — converts a screen-space point (the boundary crossing) to a normalised position [0, 1] along the polyline. This is the bridge between the geometric intersection and the slicing API.
+## API
 
-- **`Polylines.slice` / `slicePrefix` / `sliceSuffix`** — the three output segments are computed from the same normalised range. `slice(polyline, start, end)` extracts the windowed segment; the prefix and suffix paint the remainder in a dimmed style.
+- `Boxes.containsPoint`: whether a point lies in a box
+- `Boxes.spannedBox`: the window from its two corner handles
+- `Polylines.closestPosition`: the ratio of the nearest point on a polyline
+- `Polylines.slicePrefix`, `Polylines.slice`, `Polylines.sliceSuffix`: the parts before, between and after two ratios
 
-- **`Boxes.spannedBox`** — builds the smallest box containing both corner handles regardless of which handle is to the top-left. Either corner can be dragged past the other without breaking the box.
+## Notes
+
+The range runs from the first entry to the last exit. A line that leaves the box and comes back counts as one range.
+
+## See also
+
+- `geometry/polylines-03-slicing`
+- `geometry/polylines-09-convex-hull`

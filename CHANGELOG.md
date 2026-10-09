@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented here.
 
+## [Unreleased]
+
+## [1.0.2] — 2026-10-09
+
+- Builds against `visquill-gdk` 1.0.2 from npm
+- MapLibre GL 6 (was 5); the map adapter sets the worker URL that MapLibre 6 needs under Vite
+- Demos use GDK functions where they had hand-written geometry, and many bugs in demos and blueprints are fixed (controls lost on resize, wrong data and comments, missing styles)
+- All READMEs rewritten in a shorter format (rules in `CONTRIBUTING.md`); `plots/curves-02-along-circle` follows once a GDK bug is fixed
+- Explorer: demos share one copy of the GDK, MapLibre and the blueprints (build 171 MB → 7.3 MB), deep links to single demos, scrolling code blocks
+- Blueprints: `Decoration.labelsAlongPolyline` applies `distance` and takes `autoFlip`; `createSnapGroup` rejects a lens that is already in another snap group
+
 ## [1.0.1] — 2026-09-06
 
 - Migrated to `visquill-gdk` 1.0.1

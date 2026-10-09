@@ -3,7 +3,7 @@
 // @group Curves
 
 import {
-    VisQuill, Reactive, Boxes, Segments, Points, Circles,  Polylines, Curves,
+    VisQuill, Reactive, Boxes, Segments, Points, Circles, Polylines, Curves, Values,
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -48,10 +48,9 @@ export function run(div: HTMLDivElement) {
     })
 
     // ─── Baseline ──────────────────────────────────────────────────────
-    const rawBaseline = canvas.visuals.polyline("baseline-raw", baselinePoints)
-    const baseline    = canvas.visuals.polyline(
+    const baseline = canvas.visuals.polyline(
         "baseline",
-        Polylines.smooth(rawBaseline, smoothingIterations)
+        Polylines.smooth(baselinePoints, smoothingIterations)
     )
 
     // ─── Sample position markers (on the baseline) ─────────────────────
@@ -85,10 +84,8 @@ export function run(div: HTMLDivElement) {
             value: p.value + shift.value,
         })))
 
-        for (let i = 0; i < valueCount; i++) {
-            const pin = basePins[i]!
-            Circles.circleAt({ x: pin.x, y: pin.y }, 4, sampleDots[i])
-        }
+        for (let i = 0; i < valueCount; i++)
+            Circles.circleAt(basePins[i], 4, sampleDots[i])
 
         Curves.alongPolyline(baseline, positions, values, shift, true, curve)
 
@@ -99,29 +96,28 @@ export function run(div: HTMLDivElement) {
     createSlider(shift)
 
     function createSlider(value: typeof shift) {
-        const track = canvas.visuals.segment("slider-track")
+        const track      = canvas.visuals.segment("slider-track")
+        const trackLabel = canvas.text.label("Shift", "slider-label")
+        const handle     = canvas.handles.disk("slider-handle")
+        const ratio      = canvas.values.real(0.5)
 
+        // Track, label and handle follow the frame; the handle keeps its ratio.
         Reactive.do([rvg.frame], () => {
             const bottom = Boxes.bottomSide(rvg.frame)
             const mid    = Points.moveUp(Segments.midPoint(bottom), sliderBottomOffset)
             Points.moveLeft(mid,  sliderHalfWidth, track.at(0))
             Points.moveRight(mid, sliderHalfWidth, track.at(1))
+            Points.moveUp(mid, 18, trackLabel)
+            Segments.pointAt(track, ratio, handle)
         })
 
-        const trackLabel = canvas.text.label("Shift", "slider-label")
-        Reactive.do([rvg.frame], () => {
-            Points.moveUp(Segments.midPoint(track), 18, trackLabel)
-        })
-
-        const handle = canvas.handles.disk("slider-handle")
-        Points.placeOnSegment(track.at(0), track.at(1), 0.5, handle)
-
+        // The middle of the track is no shift; the ends shift by half the
+        // baseline length in either direction.
         Reactive.do([handle], () => {
             Points.closestPointOnSegment(handle, track, handle)
-            const ratio = canvas.values.real()
             Points.relativePositionOnSegment(handle, track, ratio)
-            const totalLength = Polylines.len(baseline).value
-            value.value = (ratio.value - 0.5) * totalLength
+            const half = Polylines.len(baseline).value / 2
+            Values.lerp(-half, half, ratio, value)
         })
     }
 }

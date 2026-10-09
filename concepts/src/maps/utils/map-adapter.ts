@@ -17,6 +17,13 @@ import {
 } from "@visquill/visquill-gdk";
 import type { Point } from "@visquill/visquill-gdk";
 
+// maplibre-gl 6 loads its tile worker from a separate file whose URL it
+// derives at runtime; Vite can't see that, so the worker would be missing
+// from the build. `?worker&url` makes Vite bundle the worker (including its
+// shared chunk) and returns a base-path-aware URL.
+import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
+maplibregl.setWorkerUrl(workerUrl);
+
 export interface LatLng { lat: number; lng: number }
 
 export interface MapOptions {

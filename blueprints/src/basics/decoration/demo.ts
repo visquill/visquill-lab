@@ -74,7 +74,7 @@ export function run(div: HTMLDivElement) {
             labels: labelTexts,
             placement: "top",
             position: "center",
-            distance: 5,
+            distance: 12,
             style: "label-value"
         })
     }

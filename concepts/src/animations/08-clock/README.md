@@ -1,15 +1,32 @@
 # Clock
 
-Time-driven animation using `Animate.real.eased` and `Pins.withOrientation`.
+Animate a number and let a reaction turn it into geometry.
 
-## What you see
+## How it works
 
-A clock face with hour, minute, and second hands, initialised from the system clock and ticking in real time. The second hand snaps to each position with a slight mechanical overshoot; the minute and hour hands glide smoothly.
+Each hand has one `Real`: how far it has turned, as a fraction of a full turn. A reaction places the hand on a circle at that fraction. Once a second, `Animate.real.eased` moves each value on by its share of a turn, and the reaction redraws the hand on every frame.
 
-## Key concepts
+```ts
+Reactive.do([turn], () => {
+    Segments.segment(Circles.pointAt(tail, turn.value + 0.5), Circles.pointAt(tip, turn), segment)
+})
+// …
+Animate.real.eased(secTurn, secTurn.value + 1 / 60, 300, {
+    easing: EasingFunctions.easeOutBack
+})
+```
 
-- **`Animate.real.eased` driving orientation** — each hand's angle is a reactive `Real`; a `Reactive.do` block calls `Pins.withOrientation` whenever it changes, translating the scalar angle into a layer rotation; the same pattern as the state machine demo, now applied to three independent values simultaneously
-- **`setInterval` as a tick source** — unlike the state-machine demos that chain `onComplete` callbacks, the clock is driven by a 1 000 ms interval; each tick fires three independent `eased` calls, one per hand
-- **Running angles** — angles accumulate rather than wrapping at 2π, so the second hand never snaps backward when crossing 12; each tick simply adds π/30 to the running total
-- **Easing as character** — `easeOutBack` gives the second hand the overshoot of a real quartz movement; `easeInOutSine` keeps the minute and hour hands imperceptibly smooth
-- **Layers as rotation groups** — each hand lives in its own unnamed child layer whose anchor is positioned at the clock centre; rotating the anchor's orientation rotates everything drawn inside that layer
+`dial()` builds each circle with `Circles.circle3P` through 12, 3 and 6 o'clock, so ratio 0 is 12 o'clock and ratios run clockwise. Ratios above 1 wrap around. The values only grow, so the second hand never runs backwards at 12.
+
+## API
+
+- `Animate.real.eased`: animates a `Real` to a target value
+- `Reactive.do`: runs a function now and whenever its inputs change
+- `Circles.pointAt`: the point at a ratio along a circle
+- `Circles.circle3P`: the circle through three points, starting at the first
+- `Segments.segment`: writes a segment into an existing visual
+
+## See also
+
+- `animations/01-easing`
+- `geometry/circles-03-sampling`

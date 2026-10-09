@@ -1,14 +1,30 @@
-# Polygon Slice
+# Slice
 
-Extract an arc of a polygon boundary between two positions, with wrap-around when the start ratio exceeds the end ratio.
+Cut a piece out of a polygon's boundary between two ratios, also across vertex 0.
 
-## What you see
+## How it works
 
-A hexagonal polygon whose boundary is split into two complementary arcs: the selected slice from A → B (orange, thick) and the remainder from B → A (dimmed).  Two drag handles project onto the boundary via `closestPosition()` — drag them to move the slice endpoints.  Ratio labels on each handle show the current 0–1 position.  When the orange arc wraps past vertex 0, a "↺ wrap" indicator appears there.
+A ratio is a position along the boundary: 0 at vertex 0, 1 after one full round. `Polygons.closestPosition` turns each free handle into the ratio of its nearest boundary point, and `Polygons.pointAt` turns the ratio back into a point for the marker:
 
-## Key concepts
+```ts
+Polygons.closestPosition(polygon, handleA, ratioA)
+Polygons.pointAt(polygon, ratioA, markerA)
+```
 
-- **`Polygons.slice(polygon, startRatio, endRatio)`** — extracts the boundary arc from `startRatio` to `endRatio` travelling forward; when `startRatio > endRatio` the arc wraps around past vertex 0 rather than stopping — this is impossible with `Polylines.slice()`, which requires a non-decreasing range
-- **`Polygons.closestPosition()`** — projects a point onto the boundary and returns its 0–1 ratio; used here to map each drag handle's free-space position to a boundary ratio that feeds into `slice()`
-- **`Polygons.pointAt()`** — converts a ratio back to a 2-D coordinate for the boundary marker visuals
-- **Complementary slices** — `slice(A, B)` and `slice(B, A)` together cover the full boundary; drawing both makes it immediately clear which portion is selected and which is not
+`Polygons.slice` returns the boundary from the first ratio to the second as an open polyline. If the start is greater than the end, it runs on past vertex 0. Swapping the two ratios gives the rest of the boundary:
+
+```ts
+Polygons.slice(polygon, ratioA, ratioB, sliceArc)
+Polygons.slice(polygon, ratioB, ratioA, remainArc)
+```
+
+## API
+
+- `Polygons.slice`: the boundary between two ratios as a polyline; wraps past vertex 0 when start > end
+- `Polygons.closestPosition`: the ratio of the boundary point nearest to a point
+- `Polygons.pointAt`: the boundary point at a ratio
+- `Polygons.polygon`: writes vertices into a polygon
+
+## See also
+
+- `geometry/polylines-03-slicing`

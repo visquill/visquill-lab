@@ -4,7 +4,7 @@
 
 import {
     VisQuill, Reactive, Attach, Points, Circles, Boxes, Segments,
-    type RvgGroup, type RvgGraphic, type Real, Rectangles
+    Values, type RvgGroup, type RvgGraphic, type Real, Rectangles
 } from "@visquill/visquill-gdk"
 import './styles.css'
 
@@ -68,11 +68,9 @@ export function run(div: HTMLDivElement) {
         const cx = cols[1]
 
         const center = canvas.handles.disk("center-handle", [cx, cy])
-        const circle = canvas.shapes.circle()
-        const rim    = canvas.visuals.circle("shape-circle")
+        const circle = canvas.visuals.circle("shape-circle")
         Attach.circleCenterToPoint(circle, center)
         Attach.circleRadiusToValue(circle, 80)
-        Reactive.do([center], () => { Circles.copy(circle, rim) })
 
         const pin     = canvas.values.pin()
         const pinMark = canvas.visuals.circle("pin-mark")
@@ -139,7 +137,7 @@ export function run(div: HTMLDivElement) {
         const source   = canvas.handles.disk("source-handle", [cx, cy])
         const follower = canvas.values.point()
         const followerMark = canvas.visuals.circle("pin-mark")
-        const connector    = canvas.visuals.segment("dir-line")
+        canvas.visuals.segment("dir-line", source, follower)
         const sourceMark   = canvas.visuals.circle("source-mark")
 
         Attach.pointToPoint(follower, source, { offset: [40, -50] })
@@ -147,8 +145,6 @@ export function run(div: HTMLDivElement) {
         Reactive.do([follower, source], () => {
             Circles.circleAt(follower, 7, followerMark)
             Circles.circleAt(source,   7, sourceMark)
-            Points.copy(source,   connector.at(0))
-            Points.copy(follower, connector.at(1))
         })
 
         canvas.text.labelAt("pointToPoint", { x: cx, y: cy - 130 }, "panel-label")
@@ -188,7 +184,7 @@ function buildSlider(
     })
 
     Reactive.do([t], () => {
-        value.value = min + t.value * (max - min)
+        Values.lerp(min, max, t, value)
     })
 
     return value

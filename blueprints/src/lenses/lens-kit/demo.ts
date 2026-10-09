@@ -12,7 +12,7 @@ import "./demo.css";
 //   attachTitle         — arc-following text label
 //
 // Dragging the lens left collapses it; dragging it right expands it.
-// The three plots each occupy a quarter of the arc, leaving a gap at the bottom.
+// The three plots each take 29% of the upper half circle.
 // ─────────────────────────────────────────────────────────────────────────────
 
 const COLLAPSE_THRESHOLD_X = 250  // px: drag left of this to collapse
@@ -42,8 +42,8 @@ export function run(div: HTMLDivElement) {
 
     // ── Three plots, each on its own span ────────────────────────────────────
     //
-    // The spans cover 0–75% of the arc (three × 0.29), leaving a gap at the bottom.
-    // position/span are now owned by the span itself, not repeated on plot and title.
+    // Three spans of 29% each, with small gaps, on the lens arc (half a circle,
+    // centred at the top by default).
 
     const spanA = Lenses.createRingSpan(band, { start: 0.02, extent: 0.29 })
     const spanB = Lenses.createRingSpan(band, { start: 0.35, extent: 0.29 })
@@ -95,7 +95,7 @@ export function run(div: HTMLDivElement) {
         collapsed.value = lens.location.x < COLLAPSE_THRESHOLD_X
     })
 
-    Reactive.do([lens.location], () => {
+    Reactive.do([collapsed], () => {
         const spans = [spanA, spanB, spanC]
         if (collapsed.value) {
             Animate.real.eased(lens.radius,      COLLAPSE_RADIUS, ANIMATION_MS)
@@ -139,6 +139,7 @@ export function run(div: HTMLDivElement) {
 
         options.values.forEach((v, i) => {
             plot.bars[i].height.value = v
+            plot.bars[i].valueLabel!.value = v.toString()
         })
 
         return plot

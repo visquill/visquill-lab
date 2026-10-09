@@ -68,17 +68,6 @@
     user-select: none;
 }
 
-.demos-circles-sampling-winding-label {
-    fill: #94a3b8;
-    font-size: 12px;
-    font-weight: 700;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-anchor: start;
-    dominant-baseline: central;
-    pointer-events: none;
-    user-select: none;
-}
-
 .demos-circles-sampling-slider-track {
     stroke: #cbd5e1;
     stroke-width: 4px;

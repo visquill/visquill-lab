@@ -1,13 +1,29 @@
-# Polyline Smoothing
+# Smoothing
 
-Seven draggable handles define a coarse polyline. Five overlaid curves show what `Polylines.smooth()` produces at 0, 1, 2, 4, and 8 iterations.
+Round a coarse polyline by cutting its corners, once or many times.
 
-## What you see
+## How it works
 
-Dark handles connected by the raw (0-iteration) polyline. Four additional curves in different colours show the same polyline after progressively more Chaikin passes. A slider at the bottom highlights one curve at a time so you can inspect each level individually. Drag any handle and all five curves update instantly. The top-left labels show the highlighted iteration count and the approximate vertex count at that level.
+`Polylines.smooth` cuts every corner: each pass replaces an edge with two points at 25% and 75% of it, so the vertex count roughly doubles. The first and last points stay. The handles go straight into it as the vertices:
 
-## Key concepts
+```ts
+Reactive.do(handles, () => {
+    iterationLevels.forEach((n, i) => {
+        Polylines.smooth(handles, n, curves[i])
+    })
+})
+```
 
-- **`Polylines.smooth(polyline, iterations, result)`** — applies Chaikin's corner-cutting algorithm: each pass replaces every edge with two new points at 25% and 75% along it, roughly doubling the vertex count. Start and end points are preserved. More iterations produce a rounder, smoother curve that converges toward a quadratic B-spline.
-- **`Polylines.polyline(vertices)`** — constructs a polyline from an iterable of points; used here to assemble the raw polyline from the handle positions each time a handle moves.
-- **Reactive with multiple dependencies** — `Reactive.do(handles, ...)` fires whenever *any* handle in the array moves, rebuilding all five curves in a single block.
+All five levels are computed on every drag step; the slider only decides which one is visible (`curve.visible.value`). The vertex count shown is read from the result, `curves[idx].elements.length`.
+
+## API
+
+- `Polylines.smooth`: rounds a polyline by cutting its corners a number of times
+
+## Notes
+
+The cost grows with the vertex count: 8 passes turn the 7 control points into 1792 vertices. For a drawing, 2 to 4 passes are usually enough.
+
+## See also
+
+- `geometry/polylines-01-sampling`

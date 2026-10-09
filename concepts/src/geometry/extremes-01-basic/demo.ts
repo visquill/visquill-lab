@@ -2,7 +2,7 @@
 // @category Geometry
 // @group Extremes
 
-import {VisQuill, Reactive, Extremes, Points, Segments, Circles} from "@visquill/visquill-gdk"
+import {VisQuill, Reactive, Extremes, Points, Segments, Circles, Boxes} from "@visquill/visquill-gdk"
 import './styles.css'
 
 // ─── Layout ───────────────────────────────────────────────────────────────
@@ -26,9 +26,7 @@ export function run(div: HTMLDivElement) {
         "instructions"
     )
     Reactive.do([rvg.frame], () => {
-        Points.moveDown(Segments.midPoint(Segments.segment(
-            { x: 0, y: 0 }, { x: 1000, y: 0 }
-        )), 25, instructions)
+        Points.moveDown(Segments.midPoint(Boxes.topSide(rvg.frame)), 25, instructions)
     })
 
     // ─── Divider ──────────────────────────────────────────────────────

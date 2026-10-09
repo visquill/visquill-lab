@@ -8,7 +8,7 @@
 // a third block derives a colour from area. Each block knows only its
 // immediate dependency.
 
-import { VisQuill, Reactive, Circles, Boxes, Points, Segments, Svg } from "@visquill/visquill-gdk"
+import { VisQuill, Reactive, Circles, Boxes, Points, Segments, Svg, Values } from "@visquill/visquill-gdk"
 import './styles.css'
 
 // ─── Layout ───────────────────────────────────────────────────────────────
@@ -50,8 +50,7 @@ export function run(div: HTMLDivElement) {
 
     // ─── Reactive values — the chain ──────────────────────────────────
     // Each value is the output of one block and the input of the next.
-    // All declared outside callbacks so no reactive node is ever created
-    // inside a Reactive.do.
+    // Created outside the reactions: a reaction should not create reactive values.
     const radius  = canvas.values.real(100)
     const area    = canvas.values.real(0)
 
@@ -67,16 +66,11 @@ export function run(div: HTMLDivElement) {
     const handle      = canvas.handles.disk("slider-handle")
     const sliderLabel = canvas.text.label("radius", "slider-label")
 
-    // Use a normalised t value to remember the handle position across
-    // frame resizes — same pattern as in the geometry slider helpers.
+    // The handle position as a ratio along the track, so it survives frame resizes.
     const t = canvas.values.real(0.5)
 
     Reactive.do([rvg.frame], () => {
-        const mid = Points.midPoint(
-            Boxes.bottomSide(rvg.frame).at(0),
-            Boxes.bottomSide(rvg.frame).at(1)
-        )
-        const centre = Points.moveUp(mid, Boxes.height(rvg.frame).value - trackY)
+        const centre = Points.moveDown(Segments.midPoint(Boxes.topSide(rvg.frame)), trackY)
         Points.moveLeft( centre, trackHalfW, track.at(0))
         Points.moveRight(centre, trackHalfW, track.at(1))
         Points.moveUp(centre, 18, sliderLabel)
@@ -89,26 +83,24 @@ export function run(div: HTMLDivElement) {
     })
 
     // ─── Block A — slider → radius ────────────────────────────────────
-    // Reads the normalised slider position and maps it to a pixel radius.
-    // Writes into `radius`, which triggers blocks B and the circle draw.
+    // Maps the slider ratio to a radius. Writing `radius` triggers block B.
     Reactive.do([t], () => {
-        radius.value = minRadius + t.value * (maxRadius - minRadius)
+        Values.lerp(minRadius, maxRadius, t, radius)
     })
 
     // ─── Block B — radius → circle + area ────────────────────────────
-    // The first consumer of radius. Draws the circle, updates the radius
-    // label, and computes area — writing into `area` to trigger block C.
+    // Draws the circle and writes its area. Writing `area` triggers block C.
     Reactive.do([radius], () => {
         Circles.circleAt([cx, cy], radius, circle)
         radiusLabel.value = `radius  =  ${radius.value.toFixed(0)} px`
-        area.value = Math.PI * radius.value * radius.value
+        Circles.area(circle, area)
         areaLabel.value   = `area    =  ${Math.round(area.value).toLocaleString()} px²`
     })
 
     // ─── Block C — area → colour ──────────────────────────────────────
     // Subscribes only to `area`, not to `radius` or the slider.
     // Maps normalised area to a hue: cool (blue) when small, warm (orange) when large.
-    const maxArea = Math.PI * maxRadius * maxRadius
+    const maxArea = Circles.area(Circles.circleAt([cx, cy], maxRadius)).value
     Reactive.do([area], () => {
         const ratio     = Math.min(1, area.value / maxArea)
         const hue       = Math.round(240 - ratio * 200)   // blue → orange

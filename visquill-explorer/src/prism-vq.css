@@ -1,0 +1,76 @@
+/* ==========================
+   Light Prism theme on the site tokens.
+   The --vq-code-* colors mirror the code colors of visquill-guide (guide.css); only the
+   comment color differs: --vq-muted instead of #8C8474, which is 3.7:1 on white.
+   ========================== */
+
+.demo-viewer {
+    --vq-code-keyword:  #7A4E9C;
+    --vq-code-constant: #9A5B0B;
+    --vq-code-string:   var(--vq-success);
+    --vq-code-function: #2F5E8A;
+    --vq-code-comment:  var(--vq-muted);
+    --vq-code-punct:    var(--vq-ink-soft);
+}
+
+.demo-viewer code[class*="language-"],
+.demo-viewer pre[class*="language-"] {
+    color: var(--vq-ink);
+    background: none;
+    font-family: var(--vq-font-mono);
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    tab-size: 4;
+    hyphens: none;
+}
+
+.demo-viewer .token.comment,
+.demo-viewer .token.prolog,
+.demo-viewer .token.doctype,
+.demo-viewer .token.cdata {
+    color: var(--vq-code-comment);
+    font-style: italic;
+}
+
+.demo-viewer .token.punctuation,
+.demo-viewer .token.operator {
+    color: var(--vq-code-punct);
+}
+
+.demo-viewer .token.keyword,
+.demo-viewer .token.selector,
+.demo-viewer .token.atrule,
+.demo-viewer .token.important {
+    color: var(--vq-code-keyword);
+}
+
+.demo-viewer .token.string,
+.demo-viewer .token.char,
+.demo-viewer .token.attr-value,
+.demo-viewer .token.template-string,
+.demo-viewer .token.regex,
+.demo-viewer .token.url {
+    color: var(--vq-code-string);
+}
+
+.demo-viewer .token.number,
+.demo-viewer .token.boolean,
+.demo-viewer .token.constant,
+.demo-viewer .token.symbol,
+.demo-viewer .token.unit {
+    color: var(--vq-code-constant);
+}
+
+.demo-viewer .token.function,
+.demo-viewer .token.class-name,
+.demo-viewer .token.property,
+.demo-viewer .token.builtin {
+    color: var(--vq-code-function);
+}
+
+.demo-viewer .token.bold,
+.demo-viewer .token.important { font-weight: var(--vq-weight-semibold); }
+.demo-viewer .token.italic { font-style: italic; }

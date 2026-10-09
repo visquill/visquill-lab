@@ -1,25 +1,40 @@
 /* ==========================
    Viewer-scoped CSS
+   Colors, fonts and spacing come from the site tokens (vq-tokens.css, copied from
+   visquill-site). Gold is used for thin indicators only (bars, underlines, focus),
+   never for text: it fails contrast on cream and white.
    ========================== */
 
 :root {
-    --source-panel-width: 600px;
+    /* Until the user drags the resizer: at most 600px, and never more than half the view */
+    --source-panel-width: min(600px, 45%);
 }
 
 .demo-viewer {
-    --bg: #ffffff;
-    --panel: #f8f9fa;
-    --border: #e1e4e8;
-    --text: #24292e;
-    --muted: #6a737d;
-    --accent: #0366d6;
+    --bg: var(--vq-cream);
+    --panel: var(--vq-cream-deep);
+    --surface: var(--vq-white);
+    --border: var(--vq-border);
+    --text: var(--vq-ink);
+    --text-soft: var(--vq-ink-soft);
+    --muted: var(--vq-muted);
+    --accent: var(--vq-gold-deep);   /* indicators only, never text */
+    --header-h: 3.25rem;             /* explorer header and sidebar wordmark row */
 
     display: flex;
     height: 100vh;
-    font-family: ui-sans-serif, system-ui, -apple-system;
+    height: 100dvh;
+    font-family: var(--vq-font-sans);
+    font-size: var(--vq-text-sm);
     color: var(--text);
     background: var(--bg);
     overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    margin: 0;
+    background: var(--vq-cream);
 }
 
 /* Reset box-sizing locally */
@@ -29,146 +44,185 @@
     box-sizing: border-box;
 }
 
+.demo-viewer ::selection {
+    background: var(--vq-gold-tint);
+}
+
+.demo-viewer :focus-visible {
+    outline: 2px solid var(--vq-focus);
+    outline-offset: 2px;
+}
+
 /* ==================== Sidebar ==================== */
 .demo-viewer .sidebar {
     width: 230px;
     background: var(--panel);
     border-right: 1px solid var(--border);
-    padding: 16px;
-    overflow-y: auto;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    overflow: hidden;
 }
 
 .demo-viewer .sidebar h1 {
-    font-size: 18px;
-    margin: 0 0 12px;
+    height: var(--header-h);
+    margin: 0;
+    padding: 0 var(--vq-space-4);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    font-family: var(--vq-font-display);
+    font-variation-settings: "opsz" 18, "wght" 600, "SOFT" 0, "WONK" 0;
+    font-size: var(--vq-text-lg);
+    font-weight: var(--vq-weight-semibold);
+    color: var(--text);
 }
 
 .demo-viewer .home-button {
     cursor: pointer;
     user-select: none;
-    transition: color 0.2s;
 }
 
-.demo-viewer .home-button:hover {
-    color: var(--accent);
+.demo-viewer .home-button span {
+    padding-bottom: 2px;
+    border-bottom: 2px solid transparent;
+    transition: border-color var(--vq-transition);
+}
+
+@media (hover: hover) {
+    .demo-viewer .home-button:hover span {
+        border-bottom-color: var(--vq-gold);
+    }
 }
 
 .demo-viewer #demo-list {
     flex: 1;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--vq-space-3);
+}
+
+/* Chevron shared by package and category titles */
+.demo-viewer .package-title::after,
+.demo-viewer .demo-category-title::after {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-right: 1.5px solid var(--muted);
+    border-bottom: 1.5px solid var(--muted);
+    transform: rotate(-45deg);
+    transition: transform var(--vq-transition);
+    flex-shrink: 0;
+    margin-right: 4px;
+}
+
+.demo-viewer .package-section.expanded > .package-title::after,
+.demo-viewer .demo-category.expanded > .demo-category-title::after {
+    transform: rotate(45deg);
 }
 
 /* Package sections (top-level) */
-.demo-viewer .package-section {
-    margin-bottom: 16px;
+.demo-viewer .package-section + .package-section {
+    border-top: 1px solid var(--border);
+    margin-top: var(--vq-space-2);
+    padding-top: var(--vq-space-2);
 }
 
 .demo-viewer .package-title {
-    padding: 10px 12px;
-    border-radius: 8px;
+    padding: var(--vq-space-2) var(--vq-space-2);
+    border-radius: var(--vq-radius);
     cursor: pointer;
     color: var(--text);
-    font-weight: 600;
-    font-size: 14px;
+    font-weight: var(--vq-weight-semibold);
+    font-size: var(--vq-text-sm);
     display: flex;
     align-items: center;
     justify-content: space-between;
     user-select: none;
-    background: #e8f0fe;
-    border: 1px solid #d0e3ff;
 }
 
-.demo-viewer .package-title:hover {
-    background: #d0e3ff;
-}
-
-.demo-viewer .package-title::after {
-    content: '▶';
-    font-size: 11px;
-    color: var(--accent);
-    transition: transform 0.2s;
-}
-
-.demo-viewer .package-section.expanded .package-title::after {
-    transform: rotate(90deg);
+@media (hover: hover) {
+    .demo-viewer .package-title:hover {
+        background: var(--bg);
+    }
 }
 
 .demo-viewer .package-content {
     max-height: 0;
     overflow: hidden;
-    margin-left: 0;
-    padding-left: 0;
 }
 
 .demo-viewer .package-section.expanded .package-content {
     max-height: 20000px;
-    margin-top: 8px;
+    margin-top: var(--vq-space-1);
 }
 
 /* Category sections */
 .demo-viewer .demo-category {
-    margin-bottom: 12px;
+    margin-bottom: var(--vq-space-1);
 }
 
 .demo-viewer .demo-category-title {
-    padding: 8px 10px;
-    border-radius: 6px;
+    padding: 6px var(--vq-space-2);
+    border-radius: var(--vq-radius);
     cursor: pointer;
-    color: var(--text);
-    font-weight: 500;
+    color: var(--text-soft);
+    font-weight: var(--vq-weight-medium);
     display: flex;
     align-items: center;
     justify-content: space-between;
     user-select: none;
 }
 
-.demo-viewer .demo-category-title:hover {
-    background: #f0f2f5;
-}
-
-.demo-viewer .demo-category-title::after {
-    content: '▶';
-    font-size: 10px;
-    color: var(--muted);
-    transition: transform 0.2s;
-}
-
-.demo-viewer .demo-category.expanded .demo-category-title::after {
-    transform: rotate(90deg);
+@media (hover: hover) {
+    .demo-viewer .demo-category-title:hover {
+        background: var(--bg);
+        color: var(--text);
+    }
 }
 
 .demo-viewer .demo-category-list {
     max-height: 0;
     overflow: hidden;
-    margin-left: 8px;
+    margin-left: var(--vq-space-2);
 }
 
 .demo-viewer .demo-category.expanded .demo-category-list {
     max-height: 10000px;
 }
 
-
-
-
-.demo-viewer .demo-item {
-    padding: 8px 10px;
-    border-radius: 6px;
-    cursor: pointer;
+.demo-viewer .demo-group-label {
+    padding: var(--vq-space-2) var(--vq-space-2) 2px;
+    font-size: var(--vq-text-xs);
+    font-weight: var(--vq-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: var(--vq-tracking-wide);
     color: var(--muted);
+    pointer-events: none;
+    user-select: none;
 }
 
-.demo-viewer .demo-item:hover {
-    background: #f0f2f5;
-    color: var(--text);
+.demo-viewer .demo-item {
+    padding: 6px var(--vq-space-2);
+    border-radius: var(--vq-radius);
+    cursor: pointer;
+    color: var(--text-soft);
+    transition: background var(--vq-transition), color var(--vq-transition);
+}
+
+@media (hover: hover) {
+    .demo-viewer .demo-item:hover {
+        background: var(--bg);
+        color: var(--text);
+    }
 }
 
 .demo-viewer .demo-item.active {
-    background: #e8f0fe;
-    color: var(--accent);
-    font-weight: 500;
+    background: var(--surface);
+    color: var(--text);
+    font-weight: var(--vq-weight-semibold);
+    box-shadow: inset 2px 0 0 var(--accent);
 }
 
 /* ==================== Main Area ==================== */
@@ -181,28 +235,32 @@
 }
 
 .demo-viewer .header {
-    padding: 12px 16px;
+    height: var(--header-h);
+    padding: 0 var(--vq-space-4);
     border-bottom: 1px solid var(--border);
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-shrink: 0;
-    gap: 12px;
+    gap: var(--vq-space-3);
     min-width: 0;
 }
 
 .demo-viewer .header-info {
     display: flex;
-    align-items: baseline;
-    gap: 12px;
+    align-items: center;
+    gap: var(--vq-space-3);
     min-width: 0;
     flex: 1 1 0;
     overflow: hidden;
 }
 
 .demo-viewer .header h2 {
-    font-size: 16px;
-    font-weight: 600;
+    font-family: var(--vq-font-display);
+    font-variation-settings: "opsz" 18, "SOFT" 0, "WONK" 0;
+    font-size: var(--vq-text-lg);
+    font-weight: var(--vq-weight-semibold);
+    line-height: var(--vq-leading-tight);
     margin: 0;
     white-space: nowrap;
     overflow: hidden;
@@ -211,14 +269,48 @@
 }
 
 .demo-viewer .category {
-    font-size: 13px;
-    color: var(--muted);
+    font-size: var(--vq-text-xs);
+    font-weight: var(--vq-weight-medium);
+    color: var(--text-soft);
+    background: var(--vq-gold-tint);
+    padding: 2px 10px;
+    border-radius: var(--vq-radius-pill);
     white-space: nowrap;
 }
 
-.demo-viewer .tabs {
-    display: flex;
-    gap: 8px;
+.demo-viewer .category:empty {
+    display: none;
+}
+
+/* Sidebar toggle: only shown when the sidebar is collapsible (narrow screens) */
+.demo-viewer .sidebar-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    flex-shrink: 0;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: var(--vq-radius);
+    color: var(--text);
+    cursor: pointer;
+}
+
+@media (hover: hover) {
+    .demo-viewer .sidebar-toggle:hover {
+        background: var(--panel);
+    }
+}
+
+.demo-viewer .sidebar-toggle svg {
+    width: 16px;
+    height: 16px;
+}
+
+.demo-viewer .sidebar-backdrop {
+    display: none;
 }
 
 /* ==================== GitHub Link ==================== */
@@ -228,16 +320,25 @@
     gap: 6px;
     color: var(--muted);
     text-decoration: none;
-    font-size: 13px;
+    font-size: var(--vq-text-xs);
     white-space: nowrap;
     flex-shrink: 1;
     min-width: 0;
     overflow: hidden;
-    transition: color 0.2s;
+    transition: color var(--vq-transition);
 }
 
-.demo-viewer .github-link:hover {
-    color: var(--text);
+@media (hover: hover) {
+    .demo-viewer .github-link:hover {
+        color: var(--text);
+    }
+}
+
+@media (hover: hover) {
+    .demo-viewer .github-link:hover .github-label {
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
 }
 
 .demo-viewer .github-icon {
@@ -261,25 +362,46 @@
     .demo-viewer .github-label { display: none; }
 }
 
+/* ==================== View tabs (segmented control) ==================== */
+.demo-viewer .tabs {
+    display: flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--panel);
+    border-radius: var(--vq-radius-pill);
+    flex-shrink: 0;
+}
+
 .demo-viewer .tab {
     background: none;
-    border: 1px solid var(--border);
+    border: none;
     color: var(--muted);
-    padding: 6px 12px;
-    border-radius: 6px;
+    font: inherit;
+    font-size: var(--vq-text-xs);
+    font-weight: var(--vq-weight-medium);
+    padding: 4px 14px;
+    border-radius: var(--vq-radius-pill);
     cursor: pointer;
+    transition: color var(--vq-transition), background var(--vq-transition);
+}
+
+@media (hover: hover) {
+    .demo-viewer .tab:hover {
+        color: var(--text);
+    }
 }
 
 .demo-viewer .tab.active {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: #e8f0fe;
+    background: var(--surface);
+    color: var(--text);
+    font-weight: var(--vq-weight-semibold);
+    box-shadow: var(--vq-shadow-sm);
 }
 
 /* ==================== Content Container ==================== */
 .demo-viewer .content {
     flex: 1;
-    padding: 16px;
+    padding: var(--vq-space-4);
     min-height: 0;
     overflow: hidden;
 }
@@ -318,11 +440,15 @@
     position: relative;
     flex-shrink: 0;
     user-select: none;
+    border-radius: var(--vq-radius);
+    transition: background var(--vq-transition);
 }
 
-.demo-viewer .resizer:hover,
-.demo-viewer .resizer.resizing {
-    background: var(--border);
+@media (hover: hover) {
+    .demo-viewer .resizer:hover,
+    .demo-viewer .resizer.resizing {
+        background: var(--panel);
+    }
 }
 
 .demo-viewer .resizer::before {
@@ -336,22 +462,26 @@
     background: var(--muted);
     border-radius: 1px;
     opacity: 0;
-    transition: opacity 0.2s;
+    transition: opacity var(--vq-transition);
 }
 
-.demo-viewer .resizer:hover::before,
-.demo-viewer .resizer.resizing::before {
-    opacity: 0.5;
+@media (hover: hover) {
+    .demo-viewer .resizer:hover::before,
+    .demo-viewer .resizer.resizing::before {
+        opacity: 0.5;
+    }
 }
 
 /* ==================== Preview Stage ==================== */
+/* Stays white: the demos (slate/orange/indigo) look as designed on white, not on cream. */
 .demo-viewer .preview-stage {
     flex: 1;
     min-height: 0;
-    border-radius: 12px;
-    background: #fafbfc;
+    border-radius: var(--vq-radius);
+    background: var(--surface);
     border: 1px solid var(--border);
     overflow: hidden;
+    overscroll-behavior: contain;
 }
 
 /* ==================== Source Wrapper ==================== */
@@ -361,8 +491,8 @@
     min-height: 0;
     flex: 1; /* Full width by default (source mode) */
     border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--bg);
+    border-radius: var(--vq-radius);
+    background: var(--surface);
     overflow: hidden;
 }
 
@@ -377,28 +507,38 @@
 /* ==================== File Tabs ==================== */
 .demo-viewer .file-tabs {
     display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 12px 12px 8px 12px;
+    align-items: stretch;
+    gap: var(--vq-space-1);
+    padding: 0 var(--vq-space-2);
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
-    background: var(--bg);
+    background: var(--surface);
+    overflow-x: auto;
 }
 
 .demo-viewer .file-tab {
     background: none;
     border: none;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
     color: var(--muted);
-    padding: 6px 12px;
-    border-radius: 6px;
+    padding: 10px var(--vq-space-2) 8px;
     cursor: pointer;
-    font-size: 13px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: var(--vq-text-xs);
+    font-family: var(--vq-font-mono);
+    white-space: nowrap;
+    transition: color var(--vq-transition), border-color var(--vq-transition);
+}
+
+@media (hover: hover) {
+    .demo-viewer .file-tab:hover {
+        color: var(--text);
+    }
 }
 
 .demo-viewer .file-tab.active {
-    background: rgba(3, 102, 214, 0.15);
-    color: var(--accent);
+    color: var(--text);
+    border-bottom-color: var(--accent);
 }
 
 /* ==================== File Tab Copy Button ==================== */
@@ -406,26 +546,29 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    align-self: center;
     background: none;
     border: none;
     color: var(--muted);
     width: 26px;
     height: 26px;
     padding: 5px;
-    border-radius: 6px;
+    border-radius: var(--vq-radius);
     cursor: pointer;
     margin-left: auto;
     flex-shrink: 0;
-    transition: color 0.15s, background 0.15s;
+    transition: color var(--vq-transition), background var(--vq-transition);
 }
 
-.demo-viewer .file-tab-copy:hover {
-    color: var(--text);
-    background: #f0f2f5;
+@media (hover: hover) {
+    .demo-viewer .file-tab-copy:hover {
+        color: var(--text);
+        background: var(--panel);
+    }
 }
 
 .demo-viewer .file-tab-copy.copied {
-    color: #2ea043;
+    color: var(--vq-success);
 }
 
 .demo-viewer .file-tab-copy svg {
@@ -440,7 +583,7 @@
     flex: 1;
     min-height: 0;
     overflow: auto;
-    padding: 12px;
+    overscroll-behavior: contain;
 }
 
 /* ==================== Source Files ==================== */
@@ -452,43 +595,156 @@
     display: block;
 }
 
-/* Code blocks - no border, the wrapper has it */
+/* Code blocks - no own frame, the white source card is the only one */
 .demo-viewer .source-file.code .code-block {
     margin: 0;
-    padding: 16px;
-    border-radius: 8px;
-    background: #0b0d12;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 13px;
-    line-height: 1.5;
+    padding: var(--vq-space-4);
+    background: none;
+    font-family: var(--vq-font-mono);
+    font-size: var(--vq-text-xs);
+    line-height: 1.6;
     min-height: 100%;
 }
 
-/* Markdown content - no border, the wrapper has it */
+/* Markdown content (README), styled like the site's prose */
 .demo-viewer .markdown-content {
-    padding: 16px;
-    background: transparent;
-    line-height: 1.6;
+    padding: var(--vq-space-4) var(--vq-space-5);
+    max-width: var(--vq-container-prose);
+    font-size: var(--vq-text-sm);
+    line-height: var(--vq-leading-normal);
+    color: var(--text);
+}
+
+.demo-viewer .markdown-content h1,
+.demo-viewer .markdown-content h2,
+.demo-viewer .markdown-content h3 {
+    font-family: var(--vq-font-display);
+    font-variation-settings: "opsz" 18, "SOFT" 0, "WONK" 0;
+    font-weight: var(--vq-weight-semibold);
+    line-height: var(--vq-leading-snug);
+    margin: var(--vq-space-5) 0 var(--vq-space-2);
+}
+
+.demo-viewer .markdown-content h1 { font-size: var(--vq-text-xl); margin-top: 0; }
+.demo-viewer .markdown-content h2 { font-size: var(--vq-text-lg); }
+.demo-viewer .markdown-content h3 { font-size: var(--vq-text-base); }
+
+.demo-viewer .markdown-content a {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--vq-gold);
+    text-underline-offset: 3px;
 }
 
 .demo-viewer .markdown-content code {
-    background: none;
-    padding: 2px 6px;
-    border-radius: 3px;
-    border-radius: 3px;
-    color: #24292e;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 85%;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    padding: 1px 5px;
+    border-radius: var(--vq-radius);
+    color: var(--text);
+    font-family: var(--vq-font-mono);
+    font-size: 0.875em;
 }
 
-.demo-viewer .demo-group-label {
-    padding: 6px 10px 2px 10px;
-    margin-top: 10px;
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--accent);
-    pointer-events: none;
-    user-select: none;
+/* Code blocks: one box for the block, long lines scroll instead of being cut off */
+.demo-viewer .markdown-content pre {
+    margin: var(--vq-space-3) 0;
+    padding: var(--vq-space-3) var(--vq-space-4);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--vq-radius);
+    overflow-x: auto;
+    line-height: 1.6;
+}
+
+.demo-viewer .markdown-content pre code {
+    background: none;
+    border: 0;
+    padding: 0;
+    border-radius: 0;
+    font-size: var(--vq-text-xs);
+}
+
+.demo-viewer .markdown-content li + li {
+    margin-top: var(--vq-space-1);
+}
+
+/* ==================== Narrow screens ==================== */
+/* Touch: comfortable targets */
+@media (pointer: coarse) {
+    .demo-viewer .demo-item,
+    .demo-viewer .demo-category-title,
+    .demo-viewer .package-title,
+    .demo-viewer .file-tab {
+        min-height: var(--vq-tap);
+        display: flex;
+        align-items: center;
+    }
+
+    .demo-viewer .demo-category-title,
+    .demo-viewer .package-title {
+        justify-content: space-between;
+    }
+}
+
+/* Below 640px the sidebar collapses into an overlay, opened from the header */
+@media (max-width: 639px) {
+    .demo-viewer .sidebar-toggle {
+        display: inline-flex;
+    }
+
+    .demo-viewer .sidebar {
+        position: fixed;
+        inset: 0 auto 0 0;
+        width: min(280px, 85vw);
+        z-index: 20;
+        transform: translateX(-100%);
+        transition: transform var(--vq-transition);
+        box-shadow: none;
+    }
+
+    .demo-viewer.sidebar-open .sidebar {
+        transform: none;
+        box-shadow: var(--vq-shadow-lg);
+    }
+
+    .demo-viewer.sidebar-open .sidebar-backdrop {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 10;
+        background: rgba(28, 26, 23, 0.3);
+    }
+
+    .demo-viewer .header {
+        padding: 0 var(--vq-space-3);
+        gap: var(--vq-space-2);
+    }
+
+    .demo-viewer .content {
+        padding: var(--vq-space-2);
+    }
+
+    .demo-viewer .tab {
+        padding: 4px 10px;
+    }
+
+    /* Too narrow for canvas and code side by side */
+    .demo-viewer .tab[data-tab="both"] {
+        display: none;
+    }
+
+}
+
+/* Room for the title: the category is in the sidebar anyway */
+@media (max-width: 900px) {
+    .demo-viewer .category {
+        display: none;
+    }
+}
+
+@media (max-width: 479px) {
+    .demo-viewer .github-link {
+        display: none;
+    }
 }

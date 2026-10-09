@@ -37,25 +37,3 @@
     pointer-events: none;
     user-select: none;
 }
-
-/* Annotation labels inside the content layer — they pan and zoom
-   with the shapes, helping the user see the coordinate system. */
-.demos-viewport-box-content-label {
-    fill: #94a3b8;
-    font-size: 11px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-anchor: middle;
-    pointer-events: none;
-    user-select: none;
-}
-
-/* Annotation label on the frame layer — stays fixed on screen. */
-.demos-viewport-box-frame-label {
-    fill: #475569;
-    font-size: 12px;
-    font-weight: 600;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-anchor: middle;
-    pointer-events: none;
-    user-select: none;
-}

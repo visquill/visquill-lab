@@ -8,7 +8,6 @@ import {
     VisQuill,
     ConvexHulls,
     Offsets,
-    Vectors,
     Segments,
     type Segment,
     Distribute,
@@ -20,14 +19,14 @@ import './styles.css';
 /**
  * Demonstrates polygon offsetting combined with point matching: an outer
  * polygon is computed by expanding the convex hull outward by a fixed
- * distance, then each site is connected to its nearest port on the offset
- * polygon via a leader line. Drag any site or the slider to see everything
+ * distance, then each site is connected to its own port on the offset
+ * polygon via a leader line (one-to-one, shortest total length). Drag any site or the slider to see everything
  * update reactively.
  *
  * @param div - The div element that will contain the graphic
  */
 export function run(div: HTMLDivElement) {
-    const rvg = VisQuill.create(div, "demos-geometry-polygon-offset-");
+    const rvg = VisQuill.create(div, "demos-geometry-match-separated-");
     const canvas = rvg.canvas.layer();
     const controls = rvg.canvas.layer();
     controls.handles.defaultZIndex = 1
@@ -38,7 +37,7 @@ export function run(div: HTMLDivElement) {
     const sites: Point[] = [];
     const leaders: Segment[] = [];
     for (let i = 0; i < 20; i++) {
-        const handle =controls.handles.disk("site", [200 + Math.random() * 500, 200 + Math.random() * 500])
+        const handle = controls.handles.disk("site", [200 + Math.random() * 500, 200 + Math.random() * 500])
         sites.push(handle);
         leaders.push(canvas.visuals.segment("leader"));
     }
@@ -69,17 +68,18 @@ export function run(div: HTMLDivElement) {
 
     Segments.pointAt(track, 0.5, slider);
 
+    // Keep the handle on the track; the distance is how far it is from the track's start.
     Reactive.do([slider], () => {
-        Vectors.copy([Math.max(100, Math.min(300, slider.x)), 50], slider);
-        distance.value = slider.x - 100;
+        Points.closestPointOnSegment(slider, track, slider);
+        Points.distanceToPoint(track.at(0), slider, distance);
         label.value = distance.value.toFixed(0) + "px";
-        Vectors.add(slider, [0, 25], label);
+        Points.moveDown(slider, 25, label);
     }, true);
 
     // ─── Instructions ────────────────────────────────────────────────────────
 
     rvg.canvas.text.labelAt(
-        "Drag any site or the slider — leader lines connect each site to its nearest port on the offset polygon.",
+        "Drag any site or the slider — each site gets its own port on the offset polygon, with the shortest total leader length.",
         [20, 30],
         "instructions"
     );

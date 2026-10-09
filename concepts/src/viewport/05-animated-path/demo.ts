@@ -3,7 +3,7 @@
 
 import {
     VisQuill, Reactive, Boxes, Circles, Symbols,
-    Viewports, Polylines, Points,
+    Viewports, Polylines, Points, Values,
     type Real, Segments
 } from "@visquill/visquill-gdk"
 import './styles.css'
@@ -35,8 +35,8 @@ const sliderHalfWidth = 100
 const sliderBottomOffset = 50
 
 // Waypoints defining the camera path through the content world.
-// These are the coarse control points — Polylines.smooth() will
-// interpolate a smooth curve through them.
+// These are the coarse control points — Polylines.smooth() rounds
+// their corners into a smooth curve.
 const pathWaypoints: [number, number][] = [
     [50, 50],
     [100, 200],
@@ -47,8 +47,9 @@ const pathWaypoints: [number, number][] = [
     [400, 600],
 ]
 
-// Number of interpolation steps for the smoothed trajectory.
-const smoothingSteps = 10
+// Smoothing passes (Chaikin corner cutting); each pass doubles the
+// number of vertices, so 5 passes turn 7 waypoints into 224 vertices.
+const smoothingIterations = 5
 
 // Zoom range mapped from the zoom slider (0 → minZoom, 1 → maxZoom).
 const minZoom = 0.5
@@ -64,8 +65,8 @@ const maxZoom = 2.5
  *
  * This introduces several new concepts on top of the earlier viewport
  * demos:
- *  - `Polylines.smooth()` to generate a smooth curve from coarse
- *    waypoints.
+ *  - `Polylines.smooth()` to round the corners of the coarse
+ *    waypoint path.
  *  - `Polylines.pinAt()` to sample a pin (position + direction) at
  *    any ratio along the curve.
  *  - `Viewports.focusOn()` to centre the viewport on a pin without
@@ -118,14 +119,11 @@ export function run(div: HTMLDivElement) {
     // can see the original control points.
     content.visuals.polyline("path-control", pathWaypoints)
 
-    // The smoothed trajectory interpolates between the waypoints,
+    // The smoothed trajectory cuts the corners of the waypoint path,
     // producing a gentle curve for the camera to follow.
     const trajectory = content.visuals.polyline(
         "path-smooth",
-        Polylines.smooth(
-            content.visuals.polyline("path-control-hidden", pathWaypoints),
-            smoothingSteps
-        )
+        Polylines.smooth(pathWaypoints, smoothingIterations)
     )
 
     // ─── Reactive boundary sizing ─────────────────────────────────────
@@ -142,9 +140,10 @@ export function run(div: HTMLDivElement) {
     const zoom     = canvas.values.real(0.5)
 
     // ─── Position → viewport focus ────────────────────────────────────
-    // Whenever the position slider changes, sample a pin on the smooth
-    // trajectory at that ratio and centre the viewport on it.
-    Reactive.do([position], () => {
+    // Whenever the position slider changes (or the boundary moves on
+    // resize), sample a pin on the smooth trajectory at that ratio and
+    // centre the viewport on it.
+    Reactive.do([position, viewport.boundary], () => {
         const vCenter = Boxes.center(viewport.boundary)
         const pin     = Polylines.pinAt(trajectory, position)
         Viewports.focusOn(viewport.origin, pin, vCenter, viewport.origin)
@@ -155,7 +154,7 @@ export function run(div: HTMLDivElement) {
     // apply it around the viewport centre.
     Reactive.do([zoom], () => {
         const vCenter   = Boxes.center(viewport.boundary)
-        const zoomLevel = zoom.value * (maxZoom - minZoom) + minZoom
+        const zoomLevel = Values.lerp(minZoom, maxZoom, zoom)
         Viewports.zoomTo(viewport.origin, zoomLevel, vCenter, viewport.origin)
     })
 
@@ -180,7 +179,9 @@ function buildSlider(
     label:  string
 ) {
     // Track segment — positioned reactively below the viewport.
-    const track = canvas.visuals.segment("slider-track")
+    const track      = canvas.visuals.segment("slider-track")
+    const trackLabel = canvas.text.label(label, "slider-label")
+    const handle     = canvas.handles.disk("slider-handle")
 
     Reactive.do([rvg.frame], () => {
         const bottom  = Boxes.bottomSide(rvg.frame)
@@ -194,19 +195,14 @@ function buildSlider(
 
         Points.moveLeft(anchor,  sliderHalfWidth, track.at(0))
         Points.moveRight(anchor, sliderHalfWidth, track.at(1))
+
+        // Label above the track; handle at the current value, so it
+        // moves with the track when the container resizes.
+        Points.moveUp(anchor, 18, trackLabel)
+        Segments.pointAt(track, value, handle)
     })
 
-    // Label above the track.
-    const trackLabel = canvas.text.label(label, "slider-label")
-    Reactive.do([rvg.frame], () => {
-        const mid = Points.midPoint(track.at(0), track.at(1))
-        Points.moveUp(mid, 18, trackLabel)
-    })
-
-    // Draggable handle — placed at the current value along the track
-    // and constrained so it can only slide left/right.
-    const handle = canvas.handles.disk("slider-handle")
-    Points.placeOnSegment(track.at(0), track.at(1), value, handle)
+    // Constrain the handle to the track and write its position back.
 
     Reactive.do([handle], () => {
         Points.closestPointOnSegment(handle, track, handle)

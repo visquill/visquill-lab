@@ -128,11 +128,9 @@ export function toggleButton(
         },
     })
 
-    const labelEl = Svg.get(btn.label!) as SVGTextElement
-
     Svg.get(btn.frame).addEventListener("click", () => {
         toggle.next()
-        labelEl.textContent = `${toggle.title}: ${toggle.valueToString()}`
+        btn.label!.value = `${toggle.title}: ${toggle.valueToString()}`
     })
 
     return {frame: btn.frame, label: btn.label!}
@@ -145,7 +143,7 @@ export function toggleButton(
  *
  * @param group - Group that owns the panel
  * @param options - Optional layout and style overrides
- * @param options.anchor - Position of the top-left corner of the panel
+ * @param options.anchor - Bottom-left corner of the first button; further buttons follow `gap` pixels further down
  * @param options.entries - Array of {@link Options} instances, one per button row
  * @param options.width - Button width in pixels. Defaults to 120
  * @param options.height - Button height in pixels. Defaults to 24

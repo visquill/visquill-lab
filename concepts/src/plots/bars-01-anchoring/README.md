@@ -1,12 +1,28 @@
 # Bar Anchoring
 
-How the anchor ratio controls where a pin sits along a bar's width.
+The anchor ratio decides which point of a bar's base sits on the pin.
 
-## What you see
+## How it works
 
-Three bars sharing the same pin, drawn in different colours. The green bar has anchor 0.0 — the pin sits at its left edge. The orange bar has anchor 0.5 — the pin sits at its centre. The purple bar has anchor 1.0 — the pin sits at its right edge. A connector between the position handle and direction handle visualises the pin orientation. Drag the position handle to move all three bars together; drag the direction handle to rotate them and see how each bar swings around its own anchor point.
+`Pins.placeAndAlignOnSegment` turns the two handles into one pin: it sits on the position handle and points to the direction handle. `Bars.fromAnchoredPin` builds a bar of fixed width and height on that pin. Its base runs along the pin's direction, and the anchor ratio says where the pin is on the base: 0 at the start, 0.5 in the middle, 1 at the end.
 
-## Key concepts
+```ts
+Reactive.do([posHandle, dirHandle], () => {
+    const pin = Pins.placeAndAlignOnSegment(posHandle, dirHandle, 0)
 
-- **`Bars.fromAnchoredPin(pin, anchorRatio, width, height, left, result)`** — places the bar so that the fraction `anchorRatio` of its width aligns with the pin position; 0.0 = left edge, 0.5 = centre, 1.0 = right edge
-- **`Bars.fromPin`** — equivalent to `fromAnchoredPin` with anchor 0.5
+    Bars.fromAnchoredPin(pin, { value: 0.0 }, barWidth, barHeight, true, barLeft as Rectangle)
+    Bars.fromAnchoredPin(pin, { value: 0.5 }, barWidth, barHeight, true, barCenter as Rectangle)
+    Bars.fromAnchoredPin(pin, { value: 1.0 }, barWidth, barHeight, true, barRight as Rectangle)
+}, true)
+```
+
+With `left` set to `true`, the bars grow to the left of the pin's direction. Rotating the pin turns each bar around its own anchor.
+
+## API
+
+- `Bars.fromAnchoredPin`: a bar placed on a pin at an anchor ratio along its base
+- `Pins.placeAndAlignOnSegment`: a pin at a ratio along a segment, pointing along it
+
+## See also
+
+- `plots/bars-02-along-polyline`
